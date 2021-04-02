@@ -3,6 +3,7 @@ const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mysql = require("mysql");
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.static(publicDirectory));
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+//app.use(cookieParser);
 app.use(require('./api/routes/db'));
 
 app.use((req, res, next) => {
@@ -27,7 +29,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/auth/register', require('./api/routes/auth/register'));
+app.use('/auth', require('./api/routes/auth'));
 app.use('/universities', require('./api/routes/universities'));
 app.use('/universities/:universityId/faculties', require('./api/routes/faculties'));
 
