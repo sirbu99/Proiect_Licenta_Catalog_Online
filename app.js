@@ -1,20 +1,21 @@
 const express = require('express');
-const app = express();
+const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mysql = require("mysql");
 
+const app = express();
+
 app.set('view-engine', 'ejs');
 
-const dbRoutes = require('./api/routes/db');
-const universitiesRoutes = require('./api/routes/universities');
-const facultiesRoutes = require('./api/routes/faculties');
+const publicDirectory = path.join(__dirname, './public');
+app.use(express.static(publicDirectory));
 
 
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(dbRoutes);
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(require('./api/routes/db'));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -26,8 +27,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/universities', universitiesRoutes);
-app.use('/universities/:universityId/faculties', facultiesRoutes);
+app.use('/auth/register', require('./api/routes/auth/register'));
+app.use('/universities', require('./api/routes/universities'));
+app.use('/universities/:universityId/faculties', require('./api/routes/faculties'));
+
 
 app.use((req, res, next) => {
     const err = new Error('Not found');
