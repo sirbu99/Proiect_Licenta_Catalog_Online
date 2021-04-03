@@ -14,8 +14,7 @@ exports.login = (req, res) => {
         }
 
         db.query('SELECT * FROM users WHERE email = ?', [email], async(error, results) => {
-            let hashedPassword = await bcrypt.hash(password, 8);
-            if (results.length == 0 || !(await bcrypt.compare(password, results[0].password))) {
+            if (results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
                 return res.status(401).json({
                     message: 'Invalid credentials!'
                 });
