@@ -1,4 +1,3 @@
-import React from 'react';
 import Joi from 'joi-browser';
 
 const UserValidation = (ComposedComponent) => {

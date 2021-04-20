@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
+
 const UserBoxAnonymous = (props) => {
     function handleLoginClick(e) {
         e.preventDefault();
@@ -10,7 +11,9 @@ const UserBoxAnonymous = (props) => {
     return (
         <div className="float-sm-right m-3 m-sm-auto text-sm-left text-center">
             <Link to="/login" onClick={handleLoginClick}>Login</Link>
+            <Link to="/register">Register</Link>
         </div>
+
     );
 };
 

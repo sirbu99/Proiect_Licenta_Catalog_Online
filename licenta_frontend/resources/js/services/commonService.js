@@ -41,19 +41,31 @@ export function stripScripts(s) {
     }
 
     // strip attributes && events
-    Array.from(div.querySelectorAll("*")).forEach(function(el){
+    Array.from(div.querySelectorAll("*")).forEach(function(el) {
         const atts = el.attributes;
         const attsCount = atts.length;
-        for (let i = attsCount - 1; i >= 0; i--){
+        for (let i = attsCount - 1; i >= 0; i--) {
             let att = atts[i].nodeName;
             const isImageSource = el.tagName.toLowerCase() === 'img' && att.toLowerCase() === 'src';
-            if (["style", "class"].indexOf(att) ==-1 && !isImageSource) {
+            if (["style", "class"].indexOf(att) == -1 && !isImageSource) {
                 el.removeAttribute(att);
             }
         }
     });
 
     return div.innerHTML;
+}
+
+/* Translations */
+function applyReplacements(message, replacements) {
+    _.each(replacements, (replacementKey, replacementName) => {
+        const replacement = _.get(replacements, replacementName, '');
+
+        const regex = new RegExp(`:${replacementName}`, 'g');
+        message = message.replace(regex, replacement);
+    });
+
+    return message;
 }
 
 export function getApiHost() {
