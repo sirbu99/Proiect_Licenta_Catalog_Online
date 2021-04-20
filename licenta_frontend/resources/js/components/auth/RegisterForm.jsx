@@ -4,13 +4,14 @@ import ValidatedComponent from '../ValidatedComponent';
 import RegisterValidation from './validation/RegisterValidation';
 import FormComponent from '../FormComponent';
 import {messages} from '../../constants/messages'
+import { getApiHost } from '../../services/commonService';
 
 class RegisterForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            identification_numer: '',
+            identification_number: '',
             first_name: '',
             last_name: '',
             email: '',
@@ -31,7 +32,7 @@ class RegisterForm extends Component {
 
         _.forEach(_.keys(this.validationSchema), (key) => { this.validate(key); });
 
-        this.isValid() && $.post('/api/register', requestOptions)
+        this.isValid() && $.post(`${getApiHost()}/register`, requestOptions)
             .done(() => {
                 this.props.history.push("/login");
             })

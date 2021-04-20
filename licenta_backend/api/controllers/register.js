@@ -6,6 +6,7 @@ const { json } = require("body-parser");
 
 exports.register = (req, res) => {
     const { identificationNr, firstName, lastName, password, passwordConfirm, roleId, userEmail, birthday, address, invitationCode } = req.body;
+    console.log(req.body);
     db.query('SELECT email FROM users WHERE email = ?', [userEmail], async(error, results) => {
         if (error) {
             console.log(error);

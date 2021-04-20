@@ -40,7 +40,7 @@ class UserForm extends Component {
         const routeUserId = _.get(this.props, 'match.params.userId', null);
         if (!routeUserId) return;
 
-        $.get(`${getApiHost}/users/${routeUserId}`)
+        $.get(`${getApiHost()}/users/${routeUserId}`)
             .done((response) => {
                 if (!response.success) return;
                 const userData = _.assign(this.state.user, response.data);
