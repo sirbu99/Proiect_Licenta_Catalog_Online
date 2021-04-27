@@ -56,7 +56,7 @@ class RegisterForm extends Component {
                             {renderField('last_name', 'Last Name')}
                             {renderField('email', 'Email', 'email')}
                             {renderField('role_id', 'Role ID')}
-                            {renderField('birthday', 'Birthday')}
+                            {renderField('birthday', 'Birthday','date')}
                             {renderField('address', 'Address')}
                             {renderField('invitation_code', 'Invitation Code')}
                             {renderField('password', 'Password', 'password')}
