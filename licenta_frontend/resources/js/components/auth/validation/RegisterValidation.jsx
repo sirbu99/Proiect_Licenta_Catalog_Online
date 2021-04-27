@@ -10,7 +10,6 @@ const RegisterValidation = (ComposedComponent) => {
                 first_name: Joi.string().required(),
                 last_name: Joi.string().required(),
                 email: Joi.string().email().required(),
-                username: Joi.string().required(),
                 role_id: Joi.string().required(),
                 birthday: Joi.date().required(),
                 address: Joi.string().required(),

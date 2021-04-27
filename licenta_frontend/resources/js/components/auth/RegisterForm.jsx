@@ -15,7 +15,6 @@ class RegisterForm extends Component {
             first_name: '',
             last_name: '',
             email: '',
-            username: '',
             role_id: '',
             birthday:'',
             address: '',
@@ -56,7 +55,6 @@ class RegisterForm extends Component {
                             {renderField('first_name', 'First Name')}
                             {renderField('last_name', 'Last Name')}
                             {renderField('email', 'Email', 'email')}
-                            {renderField('username', 'Username')}
                             {renderField('role_id', 'Role ID')}
                             {renderField('birthday', 'Birthday')}
                             {renderField('address', 'Address')}
