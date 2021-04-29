@@ -9,7 +9,6 @@ import { getApiHost } from '../../services/commonService';
 class RegisterForm extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             identification_number: '',
             first_name: '',

@@ -18,6 +18,9 @@ const MenuMain = (props) => {
                         <li className="nav-item">
                             <Link to="/about-us" className="nav-link">About Us</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link to="/universities" className="nav-link">Universities</Link>
+                        </li>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">

@@ -7,8 +7,4 @@ router.get("/", (req, res) => {
 
 });
 
-router.get('/universities/:universityId', (req, res) => {
-
-});
-
 module.exports = router;

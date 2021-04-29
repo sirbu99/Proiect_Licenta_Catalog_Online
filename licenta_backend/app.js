@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 
 app.use('/', require('./api/routes/auth'));
 app.use('/universities', require('./api/routes/universities'));
-app.use('/universities/:universityId/faculties', require('./api/routes/faculties'));
+app.use('/universities/:universityId', require('./api/routes/faculties'));
 
 
 app.use((req, res, next) => {

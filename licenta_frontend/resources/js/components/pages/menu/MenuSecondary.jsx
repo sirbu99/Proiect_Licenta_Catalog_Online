@@ -37,6 +37,7 @@ const MenuSecondary = (props) => {
                         <span>User list</span>
                     </Link>
                 </li>
+                
                 {hasPermission('users.view')
                     ? <li>
                         <Link to="/manage/users" className="nav-link">
