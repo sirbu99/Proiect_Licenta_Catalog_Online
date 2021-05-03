@@ -2,8 +2,10 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import HomePage from './HomePage';
 import AboutUs from './AboutUs';
-import UniversitiesPage from './UniversitiesPage';
-import FacultiesPage from './FacultiesPage';
+import UniversitiesPage from './uniPages/UniversitiesPage';
+import FacultiesPage from './facultyPages/FacultiesPage';
+import EditUniversityPage from './uniPages/EditUniversityPage';
+import EditFacultyPage from './facultyPages/EditFacultyPage';
 
 const routes = {
     all: [
@@ -13,10 +15,13 @@ const routes = {
         <Route key="route-faculties" exact path="/universities/:id" component={FacultiesPage} />,
     ],
     loggedIn: [
-
+        
+        <Route key="route-faculties-edit" exact path="/universities/:id/:facultyId/edit" component={EditFacultyPage} />,
     ],
     byPermission: {
-
+        "faculty_edit": [
+            <Route key="route-universities-edit" exact path="/universities/:id/edit" component={EditUniversityPage} />,
+        ]
     },
 };
 

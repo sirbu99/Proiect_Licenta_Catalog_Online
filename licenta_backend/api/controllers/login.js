@@ -35,7 +35,8 @@ exports.login = (req, res) => {
                 res.status(200).json({
                     data: {
                         id: results[0].id,
-                        api_token: token
+                        api_token: token,
+                        permissions: ['faculty_edit'],
                     }
                 })
             }

@@ -11,10 +11,10 @@ function isLoggedIn(user = {}) {
 export default function authentication(state = initialState, action) {
     switch (action.type) {
         case authConstants.LOGIN_REQUEST:
-        return {
-            loggedIn: false,
-            user: action.user,
-        };
+            return {
+                loggedIn: false,
+                user: action.user,
+            };
         case authConstants.LOGIN_SUCCESS:
         case authConstants.LOGIN_REFRESH:
             return {
