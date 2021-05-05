@@ -51,17 +51,19 @@ class GetUniversities extends React.Component {
         } else {
             return (
                 <div className="table-responsive">
-                    {_.get(this.props, 'auth.user.permissions', []).includes('faculty')
-                        ? 'are permisisune'
-                        : null
-                    }
                     <table className="table table-bordered table-hover">
                         <thead className="thead-dark">
                             <tr className="bg-primary">
                                 <th scope="col">University Name</th>
                                 <th scope="col">City</th>
                                 <th scope="col">Country</th>
-                                <th></th>
+                                {_.get(this.props, 'auth.user.permissions', []).includes('edit_university')
+                                            ? <>
+                                                <th></th>
+                                                <th></th>
+                                            </>
+                                            : null
+                                        }
                             </tr>
                         </thead>
                         <tbody>
@@ -71,7 +73,13 @@ class GetUniversities extends React.Component {
                                         <td role="button" onClick={this.fetchDetails.bind(me, uni.id)} >{uni.name}</td>
                                         <td>{uni.city}</td>
                                         <td>{uni.country}</td>
-                                        <td role="button" onClick={this.handleEdit.bind(me, uni.id)}>Edit</td>
+                                        {_.get(this.props, 'auth.user.permissions', []).includes('edit_university')
+                                            ? <>
+                                                <td role="button" onClick={this.handleEdit.bind(me, uni.id)}>Edit</td>
+                                                <td role="button" onClick={this.handleEdit.bind(me, uni.id)}>Delete</td>
+                                            </>
+                                            : null
+                                        }
                                     </tr>
                                 );
                             })}
