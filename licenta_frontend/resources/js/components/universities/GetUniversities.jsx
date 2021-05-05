@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
 
 
@@ -15,7 +16,12 @@ class GetUniversities extends React.Component {
     componentDidMount() {
         const apiUrl = `${getApiHost()}/universities`;
         try {
-            fetch(apiUrl)
+            console.log(this.props.auth);
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
                 .then((response) => response.json())
                 .then((data) => this.setState({ universities: data }));
 
@@ -36,7 +42,6 @@ class GetUniversities extends React.Component {
         const me = this;
         const universities = this.state.universities;
         const uniListSize = Object.keys(universities).length;
-        console.log(uniListSize);
         if (uniListSize < 1) {
             return (
                 <h3>
@@ -46,6 +51,10 @@ class GetUniversities extends React.Component {
         } else {
             return (
                 <div className="table-responsive">
+                    {_.get(this.props, 'auth.user.permissions', []).includes('faculty')
+                        ? 'are permisisune'
+                        : null
+                    }
                     <table className="table table-bordered table-hover">
                         <thead className="thead-dark">
                             <tr className="bg-primary">
@@ -75,4 +84,8 @@ class GetUniversities extends React.Component {
 
     }
 }
-export default withRouter(GetUniversities);
+const mapStateToProps = (state) => ({
+    auth: state.authentication,
+});
+
+export default connect(mapStateToProps)(withRouter(GetUniversities));

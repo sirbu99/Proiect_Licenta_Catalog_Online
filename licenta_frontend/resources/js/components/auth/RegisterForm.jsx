@@ -33,10 +33,10 @@ class RegisterForm extends Component {
         this.isValid() && $.post(`${getApiHost()}/register`, requestOptions)
             .done(() => {
                 this.props.history.push("/login");
-            })
-            .fail((xhr) => {
-                toastr.error(_.values(xhr.responseJSON.errors).join('<br/>') || messages.GENERIC_ERROR_NOTIFICATION);
             });
+            // .fail((xhr) => {
+            //     toastr.error(_.values(xhr.responseJSON.errors).join('<br/>') || messages.GENERIC_ERROR_NOTIFICATION);
+            // });
     }
 
     render() {

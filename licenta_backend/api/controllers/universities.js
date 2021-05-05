@@ -34,50 +34,7 @@ exports.postUniversity = (req, res) => {
     );
 };
 
-exports.postUniversityById = (req, res) => {
-    let university = req.body;
-    const sql = "SET @id=?; SET @name = ?; SET @city = ?; SET @country = ?; CALL Update_Universities(@id, @name, @city, @country);";
-    db.query(
-        sql, [
-            req.params.universityId,
-            university.name,
-            university.city,
-            university.country,
-        ],
-        (err, results, fields) => {
-            if (!err) {
-                results.forEach((element) => {
-                    if (element.constructor == Array) res.send(element);
-                });
-            } else {
-                console.log(err);
-            }
-        }
-    );
-};
-
 exports.putUniversity = (req, res) => {
-    let university = req.body;
-    const sql = "SET @name = ?;SET @city = ?;SET @country = ?; CALL Add_Universities(@name, @city, @country);";
-    db.query(
-        sql, [
-            university.name,
-            university.city,
-            university.country,
-        ],
-        (err, results, fields) => {
-            if (!err) {
-                res.send(
-                    "The data for the selected university has been successfully updated."
-                );
-            } else {
-                console.log(err);
-            }
-        }
-    );
-};
-
-exports.putUniversityById = (req, res) => {
     let university = req.body;
     const sql = "SET @id=?; SET @name = ?; SET @city = ?; SET @country = ?; CALL Update_Universities(@id, @name, @city, @country);";
     db.query(

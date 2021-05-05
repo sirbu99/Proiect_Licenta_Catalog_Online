@@ -1,16 +1,11 @@
-const db = require("../../utils/database");
-const jwt = require('jsonwebtoken');
+const userRepository = require('../repository/user');
 const bcrypt = require('bcryptjs');
-const { json } = require("body-parser");
 
-
-exports.register = (req, res) => {
-    const { identification_number, first_name, last_name, role_id, email, birthday, address, invitation_code, password, password_confirmation } = req.body;
-    db.query('SELECT email FROM users WHERE email = ?', [email], async(error, results) => {
-        if (error) {
-            console.log(error);
-        }
-        if (results.length > 0) {
+exports.register = async(req, res) => {
+    try {
+        const { identification_number, first_name, last_name, role_id, email, birthday, address, invitation_code, password, password_confirmation } = req.body;
+        const user = await userRepository.getUserByEmail(email);
+        if (user.length > 0) {
             return res.json({
                 message: 'Email already in use!'
             });
@@ -22,16 +17,12 @@ exports.register = (req, res) => {
         }
 
         let hashedPassword = await bcrypt.hash(password, 8);
-
-
-        db.query('INSERT INTO users SET ? ', { identification_number, first_name, last_name, password: hashedPassword, role_id, email, birthday, address, invitation_code }, (error, results) => {
-            if (error) {
-                console.log(error);
-            } else {
-                return res.json({
-                    message: 'User registered!'
-                });
-            }
+        await userRepository.insertIntoUsers(identification_number, first_name, last_name, hashedPassword, role_id, email, birthday, address, invitation_code);
+        return res.json({
+            message: 'User registered!'
         });
-    });
+
+    } catch (error) {
+        console.log(error);
+    };
 };

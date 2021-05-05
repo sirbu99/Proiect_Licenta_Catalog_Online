@@ -18,4 +18,16 @@ db.connect((err) => {
     }
 });
 
+db.queryPromise = function(query, params) {
+    return (new Promise((resolve, reject) => {
+        db.query(query, params, async(error, results) => {
+            if (error) {
+                reject(error);
+            }
+            resolve(results);
+        });
+    }));
+
+}
+
 module.exports = db;

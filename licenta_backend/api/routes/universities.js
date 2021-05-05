@@ -7,11 +7,7 @@ router.get("/", universitiesController.getAllUniversities);
 
 router.post("/", universitiesController.postUniversity);
 
-router.post("/:universityId", universitiesController.postUniversityById);
-
-router.put("/", universitiesController.putUniversity);
-
-router.put("/:universityId", universitiesController.putUniversityById);
+router.put("/:universityId", universitiesController.putUniversity);
 
 router.delete("/:universityId", universitiesController.deleteUniversity);
 

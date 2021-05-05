@@ -57,6 +57,7 @@ class EditUniversityForm extends Component {
 
     handleSubmit() {
         // TODO
+        // de trimis in header api__token
     }
 
 render() {
