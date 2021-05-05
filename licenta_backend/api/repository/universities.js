@@ -6,10 +6,9 @@ async function getAllUniversities() {
 
 async function postUniversity(name, city, country) {
     return db.queryPromise('SET @name = ?;SET @city = ?;SET @country = ?; CALL Add_Universities(@name, @city, @country);', [name, city, country]);
-    // return ['faculty'];
 }
 
-async function putUniversities(id, name, city, country) {
+async function putUniversity(id, name, city, country) {
     return db.queryPromise('SET @id=?; SET @name = ?; SET @city = ?; SET @country = ?; CALL Update_Universities(@id, @name, @city, @country);', [id, name, city, country]);
 }
 
@@ -20,7 +19,7 @@ async function deleteUniversity(id) {
 module.exports = {
     getAllUniversities,
     postUniversity,
-    putUniversities,
+    putUniversity,
     deleteUniversity,
 
 }
