@@ -1,131 +1,55 @@
 const db = require("../../utils/database");
+const facultyRepository = require('../repository/faculties');
 
-exports.getAllFaculties = (req, res) => {
-    db.query(
-        "SELECT * FROM faculties WHERE university_id= ? ", [req.params.universityId],
-        (err, results, fields) => {
-            if (!err) {
-                res.send(results);
-            } else {
-                console.log(err);
-            }
-        }
-    );
 
+exports.getAllFaculties = async(req, res) => {
+    try {
+        faculties = await facultyRepository.getAllFaculties(req.params.universityId);
+        res.send(faculties);
+    } catch (error) {
+        console.log(error);
+
+    }
 };
 
-exports.getFacultyById = (req, res) => {
-    db.query(
-        "SELECT * FROM faculties WHERE id = ? AND university_id =?", [req.params.facultyId, req.params.universityId],
-        (err, results, fields) => {
-            if (!err) {
-                res.send(results);
-            } else {
-                console.log(err);
-            }
-        }
-    );
+exports.getFacultyById = async(req, res) => {
+    try {
+        faculty = await facultyRepository.getFacultyById(req.params.facultyId, req.params.universityId);
+        res.send(faculty);
+    } catch (error) {
+        console.log(error);
+    }
 };
 
-exports.postFaculty = (req, res) => {
-    let faculty = req.body;
-    const sql = "SET @university_id = ?; SET @name = ?;SET @address = ?;SET @description = ?; CALL Add_Faculties(@university_id,@name, @address, @description);";
-    db.query(
-        sql, [
-            req.params.universityId,
-            faculty.name,
-            faculty.address,
-            faculty.description
-        ],
-        (err, results, fields) => {
-            if (!err) {
-                results.forEach((element) => {
-                    if (element.constructor == Array) res.send(element);
-                });
-            } else {
-                console.log(err);
-            }
-        }
-    );
+exports.postFaculty = async(req, res) => {
+    try {
+        let facultyInfo = req.body;
+        faculty = await facultyRepository.postFaculty(req.params.universityId, facultyInfo.name, facultyInfo.address, facultyInfo.description);
+        faculty.forEach((element) => {
+            if (element.constructor == Array) res.send(element);
+        });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
-exports.postFacultyById = (req, res) => {
-    let faculty = req.body;
-    const sql = "SET @id= ?; SET @university_id = ?; SET @name = ?;SET @address = ?;SET @description = ?; CALL Update_Faculties(@id, @university_id,@name, @address, @description);";
-    db.query(
-        sql, [
-            req.params.facultyId,
-            req.params.universityId,
-            faculty.name,
-            faculty.address,
-            faculty.description
-        ],
-        (err, results, fields) => {
-            if (!err) {
-                results.forEach((element) => {
-                    if (element.constructor == Array) res.send(element);
-                });
-            } else {
-                console.log(err);
-            }
-        }
-    );
+exports.putFaculty = async(req, res) => {
+    try {
+        let facultyInfo = req.body;
+        faculty = await facultyRepository.putFaculty(req.params.facultyId, req.params.universityId, facultyInfo.name, facultyInfo.address, facultyInfo.description);
+        res.send(
+            "The data for the selected faculty has been successfully updated."
+        );
+    } catch (error) {
+        console.log(error);
+    }
 };
 
-exports.putFaculty = (req, res) => {
-    let faculty = req.body;
-    const sql = "SET @university_id = ?; SET @name = ?;SET @address = ?;SET @description = ?; CALL Add_Faculties(@university_id,@name, @address, @description);";
-    db.query(
-        sql, [
-            req.params.facultyId,
-            faculty.name,
-            faculty.address,
-            faculty.description,
-        ],
-        (err, results, fields) => {
-            if (!err) {
-                res.send(
-                    "The data for the selected faculty has been successfully updated."
-                );
-            } else {
-                console.log(err);
-            }
-        }
-    );
-};
-
-exports.putFacultyById = (req, res) => {
-    let faculty = req.body;
-    const sql = "SET @id= ?; SET @university_id = ?; SET @name = ?;SET @address = ?;SET @description = ?; CALL Update_Faculties(@id, @university_id,@name, @address, @description);";
-    db.query(
-        sql, [
-            req.params.facultyId,
-            req.params.universityId,
-            faculty.name,
-            faculty.address,
-            faculty.description
-        ],
-        (err, results, fields) => {
-            if (!err) {
-                res.send(
-                    "The data for the selected faculty has been successfully updated."
-                );
-            } else {
-                console.log(err);
-            }
-        }
-    );
-};
-
-exports.deleteFaculty = (req, res) => {
-    db.query(
-        "DELETE FROM faculties WHERE id= ? ", [req.params.id],
-        (err, results, fields) => {
-            if (!err) {
-                res.send("The selected faculty has been successfully deleted.");
-            } else {
-                console.log(err);
-            }
-        }
-    );
+exports.deleteFaculty = async(req, res) => {
+    try {
+        faculty = await facultyRepository.deleteFaculty(req.params.id);
+        res.send("The selected faculty has been successfully deleted.");
+    } catch (error) {
+        console.log(error);
+    }
 };

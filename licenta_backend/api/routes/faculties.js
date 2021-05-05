@@ -10,11 +10,7 @@ router.get("/:facultyId", facultiesController.getFacultyById);
 
 router.post("/", facultiesController.postFaculty);
 
-router.post("/:facultyId", facultiesController.postFacultyById);
-
-router.put("/", facultiesController.putFaculty);
-
-router.put("/:facultyId", facultiesController.putFacultyById);
+router.put("/:facultyId", facultiesController.putFaculty);
 
 router.delete("/:id", facultiesController.deleteFaculty);
 
