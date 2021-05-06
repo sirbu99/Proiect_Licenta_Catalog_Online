@@ -15,6 +15,10 @@ class GetUniversities extends React.Component {
     }
 
     componentDidMount() {
+        this.fetchUniversities();
+    }
+
+    fetchUniversities() {
         const apiUrl = `${getApiHost()}/universities`;
         try {
             fetch(apiUrl, {
@@ -34,18 +38,18 @@ class GetUniversities extends React.Component {
         this.props.history.push(`/universities/${id}`);
     }
 
-    handleEdit(id){
+    handleEdit(id) {
         this.props.history.push(`/universities/${id}/edit`);
     }
 
-    handleDelete(id){
+    handleDelete(id) {
         const apiUrl = `${getApiHost()}/universities/${id}`;
         const headers = {
             'Authorization': this.props.auth.user.api_token
         }
         try {
-            axios.delete(apiUrl, { headers });
-            this.props.history.push(`/universities`);
+            axios.delete(apiUrl, { headers })
+                .then(this.fetchUniversities.bind(this));
         } catch (error) {
             console.log(error)
         }
@@ -71,12 +75,12 @@ class GetUniversities extends React.Component {
                                 <th scope="col">City</th>
                                 <th scope="col">Country</th>
                                 {_.get(this.props, 'auth.user.permissions', []).includes('edit_university')
-                                            ? <>
-                                                <th></th>
-                                                <th></th>
-                                            </>
-                                            : null
-                                        }
+                                    ? <>
+                                        <th></th>
+                                        <th></th>
+                                    </>
+                                    : null
+                                }
                             </tr>
                         </thead>
                         <tbody>

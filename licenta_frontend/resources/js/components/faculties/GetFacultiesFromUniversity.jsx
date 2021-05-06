@@ -13,6 +13,10 @@ class GetFacultiesFromUniversity extends React.Component {
         }
     }
     componentDidMount() {
+        this.fetchFaculties();
+    }
+
+    fetchFaculties() {
         const apiUrl = `${getApiHost()}/universities/${this.props.universityId}`;
         try {
             fetch(apiUrl, {
@@ -32,14 +36,14 @@ class GetFacultiesFromUniversity extends React.Component {
         this.props.history.push(`/universities/${this.props.universityId}/${id}/edit`);
     }
 
-    handleDelete(id){
+    handleDelete(id) {
         const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${id}`;
         const headers = {
             'Authorization': this.props.auth.user.api_token
         }
         try {
-            axios.delete(apiUrl, { headers });
-            this.props.history.push(`/universities/${this.props.universityId}`);
+            axios.delete(apiUrl, { headers })
+                .then(this.fetchFaculties.bind(this));
         } catch (error) {
             console.log(error)
         }
