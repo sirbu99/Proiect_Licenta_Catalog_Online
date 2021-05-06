@@ -4,7 +4,7 @@ const uniRepository = require('../repository/universities');
 exports.getAllUniversities = async(req, res) => {
     try {
         universities = await uniRepository.getAllUniversities();
-        res.send(universities)
+        res.send(universities);
     } catch (error) {
         console.log(error);
     }
