@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
+import axios from 'axios';
 
 
 class GetUniversities extends React.Component {
@@ -16,7 +17,6 @@ class GetUniversities extends React.Component {
     componentDidMount() {
         const apiUrl = `${getApiHost()}/universities`;
         try {
-            console.log(this.props.auth);
             fetch(apiUrl, {
                 headers: {
                     'Authorization': this.props.auth.user.api_token
@@ -30,12 +30,25 @@ class GetUniversities extends React.Component {
         };
     }
 
-    fetchDetails(id) {
+    showDetails(id) {
         this.props.history.push(`/universities/${id}`);
     }
 
     handleEdit(id){
         this.props.history.push(`/universities/${id}/edit`);
+    }
+
+    handleDelete(id){
+        const apiUrl = `${getApiHost()}/universities/${id}`;
+        const headers = {
+            'Authorization': this.props.auth.user.api_token
+        }
+        try {
+            axios.delete(apiUrl, { headers });
+            this.props.history.push(`/universities`);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     render() {
@@ -70,13 +83,13 @@ class GetUniversities extends React.Component {
                             {universities.map(uni => {
                                 return (
                                     <tr key={uni.id}  >
-                                        <td role="button" onClick={this.fetchDetails.bind(me, uni.id)} >{uni.name}</td>
+                                        <td role="button" onClick={this.showDetails.bind(me, uni.id)} >{uni.name}</td>
                                         <td>{uni.city}</td>
                                         <td>{uni.country}</td>
                                         {_.get(this.props, 'auth.user.permissions', []).includes('edit_university')
                                             ? <>
                                                 <td role="button" onClick={this.handleEdit.bind(me, uni.id)}>Edit</td>
-                                                <td role="button" onClick={this.handleEdit.bind(me, uni.id)}>Delete</td>
+                                                <td role="button" onClick={this.handleDelete.bind(me, uni.id)}>Delete</td>
                                             </>
                                             : null
                                         }

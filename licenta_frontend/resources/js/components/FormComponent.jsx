@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 const FormComponent = (ComposedComponent) => {
     return class FormComponent extends ComposedComponent {
@@ -77,23 +78,23 @@ const FormComponent = (ComposedComponent) => {
             );
         }
 
-        renderSelectField(varName, fieldName, label, options={}){
+        renderSelectField(varName, fieldName, label, options = {}) {
             let data = _.get(this.state, varName);
 
-            return(
+            return (
                 <div className="form-group mb-3">
                     <label>{label}</label>
                     <select className="form-control form-control-md">
                         {options.forEach(item => {
-                            <option 
-                                value={_.get(data, fieldName)} 
+                            <option
+                                value={_.get(data, fieldName)}
                                 onChange={this.handleSelectVar.bind(this, varName)}
                             >
                                 {item}
                             </option>
-                            
+
                         })}
-                        
+
                     </select>
                 </div>
             );

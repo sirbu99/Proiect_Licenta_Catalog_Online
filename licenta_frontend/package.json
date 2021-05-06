@@ -28,6 +28,7 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "bootstrap": "^5.0.0-beta3",
     "joi-browser": "^13.4.0",
     "react": "^17.0.2",

@@ -1,5 +1,8 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
+import axios from 'axios';
 
 class GetFacultiesFromUniversity extends React.Component {
     constructor(props) {
@@ -12,7 +15,11 @@ class GetFacultiesFromUniversity extends React.Component {
     componentDidMount() {
         const apiUrl = `${getApiHost()}/universities/${this.props.universityId}`;
         try {
-            fetch(apiUrl)
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
                 .then((response) => response.json())
                 .then((data) => this.setState({ faculties: data }));
 
@@ -20,6 +27,24 @@ class GetFacultiesFromUniversity extends React.Component {
             console.error(error);
         };
     }
+
+    handleEdit(id) {
+        this.props.history.push(`/universities/${this.props.universityId}/${id}/edit`);
+    }
+
+    handleDelete(id){
+        const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${id}`;
+        const headers = {
+            'Authorization': this.props.auth.user.api_token
+        }
+        try {
+            axios.delete(apiUrl, { headers });
+            this.props.history.push(`/universities/${this.props.universityId}`);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     render() {
         const faculties = this.state.faculties;
         const fctListSize = Object.keys(faculties).length;
@@ -38,6 +63,13 @@ class GetFacultiesFromUniversity extends React.Component {
                                 <th scope="col">Faculty Name</th>
                                 <th scope="col">Address</th>
                                 <th scope="col">Description</th>
+                                {_.get(this.props, 'auth.user.permissions', []).includes('faculty')
+                                    ? <>
+                                        <th></th>
+                                        <th></th>
+                                    </>
+                                    : null
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -47,7 +79,14 @@ class GetFacultiesFromUniversity extends React.Component {
                                         <td >{fct.name}</td>
                                         <td>{fct.address}</td>
                                         <td>{fct.description}</td>
-                                        <td>Edit</td>
+                                        {_.get(this.props, 'auth.user.permissions', []).includes('faculty')
+                                            ? <>
+                                                <td role="button" onClick={this.handleEdit.bind(this, fct.id)}>Edit</td>
+                                                <td role="button" onClick={this.handleDelete.bind(this, fct.id)}>Delete</td>
+                                            </>
+                                            : null
+                                        }
+
                                     </tr>
                                 );
                             })}
@@ -60,4 +99,8 @@ class GetFacultiesFromUniversity extends React.Component {
 
     }
 }
-export default GetFacultiesFromUniversity;
+
+const mapStateToProps = (state) => ({
+    auth: state.authentication,
+});
+export default connect(mapStateToProps)(withRouter(GetFacultiesFromUniversity));

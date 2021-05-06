@@ -15,12 +15,13 @@ const routes = {
         <Route key="route-faculties" exact path="/universities/:id" component={FacultiesPage} />,
     ],
     loggedIn: [
-        
-        <Route key="route-faculties-edit" exact path="/universities/:id/:facultyId/edit" component={EditFacultyPage} />,
     ],
     byPermission: {
-        "faculty_edit": [
+        "edit_university": [
             <Route key="route-universities-edit" exact path="/universities/:id/edit" component={EditUniversityPage} />,
+        ],
+        "edit_faculty": [
+            <Route key="route-faculties-edit" exact path="/universities/:id/:facultyId/edit" component={EditFacultyPage} />,
         ]
     },
 };

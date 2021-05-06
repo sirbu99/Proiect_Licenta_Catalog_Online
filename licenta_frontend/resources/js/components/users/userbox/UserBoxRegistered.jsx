@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { FaUser, FaPowerOff } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 
 import { authActions } from '../../../actions/users/authActions';
 
