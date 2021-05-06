@@ -1,4 +1,3 @@
-const db = require("../../utils/database");
 const facultyRepository = require('../repository/faculties');
 
 
