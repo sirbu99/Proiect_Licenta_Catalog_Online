@@ -6,6 +6,7 @@ import UniversitiesPage from './uniPages/UniversitiesPage';
 import FacultiesPage from './facultyPages/FacultiesPage';
 import EditUniversityPage from './uniPages/EditUniversityPage';
 import EditFacultyPage from './facultyPages/EditFacultyPage';
+import StudentsPage from './facultyPages/StudentsPage';
 
 const routes = {
     all: [
@@ -15,6 +16,7 @@ const routes = {
         <Route key="route-faculties" exact path="/universities/:id" component={FacultiesPage} />,
     ],
     loggedIn: [
+        <Route key="route-faculties-students" exact path="/universities/:id/:facultyId/students" component={StudentsPage} />,
     ],
     byPermission: {
         "edit_university": [

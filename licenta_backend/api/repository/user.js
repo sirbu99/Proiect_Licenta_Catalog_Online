@@ -13,7 +13,7 @@ async function insertIntoUsers(identification_number, first_name, last_name, pas
 }
 
 async function getStudents(id) {
-    return db.queryPromise('SELECT first_name,last_name,registration_number,identification_number,users.address,birthday,email,faculties.name FROM students JOIN users ON students.user_id = users.id JOIN faculty_members ON users.id = faculty_members.user_id JOIN faculties ON faculty_members.faculty_id = faculties.id WHERE users.role_id = 6 AND faculties.id = ?;', [id]);
+    return db.queryPromise('SELECT first_name,last_name,registration_number,identification_number,users.address,birthday,email FROM students JOIN users ON students.user_id = users.id JOIN faculty_members ON users.id = faculty_members.user_id JOIN faculties ON faculty_members.faculty_id = faculties.id WHERE users.role_id = 6 AND faculties.id = ?;', [id]);
 }
 
 async function getTeachers(id) {

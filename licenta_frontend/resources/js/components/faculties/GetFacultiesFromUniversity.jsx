@@ -49,6 +49,10 @@ class GetFacultiesFromUniversity extends React.Component {
         }
     }
 
+    showDetails(id) {
+        this.props.history.push(`/universities/${this.props.universityId}/${id}/students`);
+    }
+
     render() {
         const faculties = this.state.faculties;
         const fctListSize = Object.keys(faculties).length;
@@ -80,7 +84,7 @@ class GetFacultiesFromUniversity extends React.Component {
                             {faculties.map(fct => {
                                 return (
                                     <tr key={fct.id}>
-                                        <td >{fct.name}</td>
+                                        <td role="button" onClick={this.showDetails.bind(this, fct.id)}>{fct.name}</td>
                                         <td>{fct.address}</td>
                                         <td>{fct.description}</td>
                                         {_.get(this.props, 'auth.user.permissions', []).includes('faculty')
