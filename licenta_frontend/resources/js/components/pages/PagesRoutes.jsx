@@ -3,10 +3,14 @@ import { Route } from 'react-router-dom';
 import HomePage from './HomePage';
 import AboutUs from './AboutUs';
 import UniversitiesPage from './uniPages/UniversitiesPage';
-import FacultiesPage from './facultyPages/FacultiesPage';
+import FacultiesPage from './facultyPages/Faculties';
 import EditUniversityPage from './uniPages/EditUniversityPage';
-import EditFacultyPage from './facultyPages/EditFacultyPage';
-import StudentsPage from './facultyPages/StudentsPage';
+import EditFacultyPage from './facultyPages/EditFaculty';
+import Students from './facultyPages/Students';
+import FacultyInfoPage from './facultyPages/FacultyInfo';
+import Teachers from './facultyPages/Teachers';
+import Schedule from './facultyPages/Schedule';
+import Announcements from './facultyPages/Announcements';
 
 const routes = {
     all: [
@@ -16,7 +20,11 @@ const routes = {
         <Route key="route-faculties" exact path="/universities/:id" component={FacultiesPage} />,
     ],
     loggedIn: [
-        <Route key="route-faculties-students" exact path="/universities/:id/:facultyId/students" component={StudentsPage} />,
+        <Route key="route-faculties-students" exact path="/universities/:id/:facultyId/students" component={Students} />,
+        <Route key="route-faculties-teachers" exact path="/universities/:id/:facultyId/teachers" component={Teachers} />,
+        <Route key="route-faculties-info" exact path="/universities/:id/:facultyId/info" component={FacultyInfoPage} />,
+        <Route key="route-faculties-schedule" exact path="/universities/:id/:facultyId/schedule" component={Schedule} />,
+        <Route key="route-faculties-announcements" exact path="/universities/:id/:facultyId/announcements" component={Announcements} />,
     ],
     byPermission: {
         "edit_university": [

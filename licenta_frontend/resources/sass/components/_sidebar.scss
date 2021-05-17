@@ -1,32 +1,27 @@
-#sidebar {
-  background: $primary;
-  color: #fff;
-  transition: all 0.3s;
-}
-
-#sidebar .sidebar-header {
-  padding: 20px;
-  background: $primary;
-;
-}
-
-#sidebar ul.components {
-  padding: 20px 0;
-  border-bottom: 1px solid #47748b;
-}
-
-#sidebar ul li a {
-  padding: 10px;
-  font-size: 1.1em;
-  display: block;
-  color: #fff;
-}
-
-#sidebar ul li a:hover {
-  background: darken($primary, .9);
-}
-
-#sidebar ul li.active > a {
-  color: #fff;
-  background: #6d7fcc;
+.sidebar {
+    background: $primary;
+    color: #fff;
+    margin-right: 20px;
+    transition: all 0.3s;
+    .sidebar-header {
+        padding: 20px;
+        background: $primary;
+    }
+    & ul.components {
+        padding: 20px 0;
+        border-bottom: 1px solid #47748b;
+    }
+    & ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+        color: #fff;
+        & :hover {
+            background: darken($primary, .9);
+        }
+    }
+    & ul li.active>a {
+        color: #fff;
+        background: #6d7fcc;
+    }
 }

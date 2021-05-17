@@ -2,15 +2,13 @@
 @import 'override.scss';
 @import '~bootstrap';
 @import 'abstract/variables';
-
 // Layout
 @import 'components/ui/card.scss';
 @import 'components/ui/backdrop';
 @import 'components/ui/modal';
 @import 'components/ui/spinner';
-
 // Components
 @import 'components/sidebar';
 @import 'components/file-upload';
-
+@import 'components/ui/page-with-side-menu';
 // Pages
