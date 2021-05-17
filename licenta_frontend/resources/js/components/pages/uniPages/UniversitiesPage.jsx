@@ -10,9 +10,11 @@ class UniversitiesOverview extends Component {
 
     render() {
         return (
-            <div className="text-center">
-                <h1>Universites List</h1>
-                <GetUniversities></GetUniversities>
+            <div >
+                <h1 className="text-center">Universites List</h1>
+                <div className="card-panel">
+                    <GetUniversities></GetUniversities>
+                </div>
             </div>
         );
     }

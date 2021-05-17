@@ -55,10 +55,11 @@ class AppRoot extends Component {
         return (
             <div className="app-container">
                 <Header />
-                { this.props.auth.loggedIn
+                {/* { this.props.auth.loggedIn
                     ? <ContainerFluid>{Children.only(this.props.children)}</ContainerFluid>
                     : <Container>{Children.only(this.props.children)}</Container>
-                }
+                } */}
+                <Container>{Children.only(this.props.children)}</Container>
                 <Footer />
             </div>
         );

@@ -1,0 +1,15 @@
+.file-upload {
+    width: 100%;
+    height: 40px;
+    border: 2px dotted black;
+    padding: 5px;
+  }
+  
+  .file-upload.image {
+    height: 150px;
+  }
+  
+  .file-upload img {
+    max-height: 135px;
+    max-width: 135px;
+  }

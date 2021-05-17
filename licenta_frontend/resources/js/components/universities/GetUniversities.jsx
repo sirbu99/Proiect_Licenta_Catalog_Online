@@ -3,7 +3,10 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
 import axios from 'axios';
-
+import Card from '../ui/Card';
+import Backdrop from '../ui/Backdrop';
+import Modal from '../ui/Modal';
+import Spinner from '../ui/Spinner';
 
 class GetUniversities extends React.Component {
     constructor(props) {
@@ -11,6 +14,9 @@ class GetUniversities extends React.Component {
 
         this.state = {
             universities: [],
+            isLoaded: false,
+            modalIsOpen: false,
+            selectedId: null
         }
     }
 
@@ -27,7 +33,7 @@ class GetUniversities extends React.Component {
                 }
             })
                 .then((response) => response.json())
-                .then((data) => this.setState({ universities: data }));
+                .then((data) => this.setState({ ...this.state, universities: data, isLoaded: true }));
 
         } catch (error) {
             console.log(error)
@@ -55,53 +61,62 @@ class GetUniversities extends React.Component {
         }
     }
 
+    openModal(id) {
+        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+    }
+
+    closeModal() {
+        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+    }
+
+    handleShowButtons(id) { 
+        return _.get(this.props, 'auth.user.permissions', []).includes('edit_university')
+        ? <div className="btn-wrapper">
+            <button className="btn btn-primary" onClick={this.handleEdit.bind(this, id)}>Edit</button>
+            <button className="btn btn-primary" onClick={this.openModal.bind(this, id)}>Delete</button>
+        </div>
+        : null
+    }
+
     render() {
-        const me = this;
         const universities = this.state.universities;
         const uniListSize = Object.keys(universities).length;
+        const isLoaded = this.state.isLoaded;
+
+        if (!isLoaded) {
+            return <Spinner />
+        }
+
         if (uniListSize < 1) {
             return (
-                <h3>
+                <h5>
                     These are no universities to display!
-                </h3>
+                </h5>
             )
         } else {
             return (
-                <div className="table-responsive">
-                    <table className="table table-bordered table-hover">
-                        <thead className="thead-dark">
-                            <tr className="bg-primary">
-                                <th scope="col">University Name</th>
-                                <th scope="col">City</th>
-                                <th scope="col">Country</th>
-                                {_.get(this.props, 'auth.user.permissions', []).includes('edit_university')
-                                    ? <>
-                                        <th></th>
-                                        <th></th>
-                                    </>
-                                    : null
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {universities.map(uni => {
-                                return (
-                                    <tr key={uni.id}  >
-                                        <td role="button" onClick={this.showDetails.bind(me, uni.id)} >{uni.name}</td>
-                                        <td>{uni.city}</td>
-                                        <td>{uni.country}</td>
-                                        {_.get(this.props, 'auth.user.permissions', []).includes('edit_university')
-                                            ? <>
-                                                <td role="button" onClick={this.handleEdit.bind(me, uni.id)}>Edit</td>
-                                                <td role="button" onClick={this.handleDelete.bind(me, uni.id)}>Delete</td>
-                                            </>
-                                            : null
-                                        }
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                <div className="row">
+                    {universities.map(university => {
+                        return (
+                            <Card 
+                                key = {university.id}
+                                clickHandler = {this.showDetails.bind(this, university.id)}
+                                imageSrc = "https://placeimg.com/800/600/tech"
+                                imageAlt = {university.name}
+                                cardTitle = {university.name}
+                                description = {`${university.city}, ${university.country}`}
+                                additional = {this.handleShowButtons(university.id)}
+                                />
+                        )
+                    })}
+                    {this.state.modalIsOpen && <Modal onModalClick={this.closeModal.bind(this)}>
+                        <div>
+                            <p>Are you sure?</p>
+                                <button className="btn btn-danger" onClick={this.handleDelete.bind(this, this.state.selectedId)}>Delete</button>
+                                <button className="btn btn-outline-primary" onClick={this.closeModal.bind(this)}>Cancel</button>
+                        </div>
+                    </Modal>}
+                    {this.state.modalIsOpen && <Backdrop />}
                 </div>
             );
 

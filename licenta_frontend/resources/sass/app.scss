@@ -1,18 +1,16 @@
+// Utilities
+@import 'override.scss';
 @import '~bootstrap';
-@import 'sidebar';
+@import 'abstract/variables';
 
-.file-upload {
-  width: 100%;
-  height: 40px;
-  border: 2px dotted black;
-  padding: 5px;
-}
+// Layout
+@import 'components/ui/card.scss';
+@import 'components/ui/backdrop';
+@import 'components/ui/modal';
+@import 'components/ui/spinner';
 
-.file-upload.image {
-  height: 150px;
-}
+// Components
+@import 'components/sidebar';
+@import 'components/file-upload';
 
-.file-upload img {
-  max-height: 135px;
-  max-width: 135px;
-}
+// Pages
