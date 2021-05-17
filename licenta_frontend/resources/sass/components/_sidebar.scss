@@ -16,12 +16,8 @@
         font-size: 1.1em;
         display: block;
         color: #fff;
-        & :hover {
-            background: darken($primary, .9);
+        &:hover {
+            color: black;
         }
-    }
-    & ul li.active>a {
-        color: #fff;
-        background: #6d7fcc;
     }
 }
