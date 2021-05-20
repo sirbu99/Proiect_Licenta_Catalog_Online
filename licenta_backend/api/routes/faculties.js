@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 
 const facultiesController = require('../controllers/faculties');
-const usersController = require('../controllers/users');
+const studentsController = require('../controllers/students');
+const teachersController = require('../controllers/teachers');
 const scheduleController = require('../controllers/schedule');
 const subjectsController = require('../controllers/subjects');
 const announcementsController = require('../controllers/announcements');
@@ -12,9 +13,9 @@ router.get('/', facultiesController.getAllFaculties);
 
 router.get("/:facultyId", facultiesController.getFacultyById);
 
-router.get("/:facultyId/students", usersController.getStudents);
+router.get("/:facultyId/students", studentsController.getStudents);
 
-router.get("/:facultyId/teachers", usersController.getTeachers);
+router.get("/:facultyId/teachers", teachersController.getTeachers);
 
 router.get("/:facultyId/schedule", scheduleController.getSchedule);
 

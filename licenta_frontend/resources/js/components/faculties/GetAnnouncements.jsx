@@ -48,6 +48,7 @@ class GetAnnouncements extends React.Component {
                     <table className="table table-bordered table-hover">
                         <thead className="thead-dark">
                             <tr className="bg-primary">
+                                <th scope="col">Teacher</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Message</th>
                             </tr>
@@ -56,6 +57,7 @@ class GetAnnouncements extends React.Component {
                             {announcements.map(item => {
                                 return (
                                     <tr key={item.id}>
+                                        <td>{item.first_name} {item.last_name}</td>
                                         <td>{item.name}</td>
                                         <td>{item.text}</td>
                                     </tr>
