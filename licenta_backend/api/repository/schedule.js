@@ -91,9 +91,37 @@ async function getScheduleByHalfYear(id, year, group, halfYear) {
     `, [id, year, group, halfYear]);
 }
 
+async function deleteAllFromSchedule() {
+    return db.queryPromise(`
+        DELETE FROM schedule;    
+    `);
+}
+
+async function deleteFromScheduleBySubject(subjId) {
+    return db.queryPromise(`
+        DELETE FROM schedule
+        WHERE subject_id = ?;
+    `, [subjId]);
+}
+
+async function deleteFromScheduleByYear(year, facultyId) {
+    return db.queryPromise(`
+        DELETE FROM schedule
+        JOIN users ON users.id = schedule.user_id
+        JOIN faculty_members ON users.id = faculty_members.user_id
+        JOIN faculties on faculties.id = faculty_members.id
+        WHERE year = ?
+        AND faculty_id = ?;
+    `, [year, facultyId]);
+}
+
+
 module.exports = {
     getSchedule,
     getScheduleByYear,
     getScheduleByGroup,
     getScheduleByHalfYear,
+    deleteAllFromSchedule,
+    deleteFromScheduleBySubject,
+    deleteFromScheduleByYear,
 }
