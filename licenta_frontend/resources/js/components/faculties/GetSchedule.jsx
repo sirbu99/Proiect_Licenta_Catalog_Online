@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
-import axios from 'axios';
 
 class GetSchedule extends React.Component {
     constructor(props) {
@@ -57,6 +56,7 @@ class GetSchedule extends React.Component {
                                 <th scope="col">Type</th>
                                 <th scope="col">Start</th>
                                 <th scope="col">Finish</th>
+                                <th scope="col">Day</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,6 +71,7 @@ class GetSchedule extends React.Component {
                                         <td>{item.type}</td>
                                         <td>{item.start_at}</td>
                                         <td>{item.finish_at}</td>
+                                        <td>{item.day}</td>
                                     </tr>
                                 );
                             })}

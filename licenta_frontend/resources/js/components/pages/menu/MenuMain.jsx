@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import UserBox from '../../users/userbox/UserBox';
 
 const MenuMain = (props) => {
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -32,6 +33,7 @@ const MenuMain = (props) => {
                             </ul>
                         </li>
                     </ul>
+                    <UserBox />
                 </div>
             </div>
         </nav>

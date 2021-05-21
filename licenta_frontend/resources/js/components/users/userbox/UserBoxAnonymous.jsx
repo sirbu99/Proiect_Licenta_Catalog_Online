@@ -9,7 +9,7 @@ const UserBoxAnonymous = (props) => {
     }
 
     return (
-        <div className="float-sm-right m-3 m-sm-auto text-sm-left text-center">
+        <div className="user-box">
             <Link to="/login" onClick={handleLoginClick}>Login</Link>
             <Link to="/register">Register</Link>
         </div>

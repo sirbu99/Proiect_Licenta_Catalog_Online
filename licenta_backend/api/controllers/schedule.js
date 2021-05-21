@@ -8,3 +8,12 @@ exports.getSchedule = async(req, res) => {
         console.log(error);
     }
 };
+
+exports.deleteAllFromSchedule = async(req, res) => {
+    try {
+        schedule = await scheduleRepository.deleteAllFromSchedule(req.params.facultyId);
+        res.send("The schedule has been cleared!");
+    } catch (error) {
+        console.log(error);
+    }
+};

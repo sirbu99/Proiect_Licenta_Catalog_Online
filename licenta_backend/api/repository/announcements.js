@@ -13,9 +13,7 @@ async function getAnnouncements(facultyId) {
         WHERE a.faculty_id =?;
     `, [facultyId]);
 }
-async function deleteAnnouncement(id) {
-    return db.queryPromise('DELETE FROM announcements WHERE id=?', [id]);
-}
+
 async function updateAnnouncement(id, name, text) {
     return db.queryPromise(`
         UPDATE announcements 
@@ -25,6 +23,11 @@ async function updateAnnouncement(id, name, text) {
         WHERE id =?;
     `, [name, text, id]);
 }
+
+async function deleteAnnouncement(id) {
+    return db.queryPromise('DELETE FROM announcements WHERE id=?', [id]);
+}
+
 
 module.exports = {
     getAnnouncements,

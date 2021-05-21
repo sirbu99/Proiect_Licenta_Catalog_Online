@@ -11,7 +11,8 @@ async function getSchedule(id) {
             s.classroom,
             s.type,
             s.start_at,
-            s.finish_at 
+            s.finish_at, 
+            s.day
         FROM subjects 
         JOIN schedule as s ON subjects.id = s.subject_id 
         JOIN users ON s.user_id = users.id 
@@ -91,30 +92,44 @@ async function getScheduleByHalfYear(id, year, group, halfYear) {
     `, [id, year, group, halfYear]);
 }
 
-async function deleteAllFromSchedule() {
+async function deleteAllFromSchedule(facultyId) {
     return db.queryPromise(`
-        DELETE FROM schedule;    
-    `);
+        DELETE schedule FROM schedule
+        JOIN faculty_members as fm ON fm.user_id = schedule.user_id
+        JOIN faculties as f ON fm.faculty_id = f.id
+        WHERE f.id = ?;
+    `, [facultyId]);
 }
 
-async function deleteFromScheduleBySubject(subjId) {
+async function deleteFromSchedule(facultyId, id) {
     return db.queryPromise(`
-        DELETE FROM schedule
-        WHERE subject_id = ?;
-    `, [subjId]);
+        DELETE schedule FROM schedule as s
+        JOIN faculty_members as fm ON fm.user_id = s.user_id
+        JOIN faculties as f ON fm.faculty_id = f.id
+        WHERE f.id =?
+        AND s.id = ?;
+    `, [facultyId, id]);
 }
 
-async function deleteFromScheduleByYear(year, facultyId) {
+async function deleteFromScheduleByYear(facultyId, year) {
     return db.queryPromise(`
-        DELETE FROM schedule
-        JOIN users ON users.id = schedule.user_id
-        JOIN faculty_members ON users.id = faculty_members.user_id
-        JOIN faculties on faculties.id = faculty_members.id
-        WHERE year = ?
-        AND faculty_id = ?;
-    `, [year, facultyId]);
+        DELETE schedule FROM schedule as s
+        JOIN faculty_members as fm ON fm.user_id = s.user_id
+        JOIN faculties as f ON fm.faculty_id = f.id
+        WHERE f.id =?
+        AND s.year = ?;
+    `, [facultyId, year]);
 }
 
+async function deleteFromScheduleBySubject(facultyId, subjectId) {
+    return db.queryPromise(`
+        DELETE schedule FROM schedule as s
+        JOIN faculty_members as fm ON fm.user_id = s.user_id
+        JOIN faculties as f ON fm.faculty_id = f.id
+        WHERE f.id =?
+        AND s.subject_id = ?;
+    `, [facultyId, subjectId]);
+}
 
 module.exports = {
     getSchedule,
@@ -122,6 +137,7 @@ module.exports = {
     getScheduleByGroup,
     getScheduleByHalfYear,
     deleteAllFromSchedule,
-    deleteFromScheduleBySubject,
+    deleteFromSchedule,
     deleteFromScheduleByYear,
+    deleteFromScheduleBySubject,
 }

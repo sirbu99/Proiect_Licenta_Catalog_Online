@@ -26,18 +26,18 @@ function login(userData) {
                     const regex = new RegExp("\\?r=(.+)");
                     const r = regex.exec(window.location);
                     if (_.isNull(r) || r[1] == '/login' || r[1] == '/register') {
-                        location.assign('/');
+                        // location.assign('/');
                         return;
                     }
 
                     const testLink = document.createElement('a');
                     testLink.href = r[1];
 
-                    if (testLink.hostname && testLink.hostname !== window.location.hostname) {
-                        location.assign('/');
-                        return;
-                    }
-                    location.assign(r[1]);
+                    // if (testLink.hostname && testLink.hostname !== window.location.hostname) {
+                    //     location.assign('/');
+                    //     return;
+                    // }
+                    // location.assign(r[1]);
                 },
                 (data) => {
                     toastr.error(data.error.toString());

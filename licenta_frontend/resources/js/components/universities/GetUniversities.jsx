@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
 import axios from 'axios';
 import Card from '../ui/Card';
-import Backdrop from '../ui/Backdrop';
-import Modal from '../ui/Modal';
 import Spinner from '../ui/Spinner';
+import DeleteConfirmation from '../ui/DeleteConfirmation';
 
 class GetUniversities extends React.Component {
     constructor(props) {
@@ -26,10 +25,11 @@ class GetUniversities extends React.Component {
 
     fetchUniversities() {
         const apiUrl = `${getApiHost()}/universities`;
+        console.log(this.props.auth);
         try {
             fetch(apiUrl, {
                 headers: {
-                    'Authorization': this.props.auth.user.api_token
+                    'Authorization': this.props.auth.user && this.props.auth.user.api_token
                 }
             })
                 .then((response) => response.json())
@@ -109,14 +109,11 @@ class GetUniversities extends React.Component {
                                 />
                         )
                     })}
-                    {this.state.modalIsOpen && <Modal onModalClick={this.closeModal.bind(this)}>
-                        <div>
-                            <p>Are you sure?</p>
-                                <button className="btn btn-danger" onClick={this.handleDelete.bind(this, this.state.selectedId)}>Delete</button>
-                                <button className="btn btn-outline-primary" onClick={this.closeModal.bind(this)}>Cancel</button>
-                        </div>
-                    </Modal>}
-                    {this.state.modalIsOpen && <Backdrop />}
+                    <DeleteConfirmation 
+                        modalIsOpen={this.state.modalIsOpen}
+                        closeModal={this.closeModal.bind(this)}
+                        handleDelete={this.handleDelete.bind(this, this.state.selectedId)}
+                    />
                 </div>
             );
 

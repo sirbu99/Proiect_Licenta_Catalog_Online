@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
 import axios from 'axios';
+import DeleteConfirmation from '../ui/DeleteConfirmation';
+import Spinner from '../ui/Spinner';
 
 class GetTeachers extends React.Component {
     constructor(props) {
@@ -10,6 +12,9 @@ class GetTeachers extends React.Component {
 
         this.state = {
             teachers: [],
+            isLoaded: false,
+            modalIsOpen: false,
+            selectedId: null
         }
     }
     componentDidMount() {
@@ -27,19 +32,28 @@ class GetTeachers extends React.Component {
                 }
             })
                 .then((response) => response.json())
-                .then((data) => this.setState({ teachers: data }));
+                .then((data) => this.setState({ teachers: data, isLoaded: true }));
 
         } catch (error) {
             console.error(error);
         };
     }
 
+    openModal(id) {
+        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+    }
+
+    closeModal() {
+        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+    }
+
+
     handleEdit(id) {
         this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/teachers/${id}/edit`);
     }
 
     handleDelete(id) {
-        const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/teachers/${id}`;
+        const apiUrl = `${getApiHost()}/users/teachers/${id}`;
         const headers = {
             'Authorization': this.props.auth.user.api_token
         }
@@ -54,6 +68,11 @@ class GetTeachers extends React.Component {
     render() {
         const teachers = this.state.teachers;
         const teacherListSize = Object.keys(teachers).length;
+        const isLoaded = this.state.isLoaded;
+        if (!isLoaded) {
+            return <Spinner />
+        }
+
         if (teacherListSize < 1) {
             return (
                 <h3>
@@ -70,7 +89,7 @@ class GetTeachers extends React.Component {
                                 <th scope="col">Last Name</th>
                                 <th scope="col">Didactic Degree</th>
                                 <th scope="col">Email</th>
-                                {_.get(this.props, 'auth.user.permissions', []).includes('edit_teacher')
+                                {_.get(this.props, 'auth.user.permissions', []).includes('teacher')
                                     ? <>
                                         <th></th>
                                         <th></th>
@@ -87,19 +106,23 @@ class GetTeachers extends React.Component {
                                         <td>{teacher.last_name}</td>
                                         <td>{teacher.didactic_degree}</td>
                                         <td>{teacher.email}</td>
-                                        {_.get(this.props, 'auth.user.permissions', []).includes('edit_teacher')
+                                        {_.get(this.props, 'auth.user.permissions', []).includes('teacher')
                                             ? <>
                                                 <td role="button" onClick={this.handleEdit.bind(this, teacher.id)}>Edit</td>
-                                                <td role="button" onClick={this.handleDelete.bind(this, teacher.id)}>Delete</td>
+                                                <td role="button" onClick={this.openModal.bind(this, teacher.id)}>Delete</td>
                                             </>
                                             : null
                                         }
-
                                     </tr>
                                 );
                             })}
                         </tbody>
                     </table>
+                    <DeleteConfirmation 
+                        modalIsOpen={this.state.modalIsOpen}
+                        closeModal={this.closeModal.bind(this)}
+                        handleDelete={this.handleDelete.bind(this, this.state.selectedId)}
+                    />
                 </div>
             );
 

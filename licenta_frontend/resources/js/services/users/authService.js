@@ -26,7 +26,7 @@ function logout() {
 
     .always(() => {
         localStorage.clear();
-        location.assign('/');
+        // location.assign('/');
     });
 }
 

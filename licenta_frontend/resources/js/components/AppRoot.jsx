@@ -59,7 +59,9 @@ class AppRoot extends Component {
                     ? <ContainerFluid>{Children.only(this.props.children)}</ContainerFluid>
                     : <Container>{Children.only(this.props.children)}</Container>
                 } */}
-                <Container>{Children.only(this.props.children)}</Container>
+                <main>
+                    <Container>{Children.only(this.props.children)}</Container>
+                </main>
                 <Footer />
             </div>
         );

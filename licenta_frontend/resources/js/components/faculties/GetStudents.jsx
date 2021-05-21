@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
 import axios from 'axios';
+import Spinner from '../ui/Spinner';
+import DeleteConfirmation from '../ui/DeleteConfirmation';
 
 class GetStudents extends React.Component {
     constructor(props) {
@@ -10,6 +12,9 @@ class GetStudents extends React.Component {
 
         this.state = {
             students: [],
+            isLoaded: false,
+            modalIsOpen: false,
+            selectedId: null
         }
     }
     componentDidMount() {
@@ -27,7 +32,7 @@ class GetStudents extends React.Component {
                 }
             })
                 .then((response) => response.json())
-                .then((data) => this.setState({ students: data }));
+                .then((data) => this.setState({ students: data, isLoaded: true }));
 
         } catch (error) {
             console.error(error);
@@ -39,7 +44,7 @@ class GetStudents extends React.Component {
     }
 
     handleDelete(id) {
-        const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/students/${id}`;
+        const apiUrl = `${getApiHost()}/users/students/${id}`;
         const headers = {
             'Authorization': this.props.auth.user.api_token
         }
@@ -51,9 +56,22 @@ class GetStudents extends React.Component {
         }
     }
 
+    openModal(id) {
+        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+    }
+
+    closeModal() {
+        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+    }
+
     render() {
         const students = this.state.students;
         const stdListSize = Object.keys(students).length;
+        const isLoaded = this.state.isLoaded;
+        if (!isLoaded) {
+            return <Spinner />
+        }
+
         if (stdListSize < 1) {
             return (
                 <h3>
@@ -96,16 +114,20 @@ class GetStudents extends React.Component {
                                         {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
                                             ? <>
                                                 <td role="button" onClick={this.handleEdit.bind(this, student.id)}>Edit</td>
-                                                <td role="button" onClick={this.handleDelete.bind(this, student.id)}>Delete</td>
+                                                <td role="button" onClick={this.openModal.bind(this, student.id)}>Delete</td>
                                             </>
                                             : null
                                         }
-
                                     </tr>
                                 );
                             })}
                         </tbody>
                     </table>
+                    <DeleteConfirmation 
+                        modalIsOpen={this.state.modalIsOpen}
+                        closeModal={this.closeModal.bind(this)}
+                        handleDelete={this.handleDelete.bind(this, this.state.selectedId)}
+                    />
                 </div>
             );
 

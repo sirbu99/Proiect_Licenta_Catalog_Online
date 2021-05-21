@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 
 import MenuMain from '../menu/MenuMain';
 import Logo from './Logo';
-import UserBox from '../../users/userbox/UserBox';
 
 class Header extends Component {
     constructor(props) {
@@ -24,7 +23,7 @@ class Header extends Component {
             <header className="page-header">
                 <div className="container">
                     <div className="row align-items-center">
-                        <div className="col-md-2 col-12">
+                        <div className="col-12 col-md-2">
                             <Logo />
                             <nav className="navbar navbar-expand-lg navbar-dark float-right d-block d-md-none">
                                 <button
@@ -40,11 +39,8 @@ class Header extends Component {
                                 </button>
                             </nav>
                         </div>
-                        <div className="col-md-4 col-12 position-static">
+                        <div className="col-12 col-md-10 position-static">
                             <MenuMain />
-                        </div>
-                        <div className="col-md-3 text-sm-left text-center">
-                            <UserBox />
                         </div>
                     </div>
                 </div>

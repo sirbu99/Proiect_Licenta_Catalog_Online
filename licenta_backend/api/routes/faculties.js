@@ -12,21 +12,24 @@ const announcementsController = require('../controllers/announcements');
 router.get('/', facultiesController.getAllFaculties);
 
 router.get("/:facultyId", facultiesController.getFacultyById);
+router.post("/", facultiesController.postFaculty);
+router.put("/:facultyId", facultiesController.putFaculty);
+router.delete("/:id", facultiesController.deleteFaculty);
+
 
 router.get("/:facultyId/students", studentsController.getStudents);
 
+
 router.get("/:facultyId/teachers", teachersController.getTeachers);
 
+
 router.get("/:facultyId/schedule", scheduleController.getSchedule);
+router.delete("/:facultyId/schedule", scheduleController.deleteAllFromSchedule);
+
 
 router.get("/:facultyId/announcements", announcementsController.getAnnouncements);
 
+
 router.get("/:facultyId/subjects", subjectsController.getSubjectsList);
-
-router.post("/", facultiesController.postFaculty);
-
-router.put("/:facultyId", facultiesController.putFaculty);
-
-router.delete("/:id", facultiesController.deleteFaculty);
 
 module.exports = router;
