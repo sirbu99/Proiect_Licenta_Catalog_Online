@@ -31,7 +31,11 @@ async function getStudentById(id) {
             identification_number,
             users.address,
             birthday,
-            email 
+            email,
+            funding,
+            year,
+            half_year,
+            \`group\` 
         FROM students 
         JOIN users ON students.user_id = users.id
         WHERE users.role_id = 6 
@@ -56,7 +60,7 @@ async function updateStudentInfo(id, fName, lName, birthday, address, email, fun
     return db.queryPromise(`
         UPDATE students as s 
         JOIN users as u ON s.user_id = u.id 
-        SET 
+        SET
             u.first_name = ?, 
             u.last_name = ?, 
             u.birthday = ?, 
@@ -71,10 +75,22 @@ async function updateStudentInfo(id, fName, lName, birthday, address, email, fun
     `, [fName, lName, birthday, address, email, funding, year, halfYear, group, id]);
 }
 
+async function createStudent(userId, funding, year, halfYear, group) {
+    return db.queryPromise(`
+        INSERT INTO students 
+        SET 
+            user_id = ?, 
+            funding = ?, 
+            year = ?, 
+            half_year = ?, 
+            \`group\` = ?;
+    `, [userId, funding, year, halfYear, group]);
+}
 
 module.exports = {
     getStudents,
     getStudentById,
     deteleStudent,
+    createStudent,
     updateStudentInfo,
 }

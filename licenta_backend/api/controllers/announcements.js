@@ -8,6 +8,14 @@ exports.getAnnouncements = async(req, res) => {
         console.log(error);
     }
 };
+exports.getAnnouncementById = async(req, res) => {
+    try {
+        const [announcement] = await announcementsRepository.getAnnouncementById(req.params.announcementId);
+        res.send(announcement);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 exports.deleteAnnouncement = async(req, res) => {
     try {
@@ -21,8 +29,24 @@ exports.deleteAnnouncement = async(req, res) => {
 exports.updateAnnouncement = async(req, res) => {
     try {
         let announcementInfo = req.body
-        announcement = await announcementsRepository.updateAnnouncement(req.params.id, announcementInfo.name, announcementInfo.text);
+        announcement = await announcementsRepository.updateAnnouncement(req.params.id, announcementInfo.name, announcementInfo.text, announcementInfo.due_date);
         res.send("The selected announcement has been updated.");
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.addAnnouncement = async(req, res) => {
+    try {
+        let announcementInfo = req.body;
+        await announcementsRepository.addAnnouncement(
+            req.params.facultyId,
+            process.env.AUTH_ID,
+            announcementInfo.name,
+            announcementInfo.text,
+            announcementInfo.due_date,
+        );
+        res.send("The selected announcement has been successfully added.");
     } catch (error) {
         console.log(error);
     }

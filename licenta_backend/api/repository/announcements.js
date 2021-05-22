@@ -14,14 +14,36 @@ async function getAnnouncements(facultyId) {
     `, [facultyId]);
 }
 
-async function updateAnnouncement(id, name, text) {
+async function getAnnouncementById(announcementId) {
+    return db.queryPromise(`
+        SELECT 
+            name,
+            text,
+            due_date 
+        FROM announcements
+        WHERE id = ?;
+    `, [announcementId]);
+}
+async function addAnnouncement(facultyId, userId, title, message, dueDate) {
+    return db.queryPromise(`
+        INSERT INTO announcements
+        SET 
+            user_id = ?,
+            faculty_id = ?,
+            name = ?,
+            text = ?,
+            due_date = ?
+    `, [userId, facultyId, title, message, dueDate])
+}
+async function updateAnnouncement(id, name, text, dueDate) {
     return db.queryPromise(`
         UPDATE announcements 
         SET 
             name = ?, 
-            text = ? 
+            text = ?,
+            due_date = ? 
         WHERE id =?;
-    `, [name, text, id]);
+    `, [name, text, dueDate, id]);
 }
 
 async function deleteAnnouncement(id) {
@@ -33,4 +55,6 @@ module.exports = {
     getAnnouncements,
     deleteAnnouncement,
     updateAnnouncement,
+    addAnnouncement,
+    getAnnouncementById,
 }

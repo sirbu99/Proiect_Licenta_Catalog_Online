@@ -68,6 +68,8 @@ class GetStudents extends React.Component {
         const students = this.state.students;
         const stdListSize = Object.keys(students).length;
         const isLoaded = this.state.isLoaded;
+        const newStudentUrl = `/universities/${this.props.universityId}/${this.props.facultyId}/students/new`;
+
         if (!isLoaded) {
             return <Spinner />
         }
@@ -78,60 +80,65 @@ class GetStudents extends React.Component {
                     There are no students to display!
                 </h3>
             )
-        } else {
-            return (
-                <div className="table-responsive">
-                    <table className="table table-bordered table-hover">
-                        <thead className="thead-dark">
-                            <tr className="bg-primary">
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Registration Number</th>
-                                <th scope="col">Identification Number</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Birthday</th>
-                                <th scope="col">Email</th>
+        };
+
+        return (
+            <div className="table-responsive">
+                <button
+                    className="btn btn-outline-success float-right"
+                    onClick={() => this.props.history.push(newStudentUrl)}
+                >
+                    Add Student
+                </button>
+                <table className="table table-bordered table-hover">
+                    <thead className="thead-dark">
+                    <tr className="bg-primary">
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Registration Number</th>
+                        <th scope="col">Identification Number</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Birthday</th>
+                        <th scope="col">Email</th>
+                        {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
+                            ? <>
+                                <th />
+                                <th />
+                            </>
+                            : null
+                        }
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {students.map(student => {
+                        return (
+                            <tr key={student.id}>
+                                <td>{student.first_name}</td>
+                                <td>{student.last_name}</td>
+                                <td>{student.registration_number}</td>
+                                <td>{student.identification_number}</td>
+                                <td>{student.address}</td>
+                                <td>{student.birthday}</td>
+                                <td>{student.email}</td>
                                 {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
                                     ? <>
-                                        <th></th>
-                                        <th></th>
+                                        <td role="button" onClick={this.handleEdit.bind(this, student.id)}>Edit</td>
+                                        <td role="button" onClick={this.openModal.bind(this, student.id)}>Delete</td>
                                     </>
                                     : null
                                 }
                             </tr>
-                        </thead>
-                        <tbody>
-                            {students.map(student => {
-                                return (
-                                    <tr key={student.id}>
-                                        <td>{student.first_name}</td>
-                                        <td>{student.last_name}</td>
-                                        <td>{student.registration_number}</td>
-                                        <td>{student.identification_number}</td>
-                                        <td>{student.address}</td>
-                                        <td>{student.birthday}</td>
-                                        <td>{student.email}</td>
-                                        {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
-                                            ? <>
-                                                <td role="button" onClick={this.handleEdit.bind(this, student.id)}>Edit</td>
-                                                <td role="button" onClick={this.openModal.bind(this, student.id)}>Delete</td>
-                                            </>
-                                            : null
-                                        }
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                    <DeleteConfirmation 
-                        modalIsOpen={this.state.modalIsOpen}
-                        closeModal={this.closeModal.bind(this)}
-                        handleDelete={this.handleDelete.bind(this, this.state.selectedId)}
-                    />
-                </div>
-            );
-
-        }
+                        );
+                    })}
+                    </tbody>
+                </table>
+                <DeleteConfirmation
+                    modalIsOpen={this.state.modalIsOpen}
+                    closeModal={this.closeModal.bind(this)}
+                    handleDelete={this.handleDelete.bind(this, this.state.selectedId)}
+                />
+            </div>
+        );
 
     }
 }

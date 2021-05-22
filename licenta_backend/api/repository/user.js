@@ -9,13 +9,23 @@ async function getPermissionsByUserId(userId) {
 }
 
 async function insertIntoUsers(identification_number, first_name, last_name, password, role_id, email, birthday, address, invitation_code) {
-    return db.query('INSERT INTO users SET ? ', { identification_number, first_name, last_name, password, role_id, email, birthday, address, invitation_code });
+    return db.queryPromise('INSERT INTO users SET ? ', { identification_number, first_name, last_name, password, role_id, email, birthday, address, invitation_code });
 }
 
+
+async function addFacultyMember(userId, facultyId) {
+    return db.queryPromise(`
+        INSERT INTO faculty_members
+        SET 
+            user_id = ?, 
+            faculty_id = ?
+    `, [userId, facultyId]);
+}
 
 
 module.exports = {
     getUserByEmail,
     getPermissionsByUserId,
     insertIntoUsers,
+    addFacultyMember,
 }

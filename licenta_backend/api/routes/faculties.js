@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
+const authMiddleware = require('../middleware/auth')
 
 const facultiesController = require('../controllers/faculties');
 const studentsController = require('../controllers/students');
@@ -26,8 +27,11 @@ router.get("/:facultyId/teachers", teachersController.getTeachers);
 router.get("/:facultyId/schedule", scheduleController.getSchedule);
 router.delete("/:facultyId/schedule", scheduleController.deleteAllFromSchedule);
 
-
+router.use(authMiddleware.checkAuth);
 router.get("/:facultyId/announcements", announcementsController.getAnnouncements);
+router.get("/:facultyId/announcements/:announcementId", announcementsController.getAnnouncementById);
+router.post("/:facultyId/announcements", announcementsController.addAnnouncement);
+
 
 
 router.get("/:facultyId/subjects", subjectsController.getSubjectsList);
