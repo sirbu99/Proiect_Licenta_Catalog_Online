@@ -12,8 +12,8 @@ import Teachers from './facultyPages/Teachers';
 import Schedule from './facultyPages/Schedule';
 import Announcements from './facultyPages/Announcements';
 import StudentInfoForm from '../faculties/StudentInfoForm';
-import UpdateTeacherInfo from './facultyPages/UpdateTeacherInfo';
-import AnnouncementsForm from '../faculties/AnnouncementsForm'
+import TeacherInfoForm from '../faculties/TeacherInfoForm';
+import AnnouncementsForm from '../faculties/AnnouncementsForm';
 
 const routes = {
     all: [
@@ -43,7 +43,8 @@ const routes = {
             <Route key="route-students-add" exact path="/universities/:id/:facultyId/students/new" component={StudentInfoForm} />,
         ],
         "teacher":[
-            <Route key="route-teachers-edit" exact path="/universities/:id/:facultyId/teachers/:userId/edit" component={UpdateTeacherInfo} />,
+            <Route key="route-teachers-edit" exact path="/universities/:id/:facultyId/teachers/:userId/edit" component={TeacherInfoForm} />,
+            <Route key="route-teachers-add" exact path="/universities/:id/:facultyId/teachers/new" component={TeacherInfoForm} />,
         ],
         "announcements":[
             <Route key="route-announcements-edit" exact path="/universities/:id/:facultyId/announcements/:announcementId/edit" component={AnnouncementsForm} />,

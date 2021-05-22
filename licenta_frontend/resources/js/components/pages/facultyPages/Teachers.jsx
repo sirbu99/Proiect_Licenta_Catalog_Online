@@ -18,7 +18,10 @@ class teachersOverview extends Component {
                 </div> 
                 <div className="text-center">
                     <h1>Teachers List</h1>
-                    <GetTeachers universityId={this.props.match.params.id} facultyId={this.props.match.params.facultyId}></GetTeachers>
+                    <GetTeachers 
+                        universityId={this.props.match.params.id} 
+                        facultyId={this.props.match.params.facultyId}
+                    />
                 </div>
 
             </div>

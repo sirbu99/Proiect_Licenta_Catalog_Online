@@ -69,6 +69,7 @@ class GetTeachers extends React.Component {
         const teachers = this.state.teachers;
         const teacherListSize = Object.keys(teachers).length;
         const isLoaded = this.state.isLoaded;
+        const newTeacherUrl = `/universities/${this.props.universityId}/${this.props.facultyId}/teachers/new`;
         if (!isLoaded) {
             return <Spinner />
         }
@@ -82,6 +83,12 @@ class GetTeachers extends React.Component {
         } else {
             return (
                 <div className="table-responsive">
+                    <button
+                        className="btn btn-outline-success float-right"
+                        onClick={() => this.props.history.push(newTeacherUrl)}
+                    >
+                        Add Teacher
+                    </button>
                     <table className="table table-bordered table-hover">
                         <thead className="thead-dark">
                             <tr className="bg-primary">

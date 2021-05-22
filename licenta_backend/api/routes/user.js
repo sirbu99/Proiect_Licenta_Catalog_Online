@@ -14,6 +14,7 @@ router.delete("/students/:userId", studentsController.deleteStudent);
 
 
 router.get("/teachers/:userId", teachersController.getTeacherById);
+router.post("/teachers", teachersController.createTeacher);
 router.put("/teachers/:userId", teachersController.updateTeacherInfo);
 router.delete("/teachers/:userId", teachersController.deleteTeacher);
 
