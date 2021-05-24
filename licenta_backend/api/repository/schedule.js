@@ -22,6 +22,23 @@ async function getSchedule(id) {
     `, [id]);
 }
 
+async function getScheduleById(id) {
+    return db.queryPromise(`
+        SELECT 
+            user_id,
+            subject_id
+            year,
+            half_year,
+            \`group\`,
+            classroom,
+            start_at,
+            finish_at, 
+            day,
+            type
+        FROM schedule;
+    `, [id]);
+}
+
 async function getScheduleByYear(id, year) {
     return db.queryPromise(`
         SELECT 
@@ -68,7 +85,7 @@ async function getScheduleByGroup(id, year, group, halfYear) {
     `, [id, year, group, halfYear]);
 }
 
-async function getScheduleByHalfYear(id, year, group, halfYear) {
+async function getScheduleByHalfYear(id, year, halfYear) {
     return db.queryPromise(`
         SELECT 
             s.id,
@@ -87,10 +104,45 @@ async function getScheduleByHalfYear(id, year, group, halfYear) {
         JOIN faculties ON faculty_members.faculty_id = faculties.id 
         WHERE faculties.id =? 
         AND s.year =? 
-        AND s.group =? 
         AND s.half_year =?;
-    `, [id, year, group, halfYear]);
+    `, [id, year, halfYear]);
 }
+
+async function addScheduleEntry(userId, subjectId, year, halfYear, group, classroom, startAt, finishAt, day, type) {
+    return db.queryPromise(`
+        INSERT INTO schedule
+        SET 
+            user_id = ?,
+            subject_id = ?,
+            year = ?,
+            half_year = ?,
+            \`group\` = ?,
+            classroom = ?,
+            start_at = ?,
+            finish_at = ?,
+            day = ?,
+            type = ?
+    `, [userId, subjectId, year, halfYear, group, classroom, startAt, finishAt, day, type]);
+}
+
+async function updateSchedule(id, userId, subjectId, year, halfYear, group, classroom, startAt, finishAt, day, type) {
+    return db.queryPromise(`
+        UPDATE schedule
+        SET 
+            user_id = ?,
+            subject_id = ?,
+            year = ?,
+            half_year = ?,
+            \`group\` = ?,
+            classroom = ?,
+            start_at = ?,
+            finish_at = ?,
+            day = ?,
+            type = ?
+        WHERE id = ?;
+    `, [userId, subjectId, year, halfYear, group, classroom, startAt, finishAt, day, type, id]);
+}
+
 
 async function deleteAllFromSchedule(facultyId) {
     return db.queryPromise(`
@@ -101,14 +153,11 @@ async function deleteAllFromSchedule(facultyId) {
     `, [facultyId]);
 }
 
-async function deleteFromSchedule(facultyId, id) {
+async function deleteFromScheduleById(id) {
     return db.queryPromise(`
-        DELETE schedule FROM schedule as s
-        JOIN faculty_members as fm ON fm.user_id = s.user_id
-        JOIN faculties as f ON fm.faculty_id = f.id
-        WHERE f.id =?
-        AND s.id = ?;
-    `, [facultyId, id]);
+        DELETE FROM schedule 
+        WHERE id = ?;
+    `, [id]);
 }
 
 async function deleteFromScheduleByYear(facultyId, year) {
@@ -133,11 +182,14 @@ async function deleteFromScheduleBySubject(facultyId, subjectId) {
 
 module.exports = {
     getSchedule,
+    getScheduleById,
     getScheduleByYear,
     getScheduleByGroup,
     getScheduleByHalfYear,
+    addScheduleEntry,
+    updateSchedule,
     deleteAllFromSchedule,
-    deleteFromSchedule,
+    deleteFromScheduleById,
     deleteFromScheduleByYear,
     deleteFromScheduleBySubject,
 }

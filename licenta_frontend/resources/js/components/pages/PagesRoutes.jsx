@@ -14,6 +14,7 @@ import Announcements from './facultyPages/Announcements';
 import StudentInfoForm from '../faculties/StudentInfoForm';
 import TeacherInfoForm from '../faculties/TeacherInfoForm';
 import AnnouncementsForm from '../faculties/AnnouncementsForm';
+import ScheduleInfoForm from '../faculties/ScheduleInfoForm';
 
 const routes = {
     all: [
@@ -36,20 +37,24 @@ const routes = {
         "edit_faculty": [
             <Route key="route-faculties-edit" exact path="/universities/:id/:facultyId/edit" component={EditFaculty} />,
         ],
-        "edit_student":[
+        "edit_student": [
             <Route key="route-students-edit" exact path="/universities/:id/:facultyId/students/:userId/edit" component={StudentInfoForm} />,
         ],
-        "add_student":[
+        "add_student": [
             <Route key="route-students-add" exact path="/universities/:id/:facultyId/students/new" component={StudentInfoForm} />,
         ],
-        "teacher":[
+        "teacher": [
             <Route key="route-teachers-edit" exact path="/universities/:id/:facultyId/teachers/:userId/edit" component={TeacherInfoForm} />,
             <Route key="route-teachers-add" exact path="/universities/:id/:facultyId/teachers/new" component={TeacherInfoForm} />,
         ],
-        "announcements":[
+        "announcements": [
             <Route key="route-announcements-edit" exact path="/universities/:id/:facultyId/announcements/:announcementId/edit" component={AnnouncementsForm} />,
             <Route key="route-announcements-add" exact path="/universities/:id/:facultyId/announcements/new" component={AnnouncementsForm} />,
         ],
+        "schedule": [
+            <Route key="route-schedule-edit" exact path="/universities/:id/:facultyId/schedule/:scheduleId/edit" component={ScheduleInfoForm} />,
+            <Route key="route-schedule-add" exact path="/universities/:id/:facultyId/schedule/new" component={ScheduleInfoForm} />,
+        ]
 
     },
 };

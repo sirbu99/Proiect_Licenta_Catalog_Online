@@ -2,7 +2,21 @@ const db = require("../../utils/database");
 
 
 async function getTeachers(id) {
-    return db.queryPromise('SELECT users.id,first_name,last_name,didactic_degree,email FROM teachers JOIN users ON users.id = teachers.user_id JOIN faculty_members ON users.id = faculty_members.user_id JOIN faculties ON faculty_members.faculty_id = faculties.id WHERE users.role_id = 5 AND teachers.is_deleted = 0 AND faculties.id = ?;', [id]);
+    return db.queryPromise(`
+        SELECT 
+            users.id,
+            first_name,
+            last_name,
+            didactic_degree,
+            email 
+        FROM teachers 
+        JOIN users ON users.id = teachers.user_id 
+        JOIN faculty_members ON users.id = faculty_members.user_id 
+        JOIN faculties ON faculty_members.faculty_id = faculties.id 
+        WHERE users.role_id = 5 
+        AND teachers.is_deleted = 0 
+        AND faculties.id = ?;
+    `, [id]);
 }
 
 async function getTeacherById(id) {
@@ -25,7 +39,15 @@ async function getTeacherById(id) {
 
 
 async function deleteTeacher(id) {
-    return db.queryPromise('UPDATE teachers JOIN users ON users.id = teachers.user_id JOIN faculty_members ON users.id = faculty_members.user_id JOIN faculties ON faculty_members.faculty_id = faculties.id SET teachers.is_deleted = 1, users.is_deleted = 1 WHERE users.role_id = 5 ;', [id]);
+    return db.queryPromise(`
+        UPDATE teachers 
+        JOIN users ON users.id = teachers.user_id  
+        SET 
+            teachers.is_deleted = 1, 
+            users.is_deleted = 1 
+        WHERE users.role_id = 5
+        AND users.id = ?;
+    `, [id]);
 }
 
 
