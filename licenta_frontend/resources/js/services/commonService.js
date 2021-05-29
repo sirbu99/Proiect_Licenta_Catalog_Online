@@ -71,3 +71,11 @@ function applyReplacements(message, replacements) {
 export function getApiHost() {
     return 'http://localhost:3000';
 }
+
+export function formatDate(date) {
+    try {
+        return (new Date(date)).toISOString().split('T')[0];
+    } catch (e) {
+        return '';
+    }
+}

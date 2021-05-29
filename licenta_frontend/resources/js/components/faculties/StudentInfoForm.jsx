@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ValidatedComponent from '../ValidatedComponent';
 import FormComponent from '../FormComponent';
-import {getApiHost } from '../../services/commonService';
+import { getApiHost, formatDate } from '../../services/commonService';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 
@@ -68,7 +68,10 @@ class StudentInfoForm extends Component {
                 }
             })
                 .then((response) => response.json())
-                .then((data) => this.setState({ student: data, isLoaded: true }));
+                .then((data) => {
+                    data.birthday = formatDate(data.birthday);
+                    this.setState({ student: data, isLoaded: true })
+                });
 
         } catch (error) {
             console.error(error);

@@ -52,11 +52,11 @@ exports.createTeacher = async(req, res) => {
         );
         await usersRepository.addFacultyMember(createUserQueryResult.insertId, teacherInfo.facultyId);
         mailer.send(
-                teacherInfo.email,
-                'Please finish the registration process',
-                `Your registration code is ${invitationCode}`
-            )
-            // res.send("The teacher has been created");
+            teacherInfo.email,
+            'Please finish the registration process',
+            `Your registration code is ${invitationCode}`
+        )
+        res.send("The teacher has been added");
     } catch (error) {
         console.log(error);
     }

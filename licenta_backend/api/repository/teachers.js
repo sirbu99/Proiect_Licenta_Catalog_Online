@@ -22,11 +22,13 @@ async function getTeachers(id) {
 async function getTeacherById(id) {
     return db.queryPromise(`
         SELECT 
-            users.id,
+            users.identification_number,
             first_name,
             last_name,
-            didactic_degree,
-            email
+            birthday,
+            users.address,
+            email,
+            didactic_degree
         FROM teachers 
         JOIN users ON users.id = teachers.user_id 
         JOIN faculty_members ON users.id = faculty_members.user_id 

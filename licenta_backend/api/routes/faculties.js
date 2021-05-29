@@ -8,6 +8,7 @@ const teachersController = require('../controllers/teachers');
 const scheduleController = require('../controllers/schedule');
 const subjectsController = require('../controllers/subjects');
 const announcementsController = require('../controllers/announcements');
+const gradesController = require('../controllers/grades');
 
 
 router.get('/', facultiesController.getAllFaculties);
@@ -37,5 +38,8 @@ router.post("/:facultyId/announcements", announcementsController.addAnnouncement
 
 
 router.get("/:facultyId/subjects", subjectsController.getSubjectsList);
+
+
+router.get("/:facultyId/grades", gradesController.getGrades);
 
 module.exports = router;

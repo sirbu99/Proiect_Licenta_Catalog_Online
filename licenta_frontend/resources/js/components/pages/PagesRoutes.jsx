@@ -15,6 +15,8 @@ import StudentInfoForm from '../faculties/StudentInfoForm';
 import TeacherInfoForm from '../faculties/TeacherInfoForm';
 import AnnouncementsForm from '../faculties/AnnouncementsForm';
 import ScheduleInfoForm from '../faculties/ScheduleInfoForm';
+import GetStudentGrades from '../faculties/GetStudentGrades';
+import GradesTable from '../faculties/GradesTable';
 
 const routes = {
     all: [
@@ -39,6 +41,7 @@ const routes = {
         ],
         "edit_student": [
             <Route key="route-students-edit" exact path="/universities/:id/:facultyId/students/:userId/edit" component={StudentInfoForm} />,
+            <Route key="route-students-grades" exact path="/universities/:id/:facultyId/students/:userId/grades" component={GetStudentGrades} />,
         ],
         "add_student": [
             <Route key="route-students-add" exact path="/universities/:id/:facultyId/students/new" component={StudentInfoForm} />,

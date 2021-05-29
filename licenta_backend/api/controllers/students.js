@@ -60,6 +60,7 @@ exports.createStudent = async(req, res) => {
             'Please finish the registration process',
             `Your registration code is ${invitationCode}`
         )
+        res.send("The student has been added");
     } catch (error) {
         console.log(error);
     }

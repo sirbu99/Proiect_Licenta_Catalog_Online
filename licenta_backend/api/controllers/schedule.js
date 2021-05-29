@@ -47,15 +47,15 @@ exports.updateSchedule = async(req, res) => {
             scheduleInfo.user_id,
             scheduleInfo.subject_id,
             scheduleInfo.year,
-            scheduleInfo.halfYear,
+            scheduleInfo.half_year,
             scheduleInfo.group,
             scheduleInfo.classroom,
-            scheduleInfo.startAt,
-            scheduleInfo.finishAt,
+            scheduleInfo.start_at,
+            scheduleInfo.finish_at,
             scheduleInfo.day,
             scheduleInfo.type,
         );
-        res.send(schedule);
+        res.send("Schedule successfully updated!");
     } catch (error) {
         console.log(error);
     }

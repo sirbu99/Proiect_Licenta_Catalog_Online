@@ -32,8 +32,9 @@ app.use('/', require('./api/routes/auth'));
 app.use('/universities', require('./api/routes/universities'));
 app.use('/universities/:universityId', require('./api/routes/faculties'));
 app.use('/announcements', require('./api/routes/announcements'));
-app.use('/users', require('./api/routes/user'))
-app.use('/schedule', require('./api/routes/schedule'))
+app.use('/users', require('./api/routes/user'));
+app.use('/schedule', require('./api/routes/schedule'));
+app.use('/grades', require('./api/routes/grades'));
 
 
 app.use((req, res, next) => {

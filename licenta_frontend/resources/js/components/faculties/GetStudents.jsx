@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getApiHost } from '../../services/commonService';
+import { getApiHost, formatDate } from '../../services/commonService';
 import axios from 'axios';
 import Spinner from '../ui/Spinner';
 import DeleteConfirmation from '../ui/DeleteConfirmation';
@@ -56,6 +56,11 @@ class GetStudents extends React.Component {
         }
     }
 
+    handleViewGrades(id){
+        console.log(this.props);
+        this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/students/${id}/grades`);
+    }
+
     openModal(id) {
         this.setState({...this.state, modalIsOpen: true, selectedId: id });
     }
@@ -104,6 +109,7 @@ class GetStudents extends React.Component {
                             ? <>
                                 <th />
                                 <th />
+                                <th />
                             </>
                             : null
                         }
@@ -118,10 +124,11 @@ class GetStudents extends React.Component {
                                 <td>{student.registration_number}</td>
                                 <td>{student.identification_number}</td>
                                 <td>{student.address}</td>
-                                <td>{student.birthday}</td>
+                                <td>{formatDate(student.birthday)}</td>
                                 <td>{student.email}</td>
                                 {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
                                     ? <>
+                                        <td role="button" onClick={this.handleViewGrades.bind(this, student.id)}>View Grades</td>
                                         <td role="button" onClick={this.handleEdit.bind(this, student.id)}>Edit</td>
                                         <td role="button" onClick={this.openModal.bind(this, student.id)}>Delete</td>
                                     </>
