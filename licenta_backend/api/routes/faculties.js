@@ -21,6 +21,8 @@ router.delete("/:id", facultiesController.deleteFaculty);
 
 router.get("/:facultyId/students", studentsController.getStudents);
 
+router.get("/:facultyId/students/list", studentsController.getStudentsList);
+
 
 router.get("/:facultyId/teachers", teachersController.getTeachers);
 

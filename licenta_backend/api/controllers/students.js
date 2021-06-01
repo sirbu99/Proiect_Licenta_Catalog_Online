@@ -12,6 +12,25 @@ exports.getStudents = async(req, res) => {
     }
 }
 
+
+exports.getStudentsList = async(req, res) => {
+    try {
+        students = await studentsRepository.getStudentsList(req.params.facultyId);
+        res.send(students);
+    } catch (error) {
+        console.log(error);
+    }
+}
+exports.getStudentsBySubject = async(req, res) => {
+    try {
+        let reqInfo = req.body;
+        students = await studentsRepository.getStudentsBySubject(req.params.facultyId, reqInfo.subject_id, reqInfo.teacher_id);
+        res.send(students);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 exports.getStudentById = async(req, res) => {
     try {
         const [student] = await studentsRepository.getStudentById(req.params.userId);

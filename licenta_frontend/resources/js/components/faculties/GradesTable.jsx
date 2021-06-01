@@ -1,50 +1,54 @@
-import { Grid, Input, Select } from 'react-spreadsheet-grid'
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Table from '../table/Table';
+import { getApiHost } from '../../services/commonService';
+
+
 class GradesTable extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            students: []
         }
-        const rows = [
-            { id: 'user1', name: 'John Doe', positionId: 'position1' },
-            // and so on...
-        ];
+
+        this.routeFacultyId = _.get(this.props, 'match.params.facultyId', null);
+        this.routeUniversityId = _.get(this.props, 'match.params.id', null);
     }
-    render (){
-        <Grid
-        columns={[
-            {
-            title: () => 'Name',
-            value: (row, { focus }) => {
-                return (
-                    <Input
-                        value={row.name}
-                        focus={focus}
-                    />
-                );
-            }
-            }, {
-            title: () => 'Position',
-            value: (row, { focus }) => {
-                return (
-                    <Select
-                        value={row.positionId}
-                        isOpen={focus}
-                        items={somePositions}
-                    />
-                );
-            }
-            }
-        ]}
-        rows={rows}
-        getRowKey={row => row.id}
-        />
+
+    componentDidMount() {
+        this.fetchStudents();
+    }
+
+    fetchStudents() {
+        const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/students/list`;
+        try {
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
+                .then((response) => response.json())
+                .then((data) => this.setState({ students: data }));
+
+        } catch (error) {
+            console.error(error);
+        };
+    }
+
+    render() {
+        const students = this.state.students.map((item) => { 
+            return {id: item.registration_number, value: `${item.first_name} ${item.last_name}`}
+        });
+        
+        return (
+            <div style={{ width: 'max-content' }}>
+                <Table headerY={students} x={20} y={Object.keys(students).length} id={'1'} />
+            </div>
+        )
     }
 }
-
 const mapStateToProps = (state) => ({
     auth: state.authentication,
 });

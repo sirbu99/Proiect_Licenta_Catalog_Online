@@ -107,7 +107,7 @@ class GetStudentGrades extends React.Component {
                 <label>
                     Sort by subject: 
                     <select value={this.state.selectedSubjectId} onChange={this.handleChange.bind(this)}>
-                        <option value=''>Select a subject</option>
+                        <option value=''>None</option>
                         {subjects.map(subj => {
                             return(
                                 <option key={subj.id} value={subj.id}>{subj.name}</option>

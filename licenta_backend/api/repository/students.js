@@ -87,10 +87,47 @@ async function createStudent(userId, funding, year, halfYear, group) {
     `, [userId, funding, year, halfYear, group]);
 }
 
+async function getStudentsBySubject(id, subjectId, teacherId) {
+    return db.queryPromise(`
+        SELECT 
+            users.id,
+            first_name,
+            last_name
+        FROM students 
+        JOIN faculty_members ON students.user_id = faculty_members.user_id 
+        JOIN faculties ON faculty_members.faculty_id = faculties.id 
+        JOIN subjects_students AS ss ON ss.student_id = students.id
+        JOIN subjects_teachers AS st ON st.subject_id = ss.subject_id
+        WHERE users.role_id = 6 
+        AND ss.subject_id = ?
+        AND st.teacher_id = ?
+        AND students.is_deleted = 0 
+        AND faculties.id = ?;
+    `, [subjectId, teacherId, id]);
+}
+
+async function getStudentsList(id) {
+    return db.queryPromise(`
+        SELECT 
+            registration_number,
+            first_name,
+            last_name
+            FROM students 
+            JOIN users ON students.user_id = users.id 
+            JOIN faculty_members ON users.id = faculty_members.user_id 
+            JOIN faculties ON faculty_members.faculty_id = faculties.id 
+            WHERE users.role_id = 6 
+            AND students.is_deleted = 0 
+            AND faculties.id = ?;
+    `, [id]);
+}
+
 module.exports = {
     getStudents,
     getStudentById,
     deteleStudent,
     createStudent,
     updateStudentInfo,
+    getStudentsList,
+    getStudentsBySubject,
 }
