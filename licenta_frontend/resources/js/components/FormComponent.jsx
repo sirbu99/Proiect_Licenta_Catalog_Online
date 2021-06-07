@@ -80,18 +80,21 @@ const FormComponent = (ComposedComponent) => {
 
         renderSelectField(varName, fieldName, label, options = {}) {
             let data = _.get(this.state, varName);
-
+            
             return (
                 <div className="form-group mb-3">
                     <label>{label}</label>
                     <select className="form-control form-control-md">
-                        {options.forEach(item => {
-                            <option
-                                value={_.get(data, fieldName)}
-                                onChange={this.handleSelectVar.bind(this, varName)}
-                            >
-                                {item}
-                            </option>
+                        {options.map(item => {
+                            return (
+                                <option
+                                    key={item.value}
+                                    value={_.get(data, fieldName)}
+                                    onChange={this.handleSelectVar.bind(this, varName)}
+                                >
+                                    {item.label}
+                                </option>
+                            )
 
                         })}
 

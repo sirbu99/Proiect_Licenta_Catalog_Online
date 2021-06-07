@@ -25,9 +25,10 @@ router.get("/:facultyId/students/list", studentsController.getStudentsList);
 
 
 router.get("/:facultyId/teachers", teachersController.getTeachers);
+router.get("/:facultyId/teachers-list", teachersController.getTeachersList);
 
 router.get("/:facultyId/schedule", scheduleController.getSchedule);
-router.use(authMiddleware.checkAuth);
+// router.use(authMiddleware.checkAuth);
 router.post("/:facultyId/schedule", scheduleController.addScheduleEntry);
 router.delete("/:facultyId/schedule", scheduleController.deleteAllFromSchedule);
 
@@ -40,6 +41,7 @@ router.post("/:facultyId/announcements", announcementsController.addAnnouncement
 
 
 router.get("/:facultyId/subjects", subjectsController.getSubjectsList);
+router.get("/:facultyId/subjects-list/:userId", subjectsController.getSubjectsByTeacher);
 
 
 router.get("/:facultyId/grades", gradesController.getGrades);

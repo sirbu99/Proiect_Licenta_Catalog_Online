@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ValidatedComponent from '../ValidatedComponent';
 import FormComponent from '../FormComponent';
-import {getApiHost } from '../../services/commonService';
+import { getApiHost } from '../../services/commonService';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 
@@ -22,13 +22,47 @@ class ScheduleInfoForm extends Component {
                 start_at: '',
                 finish_at: '',
                 day: '',
-                type:'',
-            }
+                type: '',
+            },
+            subjects: [],
+            teachers: [],
+            selectedTeacherId: "",
         };
 
         this.routeScheduleId = _.get(this.props, 'match.params.scheduleId', null);
         this.routeFacultyId = _.get(this.props, 'match.params.facultyId', null);
         this.routeUniversityId = _.get(this.props, 'match.params.id', null);
+    }
+    fetchTeachers() {
+        const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/teachers-list`;
+        try {
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
+                .then((response) => response.json())
+                .then((data) => this.setState({ teachers: data }));
+
+        } catch (error) {
+            console.error(error);
+        };
+    }
+
+    fetchSubjects() {
+        const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/subjects-list/${this.state.selectedTeacherId}`;
+        try {
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
+                .then((response) => response.json())
+                .then((data) => this.setState({ subjects: data }));
+
+        } catch (error) {
+            console.error(error);
+        };
     }
 
     handleSubmit(e) {
@@ -46,9 +80,13 @@ class ScheduleInfoForm extends Component {
         }
     }
 
+    handleChangeWhenTeacherClicked(event) {
+        this.setState({ selectedTeacherId: event.target.value }, this.fetchSubjects.bind(this));
+    }
+
     handleAddToSchedule(headers) {
         const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/schedule`;
-        return axios.post(apiUrl, {facultyId: this.routeFacultyId, ...this.state.schedule}, { headers });
+        return axios.post(apiUrl, { facultyId: this.routeFacultyId, ...this.state.schedule }, { headers });
     }
 
     handleEditSchedule(headers) {
@@ -57,6 +95,7 @@ class ScheduleInfoForm extends Component {
     }
 
     componentDidMount() {
+        this.fetchTeachers();
         if (!this.routeScheduleId) {
             return;
         }
@@ -75,34 +114,62 @@ class ScheduleInfoForm extends Component {
         };
     }
 
-render() {
-    const renderField = this.renderField.bind(this, 'schedule');
+    render() {
+        const subjects = this.state.subjects;
+        const teachers = this.state.teachers;
+        const options = [];
+        const renderField = this.renderField.bind(this, 'schedule');
+        const renderSelectField = this.renderSelectField.bind(this, 'schedule');
 
-    return (
-        <div className="card mt-3">
-            <div className="card-body">
-                <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                    <h2>Schedule Info</h2>
-                    <div className="row">
-                        <div className="col-md-10">
-                            {renderField('user_id', 'User ID')}
-                            {renderField('subject_id', 'Subject ID')}
-                            {renderField('year', 'Year')}
-                            {renderField('half_year', 'Half Year')}
-                            {renderField('group', 'Group')}
-                            {renderField('classroom', 'Classroom')}
-                            {renderField('start_at', 'Start At', 'time')}
-                            {renderField('finish_at', 'Finish At', 'time')}
-                            {renderField('day', 'Day')}
-                            {renderField('type', 'Type')}
-                        </div>
-                    </div>
-                    <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
-                </form>
+
+        const teachersList = (
+            <div className="form-group mb-3">
+                <label>
+                    Select a teacher:
+                    <select value={this.state.selectedTeacherId} onChange={this.handleChangeWhenTeacherClicked.bind(this)} className="form-control form-control-md">
+                        <option value='0'>None</option>
+                        {teachers.map(teacher => {
+                            return (
+                                <option key={teacher.id} value={teacher.id}>{teacher.first_name + ' ' + teacher.last_name}</option>
+                            )
+
+                        })}
+                    </select>
+                </label>
             </div>
-        </div>
-    );
-}
+        );
+
+        subjects.forEach(subj => {
+            options.push({ value: subj.id, label: subj.name });
+        });
+
+        return (
+            <div className="card mt-3">
+                <div className="card-body">
+                    <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
+                        <h2>Schedule Info</h2>
+                        <div className="row">
+                            <div className="col-md-10">
+                                {renderField('user_id', 'User ID')}
+                                {/* {renderSelectField('user_id', 'Teachers', teachersList)} */}
+                                {teachersList}
+                                {renderSelectField('subject_id', 'Subjects', options)}
+                                {renderField('year', 'Year')}
+                                {renderField('half_year', 'Half Year')}
+                                {renderField('group', 'Group')}
+                                {renderField('classroom', 'Classroom')}
+                                {renderField('start_at', 'Start At', 'time')}
+                                {renderField('finish_at', 'Finish At', 'time')}
+                                {renderField('day', 'Day')}
+                                {renderField('type', 'Type')}
+                            </div>
+                        </div>
+                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
+                    </form>
+                </div>
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = (state) => ({

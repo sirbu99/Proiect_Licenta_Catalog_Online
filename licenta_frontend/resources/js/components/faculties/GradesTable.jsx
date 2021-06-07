@@ -44,7 +44,7 @@ class GradesTable extends React.Component {
         
         return (
             <div style={{ width: 'max-content' }}>
-                <Table headerY={students} x={20} y={Object.keys(students).length} id={'1'} />
+                <Table headerY={students} x={5} y={Object.keys(students).length} id={'1'} />
             </div>
         )
     }

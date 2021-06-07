@@ -179,7 +179,7 @@ export default class Cell extends React.Component {
      */
     calculateCss = () => {
         const css = {
-            width: '80px',
+            width: '150px',
             padding: '4px',
             margin: '0',
             height: '25px',

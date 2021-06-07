@@ -11,6 +11,15 @@ exports.getTeachers = async(req, res) => {
     }
 }
 
+exports.getTeachersList = async(req, res) => {
+    try {
+        teachers = await teachersRepository.getTeachersList(req.params.facultyId);
+        res.send(teachers);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 exports.getTeacherById = async(req, res) => {
     try {
         const [teacher] = await teachersRepository.getTeacherById(req.params.userId);
@@ -19,6 +28,7 @@ exports.getTeacherById = async(req, res) => {
         console.log(error);
     }
 }
+
 
 exports.updateTeacherInfo = async(req, res) => {
     try {
