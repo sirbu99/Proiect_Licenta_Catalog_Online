@@ -1,8 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-// import UserBoxRegistered from './UserBoxRegistered';
-// import UserBoxAnonymous from './UserBoxAnonymous';
 import { FaUser } from 'react-icons/fa';
 import LoginForm from '../../auth/LoginForm';
 import { Link } from 'react-router-dom';
@@ -17,15 +14,26 @@ const UserBox = (props) => {
 
     return (
         <div className="user-box">
-        <FaUser />
-            {!props.auth.loggedIn ? <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Login
-            </a>: <Link to="/logout" onClick={logout}>Logout</Link>
-
-            }
-            {!props.auth.loggedIn ? <div className="dropdown-menu dropdown-menu-end">
-                <LoginForm />
-            </div>: null }
+            <div className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <FaUser className="mr-2" size="1.5em" />
+                                Account
+                            </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {props.auth.loggedIn ?
+                        <>
+                            <li><Link to={`/users/${props.auth.user.id}/profile`} className="nav-link">Profile</Link></li>
+                            <li>
+                                <Link to="/profile" onClick={logout} className="nav-link">
+                                    <span>Logout</span>
+                                </Link>
+                            </li>
+                        </> :
+                        <LoginForm />
+                    }
+                </ul>
+            </div>
         </div>
     )
 };

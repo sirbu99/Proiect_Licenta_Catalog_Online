@@ -1,7 +1,5 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import HomePage from './HomePage';
-import AboutUs from './AboutUs';
 import UniversitiesPage from './uniPages/Universities';
 import FacultiesPage from './facultyPages/Faculties';
 import EditUniversity from './uniPages/EditUniversity';
@@ -17,11 +15,11 @@ import AnnouncementsForm from '../faculties/AnnouncementsForm';
 import ScheduleInfoForm from '../faculties/ScheduleInfoForm';
 import GetStudentGrades from '../faculties/GetStudentGrades';
 import GradesTable from '../faculties/GradesTable';
+import ProfileView2 from '../users/profile/ProfileView2';
 
 const routes = {
     all: [
-        <Route key="route-home-page" exact path="/" component={HomePage} />,
-        <Route key="route-about-us-page" exact path="/about-us" component={AboutUs} />,
+        <Route key="route-home-page" exact path="/" component={UniversitiesPage} />,
         <Route key="route-universities" exact path="/universities" component={UniversitiesPage} />,
         <Route key="route-faculties" exact path="/universities/:id" component={FacultiesPage} />,
         <Route key="route-faculties-info" exact path="/universities/:id/:facultyId/info" component={FacultyInfo} />
@@ -31,6 +29,8 @@ const routes = {
         <Route key="route-faculties-teachers" exact path="/universities/:id/:facultyId/teachers" component={Teachers} />,
         <Route key="route-faculties-schedule" exact path="/universities/:id/:facultyId/schedule" component={Schedule} />,
         <Route key="route-faculties-announcements" exact path="/universities/:id/:facultyId/announcements" component={Announcements} />,
+        <Route key="route-users-profile" exact path="/users/:userId/profile" component={ProfileView2} />,
+
     ],
     byPermission: {
         "edit_university": [

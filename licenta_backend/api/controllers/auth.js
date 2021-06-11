@@ -47,21 +47,30 @@ exports.logout = (req, res) => {
 
 exports.register = async(req, res) => {
     try {
-        const { identification_number, first_name, last_name, role_id, email, birthday, address, invitation_code, password, password_confirmation } = req.body;
-        const user = await userRepository.getUserByEmail(email);
+        const userInfo = req.body;
+        const user = await userRepository.getUserByEmail(userInfo.email);
         if (user.length > 0) {
             return res.json({
                 message: 'Email already in use!'
             });
-        } else if (password !== password_confirmation) {
-            console.log(password, password_confirmation)
+        } else if (userInfo.password !== userInfo.password_confirmation) {
             return res.json({
                 message: 'Passwords do not match!'
             });
         }
 
-        let hashedPassword = await bcrypt.hash(password, 8);
-        await userRepository.insertIntoUsers(identification_number, first_name, last_name, hashedPassword, role_id, email, birthday, address, invitation_code);
+        let hashedPassword = await bcrypt.hash(userInfo.password, 8);
+        await userRepository.insertIntoUsers(
+            userInfo.identification_number,
+            userInfo.first_name,
+            userInfo.last_name,
+            hashedPassword,
+            userInfo.role_id,
+            userInfo.email,
+            userInfo.birthday,
+            userInfo.address,
+            userInfo.invitation_code
+        );
         return res.json({
             message: 'User registered!'
         });

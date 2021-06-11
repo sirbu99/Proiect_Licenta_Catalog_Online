@@ -1,4 +1,3 @@
-const db = require("../../utils/database");
 const uniRepository = require('../repository/universities');
 
 exports.getAllUniversities = async(req, res) => {

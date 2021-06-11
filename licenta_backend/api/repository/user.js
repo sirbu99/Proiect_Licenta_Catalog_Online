@@ -12,6 +12,25 @@ async function insertIntoUsers(identification_number, first_name, last_name, pas
     return db.queryPromise('INSERT INTO users SET ? ', { identification_number, first_name, last_name, password, role_id, email, birthday, address, invitation_code });
 }
 
+async function getUserInfo(userId) {
+    return db.queryPromise(`
+        SELECT
+            first_name,
+            last_name,
+            email
+        FROM users
+        WHERE id = ?;
+    `, [userId]);
+}
+
+async function getUserRole(userId) {
+    return db.queryPromise(`
+    SELECT
+        role_id
+    FROM users
+    WHERE id = ?;
+    `, [userId]);
+}
 
 async function addFacultyMember(userId, facultyId) {
     return db.queryPromise(`
@@ -28,4 +47,6 @@ module.exports = {
     getPermissionsByUserId,
     insertIntoUsers,
     addFacultyMember,
+    getUserInfo,
+    getUserRole,
 }
