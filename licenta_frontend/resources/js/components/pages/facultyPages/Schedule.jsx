@@ -12,17 +12,17 @@ class scheduleOverview extends Component {
     render() {
         console.log(this.props.match.params)
         return (
-            <div className="page-with-side-menu">
-                <div className="secondary-menu">
+            <div className="row">
+                <div className="col-12 col-md-4 col-lg-3 secondary-menu">
                     <MenuSecondary></MenuSecondary>
-                </div> 
-                <div className="text-center">
+                </div>
+                <div className="col-12 col-md-8 col-lg-9 text-center">
                     <h1>Schedule</h1>
                     <GetSchedule universityId={this.props.match.params.id} facultyId={this.props.match.params.facultyId}></GetSchedule>
                 </div>
 
             </div>
-            
+
         );
     }
 }

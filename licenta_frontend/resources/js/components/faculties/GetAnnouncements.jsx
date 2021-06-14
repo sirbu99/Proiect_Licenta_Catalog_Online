@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
 import Spinner from '../ui/Spinner';
 import axios from 'axios';
+import { FaEdit, FaWindowClose } from 'react-icons/fa';
 import DeleteConfirmation from '../ui/DeleteConfirmation';
 
 class GetAnnouncements extends React.Component {
@@ -21,7 +22,7 @@ class GetAnnouncements extends React.Component {
         this.fetchAnnouncements();
     }
 
-    
+
 
     fetchAnnouncements() {
         const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/announcements`;
@@ -56,11 +57,20 @@ class GetAnnouncements extends React.Component {
         }
     }
     openModal(id) {
-        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+        this.setState({ ...this.state, modalIsOpen: true, selectedId: id });
     }
 
     closeModal() {
-        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+        this.setState({ ...this.state, modalIsOpen: false, selectedId: null });
+    }
+
+    handleShowButtons(id) {
+        return _.get(this.props, 'auth.user.permissions', []).includes('announcements')
+            ? <div className="btn-announcements">
+                <button className="btn btn-edit" onClick={this.handleEdit.bind(this, id)}><FaEdit /></button>
+                <button className="btn btn-delete" onClick={this.openModal.bind(this, id)}><FaWindowClose /></button>
+            </div>
+            : null
     }
 
     render() {
@@ -75,53 +85,49 @@ class GetAnnouncements extends React.Component {
 
         if (announcementsListSize < 1) {
             return (
-                <h3>
-                    There are no announcements yet.
-                </h3>
-            )
-        } else {
-            return (
-                <div className="table-responsive">
+                <div className="announcements-list">
+                    <h3>
+                        There are no announcements yet.
+                    </h3>
                     <button
                         className="btn btn-outline-success float-right"
                         onClick={() => this.props.history.push(newAnnouncementUrl)}
                     >
                         Add Announcement
                     </button>
-                    <table className="table table-bordered table-hover">
-                        <thead className="thead-dark">
-                            <tr className="bg-primary">
-                                <th scope="col">Teacher</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Message</th>
-                                {_.get(this.props, 'auth.user.permissions', []).includes('announcements')
-                                    ? <>
-                                        <th />
-                                        <th />
-                                    </>
-                                    : null
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {announcements.map(item => {
-                                return (
-                                    <tr key={item.id}>
-                                        <td>{item.first_name} {item.last_name}</td>
-                                        <td>{item.name}</td>
-                                        <td>{item.text}</td>
-                                        {_.get(this.props, 'auth.user.permissions', []).includes('announcements')
-                                            ? <>
-                                                <td role="button" onClick={this.handleEdit.bind(this, item.id)}>Edit</td>
-                                                <td role="button" onClick={this.openModal.bind(this, item.id)}>Delete</td>
-                                            </>
-                                            : null
-                                        }
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                </div>
+            )
+        } else {
+            return (
+                <div className="announcements-list">
+                    <button
+                        className="btn btn-outline-success float-right"
+                        onClick={() => this.props.history.push(newAnnouncementUrl)}
+                    >
+                        Add Announcement
+                    </button>
+                    <div className="row">
+                        {announcements.map(item => {
+                            return (
+                                <div className="col-12 col-lg-6" key={item.id}>
+                                    <div className="card announcement-card">
+                                        <div className="card-details">
+                                            <h5 className="card-title" >
+                                                {item.name}
+                                            </h5>
+                                            <div className="description">
+                                                {item.text}
+                                            </div>
+                                            <div className="author">
+                                                {`${item.first_name} ${item.last_name}`}
+                                            </div>
+                                            {this.handleShowButtons(item.id)}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                     <DeleteConfirmation
                         modalIsOpen={this.state.modalIsOpen}
                         closeModal={this.closeModal.bind(this)}
