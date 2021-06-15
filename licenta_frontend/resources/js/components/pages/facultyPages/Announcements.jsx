@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import GetAnnouncements from '../../faculties/GetAnnouncements';
-import MenuSecondary from '../menu/MenuSecondary'
+import MenuSecondary from '../menu/MenuSecondary';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import LoginForm from '../../auth/LoginForm';
 
-class announcementsOverview extends Component {
+class Announcements extends Component {
     constructor(props) {
         super(props);
 
@@ -12,18 +15,25 @@ class announcementsOverview extends Component {
     render() {
         console.log(this.props.match.params)
         return (
-            <div className="row">
-                <div className="col-12 col-md-4 col-lg-3 secondary-menu">
-                    <MenuSecondary></MenuSecondary>
+            this.props.auth.loggedIn ?
+                <div className="row">
+                    <div className="col-12 col-md-4 col-lg-3 secondary-menu">
+                        <MenuSecondary></MenuSecondary>
+                    </div>
+                    <div className="col-12 col-md-8 col-lg-9 text-center">
+                        <h1>Announcements</h1>
+                        <GetAnnouncements universityId={this.props.match.params.id} facultyId={this.props.match.params.facultyId}></GetAnnouncements>
+                    </div>
                 </div>
-                <div className="col-12 col-md-8 col-lg-9 text-center">
-                    <h1>Announcements</h1>
-                    <GetAnnouncements universityId={this.props.match.params.id} facultyId={this.props.match.params.facultyId}></GetAnnouncements>
+                : <div className="card col-md-6 m-auto">
+                    <h5>You must be logged in to see this page</h5>
+                    <LoginForm />
                 </div>
-            </div>
 
         );
     }
 }
-
-export default announcementsOverview;
+const mapStateToProps = (state) => ({
+    auth: state.authentication,
+});
+export default connect(mapStateToProps)(withRouter(Announcements));

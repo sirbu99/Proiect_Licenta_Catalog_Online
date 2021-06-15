@@ -35,7 +35,7 @@ async function getStudentById(id) {
             funding,
             year,
             half_year,
-            \`group\` 
+            students.group 
         FROM students 
         JOIN users ON students.user_id = users.id
         WHERE users.role_id = 6 

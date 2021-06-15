@@ -18,8 +18,8 @@ const UserBox = (props) => {
                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <FaUser className="mr-2" size="1.5em" />
-                                Account
-                            </a>
+                    Account
+                </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                     {props.auth.loggedIn ?
                         <>

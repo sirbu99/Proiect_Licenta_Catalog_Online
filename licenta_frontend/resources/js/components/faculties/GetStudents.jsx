@@ -21,7 +21,7 @@ class GetStudents extends React.Component {
         this.fetchStudents();
     }
 
-    
+
 
     fetchStudents() {
         const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/students`;
@@ -56,17 +56,17 @@ class GetStudents extends React.Component {
         }
     }
 
-    handleViewGrades(id){
+    handleViewGrades(id) {
         console.log(this.props);
         this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/students/${id}/grades`);
     }
 
     openModal(id) {
-        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+        this.setState({ ...this.state, modalIsOpen: true, selectedId: id });
     }
 
     closeModal() {
-        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+        this.setState({ ...this.state, modalIsOpen: false, selectedId: null });
     }
 
     render() {
@@ -97,46 +97,59 @@ class GetStudents extends React.Component {
                 </button>
                 <table className="table table-bordered table-hover">
                     <thead className="thead-dark">
-                    <tr className="bg-primary">
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Registration Number</th>
-                        <th scope="col">Identification Number</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Birthday</th>
-                        <th scope="col">Email</th>
-                        {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
-                            ? <>
-                                <th />
-                                <th />
-                                <th />
-                            </>
-                            : null
-                        }
-                    </tr>
+                        <tr className="bg-primary">
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Registration Number</th>
+                            {_.get(this.props, 'auth.user.role_id') == '1'
+                                ?
+                                <>
+                                    <th scope="col">Identification Number</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Birthday</th>
+                                </>
+                                : null
+                            }
+
+                            <th scope="col">Email</th>
+                            {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
+                                ? <>
+                                    <th />
+                                    <th />
+                                    <th />
+                                </>
+                                : null
+                            }
+                        </tr>
                     </thead>
                     <tbody>
-                    {students.map(student => {
-                        return (
-                            <tr key={student.id}>
-                                <td>{student.first_name}</td>
-                                <td>{student.last_name}</td>
-                                <td>{student.registration_number}</td>
-                                <td>{student.identification_number}</td>
-                                <td>{student.address}</td>
-                                <td>{formatDate(student.birthday)}</td>
-                                <td>{student.email}</td>
-                                {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
-                                    ? <>
-                                        <td role="button" onClick={this.handleViewGrades.bind(this, student.id)}>View Grades</td>
-                                        <td role="button" onClick={this.handleEdit.bind(this, student.id)}>Edit</td>
-                                        <td role="button" onClick={this.openModal.bind(this, student.id)}>Delete</td>
-                                    </>
-                                    : null
-                                }
-                            </tr>
-                        );
-                    })}
+                        {students.map(student => {
+                            return (
+                                <tr key={student.id}>
+                                    <td>{student.first_name}</td>
+                                    <td>{student.last_name}</td>
+                                    <td>{student.registration_number}</td>
+                                    {_.get(this.props, 'auth.user.role_id') == '1'
+                                        ?
+                                        <>
+                                            <td>{student.identification_number}</td>
+                                            <td>{student.address}</td>
+                                            <td>{formatDate(student.birthday)}</td>
+                                        </>
+                                        : null
+                                    }
+                                    <td>{student.email}</td>
+                                    {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
+                                        ? <>
+                                            <td role="button" onClick={this.handleViewGrades.bind(this, student.id)}>View Grades</td>
+                                            <td role="button" onClick={this.handleEdit.bind(this, student.id)}>Edit</td>
+                                            <td role="button" onClick={this.openModal.bind(this, student.id)}>Delete</td>
+                                        </>
+                                        : null
+                                    }
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
                 <DeleteConfirmation

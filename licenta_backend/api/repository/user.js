@@ -9,7 +9,10 @@ async function getPermissionsByUserId(userId) {
 }
 
 async function insertIntoUsers(identification_number, first_name, last_name, password, role_id, email, birthday, address, invitation_code) {
-    return db.queryPromise('INSERT INTO users SET ? ', { identification_number, first_name, last_name, password, role_id, email, birthday, address, invitation_code });
+    return db.queryPromise(`
+    INSERT INTO users
+    SET ?
+    `, { identification_number, first_name, last_name, password, role_id, email, birthday, address, invitation_code });
 }
 
 async function getUserInfo(userId) {
@@ -17,10 +20,20 @@ async function getUserInfo(userId) {
         SELECT
             first_name,
             last_name,
-            email
+            email,
+            birthday,
+            address
         FROM users
         WHERE id = ?;
     `, [userId]);
+}
+
+async function changePassword(userId, password) {
+    return db.queryPromise(`
+        UPDATE users
+        SET password = ?
+        WHERE id = ?;
+    `, [password, userId]);
 }
 
 async function getUserRole(userId) {
@@ -49,4 +62,5 @@ module.exports = {
     addFacultyMember,
     getUserInfo,
     getUserRole,
+    changePassword,
 }

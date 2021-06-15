@@ -16,6 +16,7 @@ router.get("/students/:userId/grades", gradesController.getStudentGrades);
 router.get("/students/:userId/subjects", subjectsController.getSubjectsByStudent);
 router.post("/students", studentsController.createStudent);
 router.put("/students/:userId", studentsController.updateStudentInfo);
+router.put("/:userId/change-password", usersController.changePassword);
 router.delete("/students/:userId", studentsController.deleteStudent);
 
 router.get("/:userId/profile-info", usersController.getUserInfo);

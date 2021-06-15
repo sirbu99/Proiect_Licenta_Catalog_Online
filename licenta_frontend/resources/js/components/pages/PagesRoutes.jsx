@@ -41,7 +41,7 @@ const routes = {
         ],
         "edit_student": [
             <Route key="route-students-edit" exact path="/universities/:id/:facultyId/students/:userId/edit" component={StudentInfoForm} />,
-            <Route key="route-students-grades" exact path="/universities/:id/:facultyId/students/:userId/grades" component={GradesTable} />,
+            <Route key="route-students-grades" exact path="/universities/:id/:facultyId/students/:userId/grades" component={GetStudentGrades} />,
         ],
         "add_student": [
             <Route key="route-students-add" exact path="/universities/:id/:facultyId/students/new" component={StudentInfoForm} />,

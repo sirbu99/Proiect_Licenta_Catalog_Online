@@ -13,6 +13,7 @@ const UserBoxRegistered = (props) => {
         event.preventDefault();
         const { dispatch } = props;
         dispatch(authActions.logout());
+
     }
 
     return (
@@ -24,7 +25,7 @@ const UserBoxRegistered = (props) => {
                 <div className="profile-info">
                     <span className="name">{_.get(props, 'auth.user.full_name', '')}</span>
                 </div>
-                
+
             </a>
 
             <div className="dropdown-menu">

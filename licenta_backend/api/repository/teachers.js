@@ -56,6 +56,7 @@ async function getTeacherById(id) {
 }
 
 
+
 async function deleteTeacher(id) {
     return db.queryPromise(`
         UPDATE teachers 

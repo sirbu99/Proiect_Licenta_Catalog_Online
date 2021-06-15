@@ -23,6 +23,7 @@ exports.login = async(req, res) => {
         });
 
         let permissions = await userRepository.getPermissionsByUserId(id);
+        let userRole = await userRepository.getUserRole(id);
         permissions = permissions.map((p) => p.permission_name);
 
         res.status(200).json({
@@ -30,6 +31,7 @@ exports.login = async(req, res) => {
                 id,
                 api_token: token,
                 permissions: permissions,
+                role_id: userRole[0].role_id,
             }
         })
 

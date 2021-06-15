@@ -6,7 +6,6 @@ import Header from './pages/partials/Header';
 import Footer from './pages/partials/Footer';
 
 import { authActions } from '../actions/users/authActions';
-import ContainerFluid from "./generic/ContainerFluid";
 import Container from "./generic/Container";
 
 class AppRoot extends Component {
@@ -27,9 +26,9 @@ class AppRoot extends Component {
             }
         });
 
-        $('body').on('click', '.nav-item', function() {
-           $(this).siblings().removeClass('active');
-           $(this).addClass('active');
+        $('body').on('click', '.nav-item', function () {
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
         });
 
         // trigger page reload if local and remote versions don't match

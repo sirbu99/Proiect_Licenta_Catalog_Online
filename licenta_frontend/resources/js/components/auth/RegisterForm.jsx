@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ValidatedComponent from '../ValidatedComponent';
 import RegisterValidation from './validation/RegisterValidation';
 import FormComponent from '../FormComponent';
-import {messages} from '../../constants/messages'
+import { messages } from '../../constants/messages'
 import { getApiHost } from '../../services/commonService';
 
 class RegisterForm extends Component {
@@ -15,9 +15,9 @@ class RegisterForm extends Component {
             last_name: '',
             email: '',
             role_id: '',
-            birthday:'',
+            birthday: '',
             address: '',
-            invitation_code:'',
+            invitation_code: '',
             password: '',
             password_confirmation: '',
         };
@@ -34,9 +34,6 @@ class RegisterForm extends Component {
             .done(() => {
                 this.props.history.push("/login");
             });
-            // .fail((xhr) => {
-            //     toastr.error(_.values(xhr.responseJSON.errors).join('<br/>') || messages.GENERIC_ERROR_NOTIFICATION);
-            // });
     }
 
     render() {
@@ -55,13 +52,13 @@ class RegisterForm extends Component {
                             {renderField('last_name', 'Last Name')}
                             {renderField('email', 'Email', 'email')}
                             {renderField('role_id', 'Role ID')}
-                            {renderField('birthday', 'Birthday','date')}
+                            {renderField('birthday', 'Birthday', 'date')}
                             {renderField('address', 'Address')}
                             {renderField('invitation_code', 'Invitation Code')}
                             {renderField('password', 'Password', 'password')}
                             {renderField('password_confirmation', 'Password Confirmation', 'password')}
 
-                            <div  className="form-group mb-3">
+                            <div className="form-group mb-3">
                                 <button type="submit" className="btn btn-primary mt-2">
                                     Register
                                 </button>

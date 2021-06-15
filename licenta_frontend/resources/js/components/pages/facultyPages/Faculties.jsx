@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import GetFaculties from '../../faculties/GetFaculties';
 import { Link } from 'react-router-dom';
 
-class facultiesOverview extends Component {
+class Faculties extends Component {
     constructor(props) {
         super(props);
 
@@ -28,4 +28,4 @@ class facultiesOverview extends Component {
     }
 }
 
-export default facultiesOverview;
+export default Faculties;
