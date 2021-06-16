@@ -13,7 +13,6 @@ class Announcements extends Component {
     }
 
     render() {
-        console.log(this.props.match.params)
         return (
             this.props.auth.loggedIn ?
                 <div className="row">
@@ -21,7 +20,6 @@ class Announcements extends Component {
                         <MenuSecondary></MenuSecondary>
                     </div>
                     <div className="col-12 col-md-8 col-lg-9 text-center">
-                        <h1>Announcements</h1>
                         <GetAnnouncements universityId={this.props.match.params.id} facultyId={this.props.match.params.facultyId}></GetAnnouncements>
                     </div>
                 </div>

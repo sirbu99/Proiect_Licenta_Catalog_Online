@@ -5,6 +5,7 @@ import { getApiHost, formatDate } from '../../services/commonService';
 import axios from 'axios';
 import Spinner from '../ui/Spinner';
 import DeleteConfirmation from '../ui/DeleteConfirmation';
+import { FaEdit, FaWindowClose } from 'react-icons/fa';
 
 class GetStudents extends React.Component {
     constructor(props) {
@@ -61,6 +62,15 @@ class GetStudents extends React.Component {
         this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/students/${id}/grades`);
     }
 
+    handleShowButtons(id) {
+        return _.get(this.props, 'auth.user.permissions', []).includes('edit_student')
+            ? <>
+                <td className="edit-button" role="button" onClick={this.handleEdit.bind(this, id)}><FaEdit /></td>
+                <td className="delete-button" role="button" onClick={this.openModal.bind(this, id)}><FaWindowClose /></td>
+            </>
+            : null
+    }
+
     openModal(id) {
         this.setState({ ...this.state, modalIsOpen: true, selectedId: id });
     }
@@ -89,34 +99,39 @@ class GetStudents extends React.Component {
 
         return (
             <div className="table-responsive">
-                <button
-                    className="btn btn-outline-success float-right"
-                    onClick={() => this.props.history.push(newStudentUrl)}
-                >
-                    Add Student
-                </button>
-                <table className="table table-bordered table-hover">
+                <div className="d-flex justify-content-between mb-3">
+                    <h1>Students List</h1>
+                    {_.get(this.props, 'auth.user.permissions', []).includes('edit_student') ?
+                        <button
+                            className="btn add-button float-right"
+                            onClick={() => this.props.history.push(newStudentUrl)}
+                        >
+                            Add Student
+                        </button>
+                        : null
+                    }
+                </div>
+                <hr></hr>
+                <table className="table table-borderless">
                     <thead className="thead-dark">
                         <tr className="bg-primary">
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">Registration Number</th>
+                            <th scope="col" className="border-1">First Name</th>
+                            <th scope="col" className="border-1">Last Name</th>
+                            <th scope="col" className="border-1">Registration Number</th>
                             {_.get(this.props, 'auth.user.role_id') == '1'
                                 ?
                                 <>
-                                    <th scope="col">Identification Number</th>
-                                    <th scope="col">Address</th>
-                                    <th scope="col">Birthday</th>
+                                    <th scope="col" className="border-1">Identification Number</th>
+                                    <th scope="col" className="border-1">Address</th>
+                                    <th scope="col" className="border-1">Birthday</th>
                                 </>
                                 : null
                             }
 
-                            <th scope="col">Email</th>
+                            <th scope="col" className="border-1">Email</th>
                             {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
                                 ? <>
-                                    <th />
-                                    <th />
-                                    <th />
+                                    <th className="border-1" />
                                 </>
                                 : null
                             }
@@ -126,27 +141,26 @@ class GetStudents extends React.Component {
                         {students.map(student => {
                             return (
                                 <tr key={student.id}>
-                                    <td>{student.first_name}</td>
-                                    <td>{student.last_name}</td>
-                                    <td>{student.registration_number}</td>
+                                    <td className="border-1">{student.first_name}</td>
+                                    <td className="border-1">{student.last_name}</td>
+                                    <td className="border-1">{student.registration_number}</td>
                                     {_.get(this.props, 'auth.user.role_id') == '1'
                                         ?
                                         <>
-                                            <td>{student.identification_number}</td>
-                                            <td>{student.address}</td>
-                                            <td>{formatDate(student.birthday)}</td>
+                                            <td className="border-1">{student.identification_number}</td>
+                                            <td className="border-1">{student.address}</td>
+                                            <td className="border-1">{formatDate(student.birthday)}</td>
                                         </>
                                         : null
                                     }
-                                    <td>{student.email}</td>
+                                    <td className="border-1">{student.email}</td>
                                     {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
                                         ? <>
-                                            <td role="button" onClick={this.handleViewGrades.bind(this, student.id)}>View Grades</td>
-                                            <td role="button" onClick={this.handleEdit.bind(this, student.id)}>Edit</td>
-                                            <td role="button" onClick={this.openModal.bind(this, student.id)}>Delete</td>
+                                            <td role="button" className="border-1" onClick={this.handleViewGrades.bind(this, student.id)}>View Grades</td>
                                         </>
                                         : null
                                     }
+                                    {this.handleShowButtons(student.id)}
                                 </tr>
                             );
                         })}
@@ -157,7 +171,7 @@ class GetStudents extends React.Component {
                     closeModal={this.closeModal.bind(this)}
                     handleDelete={this.handleDelete.bind(this, this.state.selectedId)}
                 />
-            </div>
+            </div >
         );
 
     }

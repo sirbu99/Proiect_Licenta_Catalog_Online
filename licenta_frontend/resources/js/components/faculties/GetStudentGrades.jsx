@@ -29,8 +29,8 @@ class GetStudentGrades extends React.Component {
         this.fetchSubjects();
     }
 
-    
-    fetchSubjects(){
+
+    fetchSubjects() {
         const apiUrl = `${getApiHost()}/users/students/${this.routeUserId}/subjects`;
         try {
             fetch(apiUrl, {
@@ -39,7 +39,7 @@ class GetStudentGrades extends React.Component {
                 }
             })
                 .then((response) => response.json())
-                .then((data) => this.setState({ subjects: data, isLoaded: true  }));
+                .then((data) => this.setState({ subjects: data, isLoaded: true }));
 
         } catch (error) {
             console.error(error);
@@ -58,7 +58,7 @@ class GetStudentGrades extends React.Component {
                 }
             })
                 .then((response) => response.json())
-                .then((data) => this.setState({ grades: data, isLoaded: true  }));
+                .then((data) => this.setState({ grades: data, isLoaded: true }));
 
         } catch (error) {
             console.error(error);
@@ -70,8 +70,8 @@ class GetStudentGrades extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({selectedSubjectId: event.target.value});
-      }
+        this.setState({ selectedSubjectId: event.target.value });
+    }
 
     handleDelete(id) {
         const apiUrl = `${getApiHost()}/grades/${id}`;
@@ -87,11 +87,11 @@ class GetStudentGrades extends React.Component {
     }
 
     openModal(id) {
-        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+        this.setState({ ...this.state, modalIsOpen: true, selectedId: id });
     }
 
     closeModal() {
-        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+        this.setState({ ...this.state, modalIsOpen: false, selectedId: null });
     }
 
     render() {
@@ -103,16 +103,16 @@ class GetStudentGrades extends React.Component {
             return <Spinner />
         }
         const filter = (
-            <form onSubmit = {this.fetchGrades.bind(this)}>
+            <form onSubmit={this.fetchGrades.bind(this)}>
                 <label>
-                    Sort by subject: 
+                    Sort by subject:
                     <select value={this.state.selectedSubjectId} onChange={this.handleChange.bind(this)}>
                         <option value=''>None</option>
                         {subjects.map(subj => {
-                            return(
+                            return (
                                 <option key={subj.id} value={subj.id}>{subj.name}</option>
                             )
-                            
+
                         })}
                     </select>
                 </label>
@@ -129,7 +129,7 @@ class GetStudentGrades extends React.Component {
                         There are no grades for now!
                     </h3>
                 </>
-                   
+
             )
         };
         return (

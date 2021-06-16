@@ -1,0 +1,30 @@
+.edit-button {
+    color: $primary;
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+    &:hover {
+        color: black;
+    }
+}
+
+.delete-button {
+    color: $secondary;
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+    &:hover {
+        color: black;
+    }
+}
+
+.add-button {
+    color: $primary;
+    border-color: $primary;
+    margin: 1%;
+    border: 1;
+    &:hover {
+        color: white;
+        background-color: $primary;
+    }
+}

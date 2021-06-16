@@ -1,6 +1,6 @@
 const db = require("../../utils/database");
 
-async function getSchedule(id) {
+async function getScheduleForAdmin(id) {
     return db.queryPromise(`
         SELECT 
             s.id,
@@ -20,6 +20,50 @@ async function getSchedule(id) {
         JOIN faculties ON faculty_members.faculty_id = faculties.id 
         WHERE faculties.id =?;
     `, [id]);
+}
+async function getScheduleForStudent(id, studentGroup, year, halfYear) {
+    return db.queryPromise(`
+        SELECT 
+            s.id,
+            subjects.name,
+            s.classroom,
+            s.type,
+            s.start_at,
+            s.finish_at, 
+            s.day
+        FROM subjects 
+        JOIN schedule as s ON subjects.id = s.subject_id 
+        JOIN users ON s.user_id = users.id 
+        JOIN faculty_members ON faculty_members.user_id = users.id 
+        JOIN faculties ON faculty_members.faculty_id = faculties.id 
+        WHERE faculties.id = ? 
+        AND s.year = ?
+        AND s.half_year = ?
+        AND s.group = ?
+    `, [id, year, halfYear, studentGroup]);
+}
+
+async function getScheduleForTeacher(id, userId) {
+    return db.queryPromise(`
+        SELECT 
+            s.id,
+            s.year,
+            s.half_year,
+            s.group,
+            subjects.name,
+            s.classroom,
+            s.type,
+            s.start_at,
+            s.finish_at, 
+            s.day
+        FROM subjects 
+        JOIN schedule as s ON subjects.id = s.subject_id 
+        JOIN users ON s.user_id = users.id 
+        JOIN faculty_members ON faculty_members.user_id = users.id 
+        JOIN faculties ON faculty_members.faculty_id = faculties.id 
+        WHERE faculties.id =?
+        AND users.id = ?;
+    `, [id, userId]);
 }
 
 async function getScheduleById(id) {
@@ -83,6 +127,43 @@ async function getScheduleByGroup(id, year, group, halfYear) {
         AND s.group =? 
         AND s.half_year =?;
     `, [id, year, group, halfYear]);
+}
+
+async function getGroupsFromSchedule(id) {
+    return db.queryPromise(`
+        SELECT 
+            s.group
+        FROM schedule as s
+        JOIN users ON s.user_id = users.id 
+        JOIN faculty_members ON faculty_members.user_id = users.id 
+        JOIN faculties ON faculty_members.faculty_id = faculties.id 
+        WHERE faculties.id =?
+
+    `, [id]);
+}
+
+async function getYearsFromSchedule(id) {
+    return db.queryPromise(`
+        SELECT 
+            s.year
+        FROM schedule as s
+        JOIN users ON s.user_id = users.id 
+        JOIN faculty_members ON faculty_members.user_id = users.id 
+        JOIN faculties ON faculty_members.faculty_id = faculties.id 
+        WHERE faculties.id =?
+    `, [id]);
+}
+
+async function getHalfYearsFromSchedule(id) {
+    return db.queryPromise(`
+        SELECT 
+            s.half_year
+        FROM schedule as s
+        JOIN users ON s.user_id = users.id 
+        JOIN faculty_members ON faculty_members.user_id = users.id 
+        JOIN faculties ON faculty_members.faculty_id = faculties.id 
+        WHERE faculties.id =?
+    `, [id]);
 }
 
 async function getScheduleByHalfYear(id, year, halfYear) {
@@ -180,8 +261,11 @@ async function deleteFromScheduleBySubject(facultyId, subjectId) {
     `, [facultyId, subjectId]);
 }
 
+
 module.exports = {
-    getSchedule,
+    getScheduleForAdmin,
+    getScheduleForStudent,
+    getScheduleForTeacher,
     getScheduleById,
     getScheduleByYear,
     getScheduleByGroup,
@@ -190,6 +274,9 @@ module.exports = {
     updateSchedule,
     deleteAllFromSchedule,
     deleteFromScheduleById,
+    getHalfYearsFromSchedule,
     deleteFromScheduleByYear,
+    getYearsFromSchedule,
+    getGroupsFromSchedule,
     deleteFromScheduleBySubject,
 }

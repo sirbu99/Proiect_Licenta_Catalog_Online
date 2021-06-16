@@ -20,7 +20,6 @@ class Students extends Component {
                         <MenuSecondary />
                     </div>
                     <div className="col-12 col-md-8 col-lg-9 text-center">
-                        <h1>Students List</h1>
                         <GetStudents
                             universityId={this.props.match.params.id}
                             facultyId={this.props.match.params.facultyId}

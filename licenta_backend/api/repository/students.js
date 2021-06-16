@@ -121,9 +121,21 @@ async function getStudentsList(id) {
             AND faculties.id = ?;
     `, [id]);
 }
+async function getStudentInfo(userId) {
+    return db.queryPromise(`
+        SELECT 
+            s.group,
+            s.year,
+            s.half_year
+        FROM students as s
+        WHERE s.user_id = ?;
+    `, [userId]);
+}
+
 
 module.exports = {
     getStudents,
+    getStudentInfo,
     getStudentById,
     deteleStudent,
     createStudent,

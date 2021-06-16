@@ -13,7 +13,6 @@ class FacultyInfo extends Component {
     }
 
     render() {
-
         return (
             this.props.auth.loggedIn ? <div className="row">
                 <div className="col-12 col-md-4 col-lg-3 secondary-menu">

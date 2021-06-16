@@ -5,6 +5,7 @@ import { getApiHost } from '../../services/commonService';
 import Spinner from '../ui/Spinner';
 import axios from 'axios';
 import DeleteConfirmation from '../ui/DeleteConfirmation';
+import { FaEdit, FaWindowClose } from 'react-icons/fa';
 
 class GetSchedule extends React.Component {
     constructor(props) {
@@ -14,14 +15,15 @@ class GetSchedule extends React.Component {
             schedule_info: [],
             isLoaded: false,
             modalIsOpen: false,
-            selectedId: null
+            selectedId: null,
+            groups: [],
+            years: [],
+            half_year_list: [],
         }
     }
     componentDidMount() {
         this.fetchSchedule();
     }
-
-    
 
     fetchSchedule() {
         const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule`;
@@ -32,11 +34,60 @@ class GetSchedule extends React.Component {
                 }
             })
                 .then((response) => response.json())
-                .then((data) => this.setState({ schedule_info: data, isLoaded: true  }));
+                .then((data) => this.setState({ schedule_info: data, isLoaded: true }));
 
         } catch (error) {
             console.error(error);
         };
+    }
+
+    fetchGroups() {
+        const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule/groups`;
+        try {
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
+                .then((response) => response.json())
+                .then((data) => this.setState({ groups: data, isLoaded: true }));
+
+        } catch (error) {
+            console.error(error);
+        };
+
+    }
+    fetchYears() {
+        const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule/years`;
+        try {
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
+                .then((response) => response.json())
+                .then((data) => this.setState({ years: data, isLoaded: true }));
+
+        } catch (error) {
+            console.error(error);
+        };
+
+    }
+    fetchHalfYears() {
+        const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule/half-years`;
+        try {
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
+                .then((response) => response.json())
+                .then((data) => this.setState({ half_year_list: data, isLoaded: true }));
+
+        } catch (error) {
+            console.error(error);
+        };
+
     }
 
     handleEdit(id) {
@@ -56,12 +107,21 @@ class GetSchedule extends React.Component {
         }
     }
 
+    handleShowButtons(id) {
+        return _.get(this.props, 'auth.user.permissions', []).includes('schedule')
+            ? <>
+                <td className="edit-button" role="button" onClick={this.handleEdit.bind(this, id)}><FaEdit /></td>
+                <td className="delete-button" role="button" onClick={this.openModal.bind(this, id)}><FaWindowClose /></td>
+            </>
+            : null
+    }
+
     openModal(id) {
-        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+        this.setState({ ...this.state, modalIsOpen: true, selectedId: id });
     }
 
     closeModal() {
-        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+        this.setState({ ...this.state, modalIsOpen: false, selectedId: null });
     }
 
     render() {
@@ -82,53 +142,55 @@ class GetSchedule extends React.Component {
         } else {
             return (
                 <div className="table-responsive">
-                    <button
-                        className="btn btn-outline-success float-right"
-                        onClick={() => this.props.history.push(newScheduleUrl)}
-                    >
-                        Add To The Schedule
-                    </button>
-                    <table className="table table-bordered table-hover">
+                    <div className="d-flex justify-content-between mb-3">
+                        <h1>Schedule</h1>
+                        {_.get(this.props, 'auth.user.permissions', []).includes('schedule') ?
+                            <button
+                                className="btn add-button float-right"
+                                onClick={() => this.props.history.push(newScheduleUrl)}
+                            >
+                                Add To The Schedule
+                            </button>
+                            : null
+                        }
+                    </div>
+                    <hr></hr>
+                    <table className="table table-borderless">
                         <thead className="thead-dark">
                             <tr className="bg-primary">
-                                <th scope="col">Year</th>
-                                <th scope="col">Half Year</th>
-                                <th scope="col">Group</th>
-                                <th scope="col">Subject</th>
-                                <th scope="col">Classroom</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Start</th>
-                                <th scope="col">Finish</th>
-                                <th scope="col">Day</th>
-                                {_.get(this.props, 'auth.user.permissions', []).includes('schedule')
-                                    ? <>
-                                        <th />
-                                        <th />
+                                {_.get(this.props, 'auth.user.role_id') != '6' ?
+                                    <>
+                                        <th scope="col" className="border-1">Year</th>
+                                        <th scope="col" className="border-1">Group</th>
                                     </>
                                     : null
                                 }
+                                <th scope="col" className="border-1">Subject</th>
+                                <th scope="col" className="border-1">Classroom</th>
+                                <th scope="col" className="border-1">Type</th>
+                                <th scope="col" className="border-1">Start</th>
+                                <th scope="col" className="border-1">Finish</th>
+                                <th scope="col" className="border-1">Day</th>
                             </tr>
                         </thead>
                         <tbody>
                             {schedule_info.map(item => {
                                 return (
                                     <tr key={item.id}>
-                                        <td>{item.year}</td>
-                                        <td>{item.half_year}</td>
-                                        <td>{item.group}</td>
-                                        <td>{item.name}</td>
-                                        <td>{item.classroom}</td>
-                                        <td>{item.type}</td>
-                                        <td>{item.start_at}</td>
-                                        <td>{item.finish_at}</td>
-                                        <td>{item.day}</td>
-                                        {_.get(this.props, 'auth.user.permissions', []).includes('schedule')
-                                            ? <>
-                                                <td role="button" onClick={this.handleEdit.bind(this, item.id)}>Edit</td>
-                                                <td role="button" onClick={this.openModal.bind(this, item.id)}>Delete</td>
+                                        {_.get(this.props, 'auth.user.role_id') != '6' ?
+                                            <>
+                                                <td className="border-1">{item.year}</td>
+                                                <td className="border-1">{item.half_year}{item.group}</td>
                                             </>
                                             : null
                                         }
+                                        <td className="border-1">{item.name}</td>
+                                        <td className="border-1">{item.classroom}</td>
+                                        <td className="border-1">{item.type}</td>
+                                        <td className="border-1">{item.start_at}</td>
+                                        <td className="border-1">{item.finish_at}</td>
+                                        <td className="border-1">{item.day}</td>
+                                        {this.handleShowButtons(item.id)}
                                     </tr>
                                 );
                             })}
@@ -139,7 +201,7 @@ class GetSchedule extends React.Component {
                         closeModal={this.closeModal.bind(this)}
                         handleDelete={this.handleDelete.bind(this, this.state.selectedId)}
                     />
-                </div>
+                </div >
             );
 
         }

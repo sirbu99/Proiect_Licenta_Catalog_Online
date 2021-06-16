@@ -109,7 +109,7 @@ class ProfileView extends React.Component {
                                     <div className="font-weight-bold p-2 bg-light ">Address</div>
                                     <div>{userInfo.address}</div>
                                 </div>
-                                {_.get(this.props, 'auth.user.permissions', []).includes('view_profile_info_student')
+                                {_.get(this.props, 'auth.user.role_id') == '6'
                                     ? <>
                                         <div className="mb-3 ">
                                             <div className="font-weight-bold p-2 bg-light">Registration Number</div>
@@ -131,7 +131,7 @@ class ProfileView extends React.Component {
                                     :
                                     null
                                 }
-                                {_.get(this.props, 'auth.user.permissions', []).includes('view_profile_info_teacher')
+                                {_.get(this.props, 'auth.user.role_id') == '5'
                                     ? <>
                                         <div className="mb-3">
                                             <div className="font-weight-bold">Didactic Degree</div>
@@ -141,7 +141,7 @@ class ProfileView extends React.Component {
                                     :
                                     null
                                 }
-                                {_.get(this.props, 'auth.user.permissions', []).includes('view_profile_info_admin')
+                                {_.get(this.props, 'auth.user.role_id') == '1' || _.get(this.props, 'auth.user.role_id') == '2'
                                     ? <>
                                         <div className="mb-3">
                                             <div className="font-weight-bold"></div>

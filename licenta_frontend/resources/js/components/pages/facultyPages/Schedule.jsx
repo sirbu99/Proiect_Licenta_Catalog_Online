@@ -13,7 +13,6 @@ class Schedule extends Component {
     }
 
     render() {
-        console.log(this.props.match.params)
         return (
             this.props.auth.loggedIn ?
                 <div className="row">
@@ -21,10 +20,9 @@ class Schedule extends Component {
                         <MenuSecondary></MenuSecondary>
                     </div>
                     <div className="col-12 col-md-8 col-lg-9 text-center">
-                        <h1>Schedule</h1>
+
                         <GetSchedule universityId={this.props.match.params.id} facultyId={this.props.match.params.facultyId}></GetSchedule>
                     </div>
-
                 </div>
                 : <div className="card col-md-6 m-auto">
                     <h5>You must be logged in to see this page</h5>

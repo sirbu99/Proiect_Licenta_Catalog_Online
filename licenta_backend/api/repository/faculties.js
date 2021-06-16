@@ -33,6 +33,8 @@ async function deleteFaculty(id) {
     return db.queryPromise('DELETE FROM faculties WHERE id= ?;', id)
 }
 
+
+
 module.exports = {
     getAllFaculties,
     getFacultyById,

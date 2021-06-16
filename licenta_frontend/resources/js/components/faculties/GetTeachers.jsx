@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getApiHost } from '../../services/commonService';
 import axios from 'axios';
 import DeleteConfirmation from '../ui/DeleteConfirmation';
+import { FaEdit, FaWindowClose } from 'react-icons/fa';
 import Spinner from '../ui/Spinner';
 
 class GetTeachers extends React.Component {
@@ -21,7 +22,7 @@ class GetTeachers extends React.Component {
         this.fetchTeachers();
     }
 
-    
+
 
     fetchTeachers() {
         const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/teachers`;
@@ -40,11 +41,11 @@ class GetTeachers extends React.Component {
     }
 
     openModal(id) {
-        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+        this.setState({ ...this.state, modalIsOpen: true, selectedId: id });
     }
 
     closeModal() {
-        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+        this.setState({ ...this.state, modalIsOpen: false, selectedId: null });
     }
 
 
@@ -52,6 +53,14 @@ class GetTeachers extends React.Component {
         this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/teachers/${id}/edit`);
     }
 
+    handleShowButtons(id) {
+        return _.get(this.props, 'auth.user.permissions', []).includes('teacher')
+            ? <>
+                <td className="edit-button" role="button" onClick={this.handleEdit.bind(this, id)}><FaEdit /></td>
+                <td className="delete-button" role="button" onClick={this.openModal.bind(this, id)}><FaWindowClose /></td>
+            </>
+            : null
+    }
     handleDelete(id) {
         const apiUrl = `${getApiHost()}/users/teachers/${id}`;
         const headers = {
@@ -83,49 +92,43 @@ class GetTeachers extends React.Component {
         } else {
             return (
                 <div className="table-responsive">
-                    <button
-                        className="btn btn-outline-success float-right"
-                        onClick={() => this.props.history.push(newTeacherUrl)}
-                    >
-                        Add Teacher
-                    </button>
-                    <table className="table table-bordered table-hover">
+                    <div className="d-flex justify-content-between mb-3">
+                        <h1>Teachers List</h1>
+                        {_.get(this.props, 'auth.user.permissions', []).includes('teacher') ?
+                            <button
+                                className="btn add-button float-right"
+                                onClick={() => this.props.history.push(newTeacherUrl)}
+                            >
+                                Add Teacher
+                            </button>
+                            : null
+                        }
+                    </div>
+                    <hr></hr>
+                    <table className="table table-borderless">
                         <thead className="thead-dark">
-                            <tr className="bg-primary">
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Didactic Degree</th>
-                                <th scope="col">Email</th>
-                                {_.get(this.props, 'auth.user.permissions', []).includes('teacher')
-                                    ? <>
-                                        <th></th>
-                                        <th></th>
-                                    </>
-                                    : null
-                                }
+                            <tr className="bg-primary" >
+                                <th scope="col" className="border-1">First Name</th>
+                                <th scope="col" className="border-1">Last Name</th>
+                                <th scope="col" className="border-1">Didactic Degree</th>
+                                <th scope="col" className="border-1">Email</th>
                             </tr>
                         </thead>
                         <tbody>
                             {teachers.map(teacher => {
                                 return (
                                     <tr key={teacher.id}>
-                                        <td>{teacher.first_name}</td>
-                                        <td>{teacher.last_name}</td>
-                                        <td>{teacher.didactic_degree}</td>
-                                        <td>{teacher.email}</td>
-                                        {_.get(this.props, 'auth.user.permissions', []).includes('teacher')
-                                            ? <>
-                                                <td role="button" onClick={this.handleEdit.bind(this, teacher.id)}>Edit</td>
-                                                <td role="button" onClick={this.openModal.bind(this, teacher.id)}>Delete</td>
-                                            </>
-                                            : null
-                                        }
+                                        <td className="border-1">{teacher.first_name}</td>
+                                        <td className="border-1">{teacher.last_name}</td>
+                                        <td className="border-1">{teacher.didactic_degree}</td>
+                                        <td className="border-1">{teacher.email}</td>
+                                        {this.handleShowButtons(teacher.id)}
                                     </tr>
                                 );
                             })}
                         </tbody>
                     </table>
-                    <DeleteConfirmation 
+                    <DeleteConfirmation
                         modalIsOpen={this.state.modalIsOpen}
                         closeModal={this.closeModal.bind(this)}
                         handleDelete={this.handleDelete.bind(this, this.state.selectedId)}

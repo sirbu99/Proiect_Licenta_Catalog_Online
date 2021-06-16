@@ -1,9 +1,25 @@
 const scheduleRepository = require('../repository/schedule');
+const studentsRepository = require('../repository/students');
+const userRepository = require('../repository/user');
 
 exports.getSchedule = async(req, res) => {
     try {
-        schedule = await scheduleRepository.getSchedule(req.params.facultyId);
-        res.send(schedule);
+        userInfo = await userRepository.getUserRole(process.env.AUTH_ID);
+        switch (userInfo[0].role_id) {
+            case 6:
+                studentInfo = await studentsRepository.getStudentInfo(process.env.AUTH_ID);
+                scheduleInfo = await scheduleRepository.getScheduleForStudent(req.params.facultyId, studentInfo[0].group, studentInfo[0].year, studentInfo[0].half_year);
+                res.send(scheduleInfo);
+                break;
+            case 5:
+                scheduleInfo = await scheduleRepository.getScheduleForTeacher(req.params.facultyId, process.env.AUTH_ID);
+                res.send(scheduleInfo);
+                break;
+            default:
+                scheduleInfo = await scheduleRepository.getScheduleForAdmin(req.params.facultyId);
+                res.send(scheduleInfo);
+                break;
+        }
     } catch (error) {
         console.log(error);
     }
@@ -12,6 +28,31 @@ exports.getSchedule = async(req, res) => {
 exports.getScheduleById = async(req, res) => {
     try {
         const [schedule] = await scheduleRepository.getScheduleById(req.params.scheduleId);
+        res.send(schedule);
+    } catch (error) {
+        console.log(error);
+    }
+};
+exports.getGroupsFromSchedule = async(req, res) => {
+    try {
+        const [schedule] = await scheduleRepository.getGroupsFromSchedule(req.params.facultyId);
+        res.send(schedule);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.getYearsFromSchedule = async(req, res) => {
+    try {
+        const [schedule] = await scheduleRepository.getYearsFromSchedule(req.params.facultyId);
+        res.send(schedule);
+    } catch (error) {
+        console.log(error);
+    }
+};
+exports.getHalfYearsFromSchedule = async(req, res) => {
+    try {
+        const [schedule] = await scheduleRepository.getYearsHalfFromSchedule(req.params.facultyId);
         res.send(schedule);
     } catch (error) {
         console.log(error);

@@ -90,7 +90,7 @@ class GetAnnouncements extends React.Component {
                         There are no announcements yet.
                     </h3>
                     <button
-                        className="btn btn-outline-success float-right"
+                        className="btn btn-outline-success btn-sm float-right"
                         onClick={() => this.props.history.push(newAnnouncementUrl)}
                     >
                         Add Announcement
@@ -100,12 +100,19 @@ class GetAnnouncements extends React.Component {
         } else {
             return (
                 <div className="announcements-list">
-                    <button
-                        className="btn btn-outline-success float-right"
-                        onClick={() => this.props.history.push(newAnnouncementUrl)}
-                    >
-                        Add Announcement
-                    </button>
+                    <div className="d-flex justify-content-between mb-3">
+                        <h1>Announcements</h1>
+                        {_.get(this.props, 'auth.user.permissions', []).includes('announcements') ?
+                            <button
+                                className="btn add-button float-right"
+                                onClick={() => this.props.history.push(newAnnouncementUrl)}
+                            >
+                                Add Announcement
+                            </button>
+                            : null
+                        }
+                    </div>
+                    <hr></hr>
                     <div className="row">
                         {announcements.map(item => {
                             return (
@@ -135,9 +142,7 @@ class GetAnnouncements extends React.Component {
                     />
                 </div>
             );
-
         }
-
     }
 }
 
