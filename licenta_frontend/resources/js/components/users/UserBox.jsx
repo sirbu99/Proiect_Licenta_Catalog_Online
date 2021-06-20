@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FaUser } from 'react-icons/fa';
-import LoginForm from '../../auth/LoginForm';
+import LoginForm from '../auth/LoginForm';
 import { Link } from 'react-router-dom';
-import { authActions } from '../../../actions/users/authActions';
+import { authActions } from '../../actions/users/authActions';
 
 const UserBox = (props) => {
     function logout(event) {

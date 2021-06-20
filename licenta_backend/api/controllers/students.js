@@ -2,6 +2,7 @@ const studentsRepository = require('../repository/students');
 const usersRepository = require('../repository/user');
 const bcrypt = require('bcrypt');
 const mailer = require('../../utils/mailer');
+const url = require('url');
 
 exports.getStudents = async(req, res) => {
     try {
@@ -12,10 +13,10 @@ exports.getStudents = async(req, res) => {
     }
 }
 
-
 exports.getStudentsList = async(req, res) => {
     try {
-        students = await studentsRepository.getStudentsList(req.params.facultyId);
+        const subjectId = url.parse(req.url, true).query.subjectId;
+        students = await studentsRepository.getStudentsBySubjectAndTeacher(req.params.facultyId, subjectId, process.env.AUTH_ID);
         res.send(students);
     } catch (error) {
         console.log(error);

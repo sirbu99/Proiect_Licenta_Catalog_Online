@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import UserBox from '../../users/userbox/UserBox';
+import UserBox from '../../users/UserBox';
 
 const MenuMain = (props) => {
     return (

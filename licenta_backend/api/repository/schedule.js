@@ -70,7 +70,7 @@ async function getScheduleById(id) {
     return db.queryPromise(`
         SELECT 
             user_id,
-            subject_id
+            subject_id,
             year,
             half_year,
             \`group\`,
@@ -79,7 +79,8 @@ async function getScheduleById(id) {
             finish_at, 
             day,
             type
-        FROM schedule;
+        FROM schedule
+        WHERE id = ?;
     `, [id]);
 }
 

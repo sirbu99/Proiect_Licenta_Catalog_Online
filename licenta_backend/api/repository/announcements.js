@@ -10,7 +10,8 @@ async function getAnnouncements(facultyId) {
             a.text 
         FROM announcements as a 
         JOIN users as u ON u.id = a.user_id 
-        WHERE a.faculty_id =?;
+        WHERE a.faculty_id =?
+        AND due_date >= (SELECT NOW());
     `, [facultyId]);
 }
 

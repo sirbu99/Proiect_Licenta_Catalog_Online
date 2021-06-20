@@ -5,6 +5,7 @@ import { getApiHost, formatDate } from '../../services/commonService';
 import Spinner from '../ui/Spinner';
 import axios from 'axios';
 import DeleteConfirmation from '../ui/DeleteConfirmation';
+import Filter from '../ui/Filter';
 
 class GetStudentGrades extends React.Component {
     constructor(props) {
@@ -103,21 +104,13 @@ class GetStudentGrades extends React.Component {
             return <Spinner />
         }
         const filter = (
-            <form onSubmit={this.fetchGrades.bind(this)}>
-                <label>
-                    Sort by subject:
-                    <select value={this.state.selectedSubjectId} onChange={this.handleChange.bind(this)}>
-                        <option value=''>None</option>
-                        {subjects.map(subj => {
-                            return (
-                                <option key={subj.id} value={subj.id}>{subj.name}</option>
-                            )
-
-                        })}
-                    </select>
-                </label>
-                <input type="submit" value="Apply" />
-            </form>
+            <Filter
+                clickHandler={this.handleChange.bind(this)}
+                name="subjects"
+                fetchInfo={this.fetchGrades.bind(this)}
+                list={subjects}
+                selectedId={this.state.selectedSubjectId}
+            />
         );
         if (gradesLstSize < 1) {
             return (

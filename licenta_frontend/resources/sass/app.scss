@@ -8,9 +8,11 @@
 @import 'components/ui/modal';
 @import 'components/ui/spinner';
 @import 'components/ui/buttons';
+@import 'components/ui/filter';
 // Components
 @import 'components/sidebar';
 @import 'components/announcements';
 @import 'components/file-upload';
 @import 'components/ui/page-with-side-menu';
 // Pages
+@import '../../node_modules/toastr/toastr.scss';

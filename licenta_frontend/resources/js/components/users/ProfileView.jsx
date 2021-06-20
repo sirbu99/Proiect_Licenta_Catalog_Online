@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Spinner from '../../ui/Spinner';
-import ValidatedComponent from '../..//ValidatedComponent';
-import FormComponent from '../../FormComponent';
-import { getApiHost, formatDate } from '../../../services/commonService';
+import Spinner from '../ui/Spinner';
+import ValidatedComponent from '../ValidatedComponent';
+import PasswordValidation from './validation/PasswordValidation';
+import FormComponent from '../FormComponent';
+import { getApiHost, formatDate } from '../../services/commonService';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import toastr from 'toastr';
 
 
 class ProfileView extends React.Component {
@@ -30,15 +32,19 @@ class ProfileView extends React.Component {
     }
 
 
-    handleChangePass() {
+    handleChangePass(e) {
+        e.preventDefault();
         const apiUrl = `${getApiHost()}/users/${this.props.auth.user.id}/change-password`;
         const headers = {
             'Authorization': this.props.auth.user.api_token
         }
+        _.forEach(_.keys(this.validationSchema), (key) => { this.validate(key); });
         try {
-            axios.put(apiUrl, this.state.passInfo, { headers })
-                .then(() => toastr.success('Password changed!', 'Success'));
-            this.props.history.push(`/users/${this.props.auth.user.id}/profile`);
+            this.isValid() && axios.put(apiUrl, this.state.passInfo, { headers })
+                .then(() => {
+                    toastr.success('Password changed!', 'Success');
+                    this.displayChangePassForm();
+                });
         } catch (error) {
             console.log(error)
         }
@@ -75,7 +81,7 @@ class ProfileView extends React.Component {
                         {renderField('password', 'Password', 'password')}
                         {renderField('password_confirmation', 'Password confirmation', 'password')}
 
-                        <button className="btn btn-primary" onClick={this.handleChangePass.bind(this, 'passInfo')}> Save </button>
+                        <button className="btn btn-primary" onClick={this.handleChangePass.bind(this)}> Save </button>
                     </form >
                 </>
                 : null
@@ -134,18 +140,8 @@ class ProfileView extends React.Component {
                                 {_.get(this.props, 'auth.user.role_id') == '5'
                                     ? <>
                                         <div className="mb-3">
-                                            <div className="font-weight-bold">Didactic Degree</div>
+                                            <div className="font-weight-bold p-2 bg-light">Didactic Degree</div>
                                             <div>{userInfo.didactic_degree}</div>
-                                        </div>
-                                    </>
-                                    :
-                                    null
-                                }
-                                {_.get(this.props, 'auth.user.role_id') == '1' || _.get(this.props, 'auth.user.role_id') == '2'
-                                    ? <>
-                                        <div className="mb-3">
-                                            <div className="font-weight-bold"></div>
-                                            <div></div>
                                         </div>
                                     </>
                                     :
@@ -170,4 +166,4 @@ const mapStateToProps = (state) => ({
     auth: state.authentication,
 });
 
-export default connect(mapStateToProps)(withRouter(ValidatedComponent(FormComponent(ProfileView))));
+export default connect(mapStateToProps)(withRouter(ValidatedComponent(PasswordValidation(FormComponent(ProfileView)))));

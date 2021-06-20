@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from './pages/partials/Header';
 import Footer from './pages/partials/Footer';
+import toastr from 'toastr';
 
 import { authActions } from '../actions/users/authActions';
 import Container from "./generic/Container";

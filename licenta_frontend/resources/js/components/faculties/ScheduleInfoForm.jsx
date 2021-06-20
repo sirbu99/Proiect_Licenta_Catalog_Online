@@ -67,6 +67,7 @@ class ScheduleInfoForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
+        console.log(this.state.schedule);
         const headers = {
             'Authorization': this.props.auth.user.api_token
         };
@@ -81,7 +82,10 @@ class ScheduleInfoForm extends Component {
     }
 
     handleChangeWhenTeacherClicked(event) {
-        this.setState({ selectedTeacherId: event.target.value }, this.fetchSubjects.bind(this));
+        this.setState({
+            selectedTeacherId: event.target.value,
+            schedule: { ...this.state.schedule, user_id: event.target.value },
+        }, this.fetchSubjects.bind(this));
     }
 
     handleAddToSchedule(headers) {
@@ -126,11 +130,16 @@ class ScheduleInfoForm extends Component {
             <div className="form-group mb-3">
                 <label>
                     Select a teacher:
-                    <select value={this.state.selectedTeacherId} onChange={this.handleChangeWhenTeacherClicked.bind(this)} className="form-control form-control-md">
+                    <select value={this.state.schedule.user_id} onChange={this.handleChangeWhenTeacherClicked.bind(this)} className="form-control form-control-md">
                         <option value='0'>None</option>
                         {teachers.map(teacher => {
                             return (
-                                <option key={teacher.id} value={teacher.id}>{teacher.first_name + ' ' + teacher.last_name}</option>
+                                <option
+                                    key={teacher.id}
+                                    value={teacher.id}
+                                >
+                                    {teacher.first_name + ' ' + teacher.last_name}
+                                </option>
                             )
 
                         })}
@@ -150,7 +159,7 @@ class ScheduleInfoForm extends Component {
                         <h2>Schedule Info</h2>
                         <div className="row">
                             <div className="col-md-10">
-                                {renderField('user_id', 'User ID')}
+                                {/* {renderField('user_id', 'User ID')} */}
                                 {/* {renderSelectField('user_id', 'Teachers', teachersList)} */}
                                 {teachersList}
                                 {renderSelectField('subject_id', 'Subjects', options)}

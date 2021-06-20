@@ -9,7 +9,6 @@ import ScrollToTop from './components/generic/ScrollToTop';
 import AppRoot from './components/AppRoot';
 import NotFound from "./components/generic/NotFound";
 import pagesRoutes from './components/pages/PagesRoutes';
-import usersRoutes from './components/users/UsersRoutes';
 import authRoutes from './components/auth/AuthRoutes';
 
 import '../sass/app.scss';
@@ -17,10 +16,9 @@ import '../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const routes = []
     .concat(getRoutes(pagesRoutes.routes, store.getState().authentication))
-    .concat(getRoutes(usersRoutes.routes, store.getState().authentication))
     .concat(getRoutes(authRoutes.routes, store.getState().authentication))
     .concat([
-        <Route key="not-found" path='*' component={NotFound}/>
+        <Route key="not-found" path='*' component={NotFound} />
     ]);
 
 ReactDOM.render((
@@ -30,7 +28,7 @@ ReactDOM.render((
                 <ScrollToTop>
                     <AppRoot>
                         <Switch>
-                            { routes }
+                            {routes}
                         </Switch>
                     </AppRoot>
                 </ScrollToTop>

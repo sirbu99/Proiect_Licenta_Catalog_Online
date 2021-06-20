@@ -5,11 +5,10 @@ const studentsController = require('../controllers/students');
 const gradesController = require('../controllers/grades');
 const subjectsController = require('../controllers/subjects');
 const usersController = require('../controllers/users');
+const authMiddleware = require('../middleware/auth');
 
+router.use(authMiddleware.checkAuth);
 router.get("/", studentsController.getStudents);
-
-router.get("/", teachersController.getTeachers);
-
 router.get("/students/:userId", studentsController.getStudentById);
 router.get("/students/:userId/grades-average", gradesController.getGradesAvg);
 router.get("/students/:userId/grades", gradesController.getStudentGrades);
@@ -21,6 +20,8 @@ router.delete("/students/:userId", studentsController.deleteStudent);
 
 router.get("/:userId/profile-info", usersController.getUserInfo);
 
+router.get("/", teachersController.getTeachers);
+router.get("/teachers/subjects", subjectsController.getSubjectsByTeacher);
 router.get("/teachers/:userId", teachersController.getTeacherById);
 router.post("/teachers", teachersController.createTeacher);
 router.put("/teachers/:userId", teachersController.updateTeacherInfo);

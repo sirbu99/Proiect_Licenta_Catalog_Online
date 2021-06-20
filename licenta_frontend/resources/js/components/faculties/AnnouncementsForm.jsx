@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ValidatedComponent from '../ValidatedComponent';
 import FormComponent from '../FormComponent';
-import {getApiHost } from '../../services/commonService';
+import { getApiHost, formatDate } from '../../services/commonService';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import { data } from 'jquery';
 
 
 class AnouncementsForm extends Component {
@@ -41,7 +42,7 @@ class AnouncementsForm extends Component {
 
     handleCreateAnnouncement(headers) {
         const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/announcements`;
-        return axios.post(apiUrl, {facultyId: this.routeFacultyId, ...this.state.announcement}, { headers });
+        return axios.post(apiUrl, { facultyId: this.routeFacultyId, ...this.state.announcement }, { headers });
     }
 
     handleEditAnnouncement(headers) {
@@ -61,34 +62,37 @@ class AnouncementsForm extends Component {
                 }
             })
                 .then((response) => response.json())
-                .then((data) => this.setState({ announcement: data, isLoaded: true }));
+                .then((data) => {
+                    data.due_date = formatDate(data.due_date);
+                    this.setState({ announcement: data, isLoaded: true })
+                });
 
         } catch (error) {
             console.error(error);
         };
     }
 
-render() {
-    const renderField = this.renderField.bind(this, 'announcement');
+    render() {
+        const renderField = this.renderField.bind(this, 'announcement');
 
-    return (
-        <div className="card mt-3">
-            <div className="card-body">
-                <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                    <h2>Announcement Info</h2>
-                    <div className="row">
-                        <div className="col-md-10">
-                            {renderField('name', 'Title')}
-                            {renderField('text', 'Message')}
-                            {renderField('due_date', 'Due Date', 'date')}
+        return (
+            <div className="card mt-3">
+                <div className="card-body">
+                    <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
+                        <h2>Announcement Info</h2>
+                        <div className="row">
+                            <div className="col-md-10">
+                                {renderField('name', 'Title')}
+                                {renderField('text', 'Message')}
+                                {renderField('due_date', 'Due Date', 'date')}
+                            </div>
                         </div>
-                    </div>
-                    <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
-                </form>
+                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    }
 }
 
 const mapStateToProps = (state) => ({

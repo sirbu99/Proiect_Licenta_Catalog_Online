@@ -198,8 +198,8 @@ export default class Cell extends React.Component {
 
         if (this.props.x === 0 || this.props.y === 0) {
             css.textAlign = 'center'
-            css.backgroundColor = '#f0f0f0'
-            css.fontWeight = 'bold'
+            css.color = 'white'
+            css.backgroundColor = '#276b80'
         }
 
         return css

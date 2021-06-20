@@ -118,6 +118,8 @@ class GetStudents extends React.Component {
                             <th scope="col" className="border-1">First Name</th>
                             <th scope="col" className="border-1">Last Name</th>
                             <th scope="col" className="border-1">Registration Number</th>
+                            <th scope="col" className="border-1">Year</th>
+                            <th scope="col" className="border-1">Group</th>
                             {_.get(this.props, 'auth.user.role_id') == '1'
                                 ?
                                 <>
@@ -144,6 +146,8 @@ class GetStudents extends React.Component {
                                     <td className="border-1">{student.first_name}</td>
                                     <td className="border-1">{student.last_name}</td>
                                     <td className="border-1">{student.registration_number}</td>
+                                    <td className="border-1">{student.year}</td>
+                                    <td className="border-1">{student.half_year}{student.group}</td>
                                     {_.get(this.props, 'auth.user.role_id') == '1'
                                         ?
                                         <>

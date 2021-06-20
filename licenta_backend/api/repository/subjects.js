@@ -54,7 +54,7 @@ async function getSubjectsByStudent(userId) {
 
 async function getSubjectsByTeacher(userId) {
     return db.queryPromise(`
-        SELECT 
+        SELECT DISTINCT
             subjects.id,
             name
         FROM subjects 

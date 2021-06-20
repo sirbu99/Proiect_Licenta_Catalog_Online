@@ -46,7 +46,7 @@ const MenuSecondary = (props) => {
                             </Link>
                         </li>
                         <li>
-                            <Link to={`./students/${userId}/grades`} className="nav-link">
+                            <Link to={`./grades-table`} className="nav-link">
                                 <FaUser className="mr-2" size="1.5em" />
                                 <span>Edit Grades</span>
                             </Link>

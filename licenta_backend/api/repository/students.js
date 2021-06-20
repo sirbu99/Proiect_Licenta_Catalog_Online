@@ -7,6 +7,9 @@ async function getStudents(id) {
             first_name,
             last_name,
             registration_number,
+            year,
+            half_year,
+            \`group\`,
             identification_number,
             users.address,
             birthday,
@@ -106,6 +109,34 @@ async function getStudentsBySubject(id, subjectId, teacherId) {
     `, [subjectId, teacherId, id]);
 }
 
+async function getStudentsBySubjectAndTeacher(id, subjectId, teacherId) {
+    const bindings = [id, teacherId];
+    let query = `
+        SELECT 
+            registration_number,
+            first_name,
+            last_name,
+            students.year,
+            students.half_year,
+            students.group
+        FROM students
+        JOIN subjects_students AS ss ON ss.student_id = students.id
+        JOIN subjects_teachers AS st ON st.subject_id = ss.subject_id
+        JOIN teachers ON teachers.id = st.teacher_id
+        JOIN users ON students.user_id = users.id
+        JOIN faculty_members ON users.id = faculty_members.user_id 
+        JOIN faculties ON faculty_members.faculty_id = faculties.id 
+        WHERE users.role_id = 6 
+        AND students.is_deleted = 0
+        AND faculties.id = ?
+        AND teachers.user_id = ?
+    `;
+    if (subjectId) {
+        query += "AND ss.subject_id = ?";
+        bindings.push(subjectId);
+    }
+    return db.queryPromise(query, bindings);
+}
 async function getStudentsList(id) {
     return db.queryPromise(`
         SELECT 
@@ -142,4 +173,5 @@ module.exports = {
     updateStudentInfo,
     getStudentsList,
     getStudentsBySubject,
+    getStudentsBySubjectAndTeacher,
 }

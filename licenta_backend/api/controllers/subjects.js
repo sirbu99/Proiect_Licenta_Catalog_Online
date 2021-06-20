@@ -29,7 +29,7 @@ exports.getSubjectsByStudent = async(req, res) => {
 
 exports.getSubjectsByTeacher = async(req, res) => {
     try {
-        subjects = await subjectsRepository.getSubjectsByTeacher(req.params.userId);
+        subjects = await subjectsRepository.getSubjectsByTeacher(process.env.AUTH_ID);
         res.send(subjects);
     } catch (error) {
         console.log(error);
