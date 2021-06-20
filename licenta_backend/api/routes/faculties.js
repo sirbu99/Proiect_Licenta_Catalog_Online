@@ -30,6 +30,7 @@ router.get("/:facultyId/teachers-list", teachersController.getTeachersList);
 router.use(authMiddleware.checkAuth);
 router.get("/:facultyId/schedule", scheduleController.getSchedule);
 router.get("/:facultyId/schedule/groups", scheduleController.getGroupsFromSchedule);
+router.get("/:facultyId/schedule/subjects", subjectsController.getSubjects);
 router.get("/:facultyId/schedule/years", scheduleController.getYearsFromSchedule);
 router.get("/:facultyId/schedule/half-years", scheduleController.getHalfYearsFromSchedule);
 

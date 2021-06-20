@@ -19,7 +19,7 @@ async function getSubjectsList(id) {
 
 async function getSubjects(id) {
     return db.queryPromise(`
-        SELECT 
+        SELECT DISTINCT
             sub.id,
             sub.name
         FROM subjects as sub 

@@ -1,6 +1,7 @@
 const scheduleRepository = require('../repository/schedule');
 const studentsRepository = require('../repository/students');
 const userRepository = require('../repository/user');
+const url = require('url');
 
 exports.getSchedule = async(req, res) => {
     try {
@@ -16,7 +17,8 @@ exports.getSchedule = async(req, res) => {
                 res.send(scheduleInfo);
                 break;
             default:
-                scheduleInfo = await scheduleRepository.getScheduleForAdmin(req.params.facultyId);
+                const subjectId = url.parse(req.url, true).query.subjectId;
+                scheduleInfo = await scheduleRepository.getScheduleBySubject(req.params.facultyId, subjectId);
                 res.send(scheduleInfo);
                 break;
         }
@@ -33,6 +35,7 @@ exports.getScheduleById = async(req, res) => {
         console.log(error);
     }
 };
+
 exports.getGroupsFromSchedule = async(req, res) => {
     try {
         const [schedule] = await scheduleRepository.getGroupsFromSchedule(req.params.facultyId);

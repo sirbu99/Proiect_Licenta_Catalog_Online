@@ -11,14 +11,13 @@ async function getScheduleForAdmin(id) {
             s.classroom,
             s.type,
             s.start_at,
-            s.finish_at, 
-            s.day
+            s.finish_at
         FROM subjects 
         JOIN schedule as s ON subjects.id = s.subject_id 
         JOIN users ON s.user_id = users.id 
         JOIN faculty_members ON faculty_members.user_id = users.id 
         JOIN faculties ON faculty_members.faculty_id = faculties.id 
-        WHERE faculties.id =?;
+        WHERE faculties.id =?
     `, [id]);
 }
 async function getScheduleForStudent(id, studentGroup, year, halfYear) {
@@ -128,6 +127,34 @@ async function getScheduleByGroup(id, year, group, halfYear) {
         AND s.group =? 
         AND s.half_year =?;
     `, [id, year, group, halfYear]);
+}
+
+async function getScheduleBySubject(id, subjectId) {
+    const bindings = [id];
+    let query = `
+        SELECT 
+            s.id,
+            s.year,
+            s.half_year,
+            s.group,
+            subjects.name,
+            s.classroom,
+            s.type,
+            s.start_at,
+            s.finish_at,
+            day
+        FROM subjects 
+        JOIN schedule as s ON subjects.id = s.subject_id 
+        JOIN users ON s.user_id = users.id 
+        JOIN faculty_members ON faculty_members.user_id = users.id 
+        JOIN faculties ON faculty_members.faculty_id = faculties.id 
+        WHERE faculties.id =?
+    `;
+    if (subjectId) {
+        query += "AND subject_id = ?";
+        bindings.push(subjectId);
+    }
+    return db.queryPromise(query, bindings);
 }
 
 async function getGroupsFromSchedule(id) {
@@ -280,4 +307,5 @@ module.exports = {
     getYearsFromSchedule,
     getGroupsFromSchedule,
     deleteFromScheduleBySubject,
+    getScheduleBySubject,
 }

@@ -14,7 +14,7 @@ class GradesTable extends React.Component {
         this.state = {
             students: [],
             subjects: [],
-            selectedSubjectId: '',
+            selectedSubjectId: null,
             isLoaded: false,
         }
 
