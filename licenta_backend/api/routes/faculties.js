@@ -34,6 +34,8 @@ router.get("/:facultyId/schedule/subjects", subjectsController.getSubjects);
 router.get("/:facultyId/schedule/years", scheduleController.getYearsFromSchedule);
 router.get("/:facultyId/schedule/half-years", scheduleController.getHalfYearsFromSchedule);
 
+router.get("/:facultyId/groups", facultiesController.getGroupsFromFaculty);
+
 
 router.post("/:facultyId/schedule", scheduleController.addScheduleEntry);
 router.delete("/:facultyId/schedule", scheduleController.deleteAllFromSchedule);

@@ -6,7 +6,7 @@ const universitiesController = require('../controllers/universities');
 
 router.get("/", universitiesController.getAllUniversities);
 
-router.use(authMiddleware.checkAuth);
+// router.use(authMiddleware.checkAuth);
 
 router.post("/", universitiesController.postUniversity);
 

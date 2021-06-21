@@ -1,7 +1,7 @@
 import React from 'react';
 const Filter = (props) => {
     return (
-        <form onSubmit={props.fetchInfo}>
+        <div className="d-flex mb-3">
             <label>
                 <p className="filter-title">Sort by {props.name}: </p>
                 <select value={props.selectedId} onChange={props.clickHandler} className="filter-options ">
@@ -14,8 +14,9 @@ const Filter = (props) => {
                     })}
                 </select>
             </label>
-            <input type="submit" value="Apply" className="btn btn-primary mx-2" />
-        </form>
+
+        </div>
+
     );
 };
 

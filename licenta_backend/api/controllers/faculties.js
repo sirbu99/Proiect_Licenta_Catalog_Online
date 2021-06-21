@@ -20,6 +20,16 @@ exports.getFacultyById = async(req, res) => {
     }
 };
 
+exports.getGroupsFromFaculty = async(req, res) => {
+    try {
+        groups = await facultyRepository.getGroupsFromFaculty(req.params.facultyId);
+        res.send(groups);
+    } catch (error) {
+        console.log(error);
+
+    }
+};
+
 exports.postFaculty = async(req, res) => {
     try {
         let facultyInfo = req.body;

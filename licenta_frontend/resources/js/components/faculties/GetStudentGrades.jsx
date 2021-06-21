@@ -115,9 +115,7 @@ class GetStudentGrades extends React.Component {
         if (gradesLstSize < 1) {
             return (
                 <>
-                    <div>
-                        {filter}
-                    </div>
+                    {filter}
                     <h3>
                         There are no grades for now!
                     </h3>

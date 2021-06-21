@@ -16,7 +16,10 @@ exports.getStudents = async(req, res) => {
 exports.getStudentsList = async(req, res) => {
     try {
         const subjectId = url.parse(req.url, true).query.subjectId;
-        students = await studentsRepository.getStudentsBySubjectAndTeacher(req.params.facultyId, subjectId, process.env.AUTH_ID);
+        const year = url.parse(req.url, true).query.year;
+        const halfYear = url.parse(req.url, true).query.halfYear;
+        const group = url.parse(req.url, true).query.group;
+        students = await studentsRepository.getStudentsBySubjectAndTeacher(req.params.facultyId, subjectId, year, halfYear, group, process.env.AUTH_ID);
         res.send(students);
     } catch (error) {
         console.log(error);

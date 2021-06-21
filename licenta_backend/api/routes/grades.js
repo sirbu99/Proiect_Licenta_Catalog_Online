@@ -6,5 +6,6 @@ const gradesController = require('../controllers/grades');
 
 router.use(authMiddleware.checkAuth);
 router.put("/:gradeId", gradesController.changeGrade);
+router.post("/add-grade/:userId", gradesController.addGrade);
 
 module.exports = router;

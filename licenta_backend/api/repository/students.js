@@ -109,7 +109,7 @@ async function getStudentsBySubject(id, subjectId, teacherId) {
     `, [subjectId, teacherId, id]);
 }
 
-async function getStudentsBySubjectAndTeacher(id, subjectId, teacherId) {
+async function getStudentsBySubjectAndTeacher(id, subjectId, year, halfYear, group, teacherId) {
     const bindings = [id, teacherId];
     let query = `
         SELECT 
@@ -126,7 +126,7 @@ async function getStudentsBySubjectAndTeacher(id, subjectId, teacherId) {
         JOIN users ON students.user_id = users.id
         JOIN faculty_members ON users.id = faculty_members.user_id 
         JOIN faculties ON faculty_members.faculty_id = faculties.id 
-        WHERE users.role_id = 6 
+        WHERE users.role_id = 6
         AND students.is_deleted = 0
         AND faculties.id = ?
         AND teachers.user_id = ?
@@ -135,6 +135,19 @@ async function getStudentsBySubjectAndTeacher(id, subjectId, teacherId) {
         query += "AND ss.subject_id = ?";
         bindings.push(subjectId);
     }
+    if (year) {
+        query += "AND students.year = ?";
+        bindings.push(year);
+    }
+    if (halfYear) {
+        query += "AND students.half_year = ?";
+        bindings.push(halfYear);
+    }
+    if (group) {
+        query += "AND students.group = ?";
+        bindings.push(group);
+    }
+    query += "GROUP BY students.id";
     return db.queryPromise(query, bindings);
 }
 async function getStudentsList(id) {

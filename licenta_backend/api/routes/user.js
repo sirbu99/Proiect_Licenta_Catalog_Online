@@ -13,6 +13,7 @@ router.get("/students/:userId", studentsController.getStudentById);
 router.get("/students/:userId/grades-average", gradesController.getGradesAvg);
 router.get("/students/:userId/grades", gradesController.getStudentGrades);
 router.get("/students/:userId/subjects", subjectsController.getSubjectsByStudent);
+
 router.post("/students", studentsController.createStudent);
 router.put("/students/:userId", studentsController.updateStudentInfo);
 router.put("/:userId/change-password", usersController.changePassword);

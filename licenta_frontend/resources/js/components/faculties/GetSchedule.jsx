@@ -18,7 +18,7 @@ class GetSchedule extends React.Component {
             modalIsOpen: false,
             selectedId: null,
             subjects: [],
-            selectedSubjectId: null,
+            selectedSubjectId: '',
         }
     }
     componentDidMount() {
@@ -157,13 +157,15 @@ class GetSchedule extends React.Component {
         const newScheduleUrl = `/universities/${this.props.universityId}/${this.props.facultyId}/schedule/new`;
 
         const filter = (
-            <Filter
-                clickHandler={this.handleChange.bind(this)}
-                name="subjects"
-                fetchInfo={this.fetchSchedule.bind(this)}
-                list={this.state.subjects}
-                selectedId={this.state.selectedSubjectId}
-            />
+            <>
+                <Filter
+                    clickHandler={this.handleChange.bind(this)}
+                    name="subjects"
+                    list={this.state.subjects}
+                    selectedId={this.state.selectedSubjectId}
+                />
+                <button onClick={this.fetchSchedule.bind(this)} className="btn btn-primary mx-2" >Apply</button>
+            </>
         )
 
         if (!isLoaded) {
@@ -174,9 +176,7 @@ class GetSchedule extends React.Component {
             return (
                 <>
                     {_.get(this.props, 'auth.user.role_id') == '1' ?
-                        <div>
-                            {filter}
-                        </div>
+                        { filter }
                         : null
                     }
                     <hr></hr>
@@ -201,11 +201,13 @@ class GetSchedule extends React.Component {
                                 : null
                             }
                         </div>
-                        <hr></hr>
                         {_.get(this.props, 'auth.user.role_id') == '1' ?
-                            <div>
-                                {filter}
-                            </div>
+                            <>
+                                <hr></hr>
+                                <div className="d-flex mb-3">
+                                    {filter}
+                                </div>
+                            </>
                             : null
                         }
                         <hr></hr>
