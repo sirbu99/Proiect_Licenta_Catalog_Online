@@ -176,7 +176,9 @@ class GetSchedule extends React.Component {
             return (
                 <>
                     {_.get(this.props, 'auth.user.role_id') == '1' ?
-                        { filter }
+                        <div className="d-flex mb-3">
+                            {filter}
+                        </div>
                         : null
                     }
                     <hr></hr>
@@ -211,9 +213,9 @@ class GetSchedule extends React.Component {
                             : null
                         }
                         <hr></hr>
-                        <table className="table table-borderless">
-                            <thead className="thead-dark">
-                                <tr className="bg-primary">
+                        <table className="table table-borderless align-middle">
+                            <thead className="thead-dark align-middle">
+                                <tr className="bg-primary text-white">
                                     {_.get(this.props, 'auth.user.role_id') != '6' ?
                                         <>
                                             <th scope="col" className="border-1">Year</th>

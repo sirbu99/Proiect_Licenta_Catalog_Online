@@ -105,8 +105,8 @@ class GetTeachers extends React.Component {
                         }
                     </div>
                     <hr></hr>
-                    <table className="table table-borderless">
-                        <thead className="thead-dark">
+                    <table className="table table-borderless align-middle">
+                        <thead className="thead-dark text-white align-middle">
                             <tr className="bg-primary" >
                                 <th scope="col" className="border-1">First Name</th>
                                 <th scope="col" className="border-1">Last Name</th>

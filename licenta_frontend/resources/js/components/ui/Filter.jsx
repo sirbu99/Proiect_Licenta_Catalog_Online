@@ -1,9 +1,9 @@
 import React from 'react';
 const Filter = (props) => {
     return (
-        <div className="d-flex mb-3">
+        <div className="d-flex">
             <label>
-                <p className="filter-title">Sort by {props.name}: </p>
+                <p className="filter-title">{props.name}: </p>
                 <select value={props.selectedId} onChange={props.clickHandler} className="filter-options ">
                     <option value=''>None</option>
                     {props.list.map(item => {

@@ -7,9 +7,9 @@ async function getAllGrades(facultyId) {
             u.last_name,
             subjects.name,
             grade,
-            grades.year,
-            grades.half_year,
-            grades.group,
+            students.year,
+            students.half_year,
+            students.group,
             grades.date,
             type
         FROM grades 
@@ -40,24 +40,54 @@ async function getGradesByStudent(userId, subjectId) {
     return db.queryPromise(query, bindings);
 }
 
-async function getGradesByTeacher(teacherId) {
-    return db.queryPromise(`
-        SELECT 
-            u.first_name,
-            u.last_name,
-            subjects.name,
-            grade, 
-            grades.year,
-            grades.half_year,
-            grades.group,
-            grades.date,
-            type
+async function getGradesByTeacher(teacherId, subjectId, year, halfYear, group) {
+    const bindings = [teacherId];
+    let query = `
+         SELECT DISTINCT
+            grades.student_id,
+            grade,
+            date,
+            IF (
+					DATE >= DATE_FORMAT(date, "%Y-10-01"),
+					DATE_FORMAT(date, "%Y-10-01"),
+					DATE_FORMAT(DATE_SUB(date, INTERVAL 1 YEAR), "%Y-10-01")
+				) AS data_referinta,
+				ABS(
+					TIMESTAMPDIFF(
+						WEEK, 
+						date, 
+						IF (
+							DATE >= DATE_FORMAT(date, "%Y-10-01"),
+							DATE_FORMAT(date, "%Y-10-01"),
+							DATE_FORMAT(DATE_SUB(date, INTERVAL 1 YEAR), "%Y-10-01")
+						)
+					)
+				) AS date_diff
         FROM grades 
         JOIN students ON grades.student_id = students.id
         JOIN users AS u ON students.user_id = u.id
         JOIN subjects ON grades.subject_id = subjects.id
-        WHERE teacher_id = ?;
-    `, [teacherId]);
+        JOIN subjects_teachers AS st ON st.subject_id = subjects.id
+        JOIN teachers ON teachers.id = st.teacher_id
+        WHERE teachers.user_id= ?
+    `;
+    if (subjectId) {
+        query += "AND subjects.id = ?";
+        bindings.push(subjectId);
+    }
+    if (year) {
+        query += "AND students.year = ?";
+        bindings.push(year);
+    }
+    if (halfYear) {
+        query += "AND students.half_year = ?";
+        bindings.push(halfYear);
+    }
+    if (group) {
+        query += "AND students.group = ?";
+        bindings.push(group);
+    }
+    return db.queryPromise(query, bindings);
 }
 
 async function getGradesByYear(year) {
@@ -67,9 +97,9 @@ async function getGradesByYear(year) {
             u.last_name,
             subjects.name,
             grade, 
-            grades.year,
-            grades.half_year,
-            grades.group,
+            students.year,
+            students.half_year,
+            students.group,
             grades.date,
             type
         FROM grades 

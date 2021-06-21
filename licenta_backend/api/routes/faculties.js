@@ -28,6 +28,7 @@ router.get("/:facultyId/teachers", teachersController.getTeachers);
 router.get("/:facultyId/teachers-list", teachersController.getTeachersList);
 
 router.use(authMiddleware.checkAuth);
+router.get("/:facultyId/grades", gradesController.getGradesByTeacher);
 router.get("/:facultyId/schedule", scheduleController.getSchedule);
 router.get("/:facultyId/schedule/groups", scheduleController.getGroupsFromSchedule);
 router.get("/:facultyId/schedule/subjects", subjectsController.getSubjects);

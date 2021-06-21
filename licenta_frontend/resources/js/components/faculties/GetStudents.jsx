@@ -112,9 +112,9 @@ class GetStudents extends React.Component {
                     }
                 </div>
                 <hr></hr>
-                <table className="table table-borderless">
-                    <thead className="thead-dark">
-                        <tr className="bg-primary">
+                <table className="table table-borderless table-sm align-middle">
+                    <thead className="thead-dark align-middle">
+                        <tr className="bg-primary text-white">
                             <th scope="col" className="border-1">First Name</th>
                             <th scope="col" className="border-1">Last Name</th>
                             <th scope="col" className="border-1">Registration Number</th>
@@ -125,7 +125,7 @@ class GetStudents extends React.Component {
                                 <>
                                     <th scope="col" className="border-1">Identification Number</th>
                                     <th scope="col" className="border-1">Address</th>
-                                    <th scope="col" className="border-1">Birthday</th>
+                                    <th scope="col" className="border-1 px-3">Birthday</th>
                                 </>
                                 : null
                             }

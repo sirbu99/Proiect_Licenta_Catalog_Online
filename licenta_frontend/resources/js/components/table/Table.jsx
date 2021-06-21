@@ -1,18 +1,24 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Parser as FormulaParser } from 'hot-formula-parser'
-import Row from './Row'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Parser as FormulaParser } from 'hot-formula-parser';
+import Row from './Row';
+import { getApiHost } from '../../services/commonService';
 
 /**
  * Table creates a table with x rows and y columns
  */
-export default class Table extends React.Component {
+class Table extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
       data: {},
+      grades: [],
     }
+    this.routeFacultyId = _.get(this.props, 'match.params.facultyId', null);
+    this.routeUniversityId = _.get(this.props, 'match.params.id', null);
 
     this.tableIdentifier = `tableData-${props.id}`
 
@@ -85,17 +91,45 @@ export default class Table extends React.Component {
     })
   }
 
-  /**
-   * Initialize the sate from the localstorage, if found
-   */
-  componentWillMount() {
-    if (this.props.saveToLocalStorage && window && window.localStorage) {
-      const data = window.localStorage.getItem(this.tableIdentifier)
-      if (data) {
-        // antipattern
-        this.setState({ data: JSON.parse(data) })
-      }
+
+  componentDidMount() {
+    this.fetchGrades();
+    // if (this.props.saveToLocalStorage && window && window.localStorage) {
+    //   const data = window.localStorage.getItem(this.tableIdentifier)
+    //   if (data) {
+    //     // antipattern
+    //     this.setState({ data: JSON.parse(data) })
+    //   }
+    // }
+  }
+
+  fetchGrades(event) {
+    event && event.preventDefault();
+    let apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades?type=display`;
+    if (this.props.subjectId) {
+      apiUrl += `&subjectId=${this.props.subjectId}`;
     }
+    if (this.props.year) {
+      apiUrl += `&year=${this.props.year}`;
+    }
+    if (this.props.halfYear) {
+      apiUrl += `&halfYear=${this.props.halfYear}`;
+    }
+    if (this.props.group) {
+      apiUrl += `&group=${this.props.group}`;
+    }
+    try {
+      fetch(apiUrl, {
+        headers: {
+          'Authorization': this.props.auth.user.api_token
+        }
+      })
+        .then((response) => response.json())
+        .then((data) => this.setState({ data: data, isLoaded: true }));
+
+    } catch (error) {
+      console.error(error);
+    };
   }
 
   /**
@@ -138,21 +172,31 @@ export default class Table extends React.Component {
 
   render() {
     const rows = []
-
+    const sortedRowData = {};
     for (let y = 0; y < this.props.y + 1; y += 1) {
       const rowData = this.state.data[y] || {}
-      rows.push(
-        <Row
-          handleChangedCell={this.handleChangedCell}
-          executeFormula={this.executeFormula}
-          updateCells={this.updateCells}
-          key={y}
-          y={y}
-          x={this.props.x + 1}
-          rowData={rowData}
-          headerY={this.props.headerY[y - 1]}
-        />,
-      )
+      const grades = [];
+      const weeks = [];
+      const rowValues = Object.values(rowData);
+      if (rowValues[1]) {
+        grades.push(rowValues[1].toString());
+        weeks.push(rowValues[4]);
+        for (let i = 0; i < grades.length; i++) {
+          sortedRowData[weeks[i]] = grades[i].toString();
+        }
+        rows.push(
+          <Row
+            handleChangedCell={this.handleChangedCell}
+            executeFormula={this.executeFormula}
+            updateCells={this.updateCells}
+            key={y}
+            y={y}
+            x={this.props.x + 1}
+            rowData={sortedRowData}
+            headerY={this.props.headerY[y - 1]}
+          />,
+        )
+      }
     }
     return (
       <div>
@@ -173,3 +217,8 @@ Table.defaultProps = {
   saveToLocalStorage: true,
   id: 'default',
 }
+
+const mapStateToProps = (state) => ({
+  auth: state.authentication,
+});
+export default connect(mapStateToProps)(withRouter(Table));

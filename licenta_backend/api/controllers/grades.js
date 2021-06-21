@@ -10,6 +10,19 @@ exports.getGrades = async(req, res) => {
     }
 };
 
+exports.getGradesByTeacher = async(req, res) => {
+    try {
+        const subjectId = url.parse(req.url, true).query.subjectId;
+        const year = url.parse(req.url, true).query.year;
+        const halfYear = url.parse(req.url, true).query.halfYear;
+        const group = url.parse(req.url, true).query.group;
+        grades = await gradesRepository.getGradesByTeacher(process.env.AUTH_ID, subjectId, year, halfYear, group);
+        res.send(grades);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 exports.getGradesAvg = async(req, res) => {
     try {
         grades = await gradesRepository.getGradesAvgForStudent(req.params.userId);

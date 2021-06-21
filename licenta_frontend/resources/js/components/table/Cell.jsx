@@ -179,7 +179,7 @@ export default class Cell extends React.Component {
      */
     calculateCss = () => {
         const css = {
-            width: '150px',
+            width: '100px',
             padding: '4px',
             margin: '0',
             height: '25px',
@@ -188,8 +188,7 @@ export default class Cell extends React.Component {
             display: 'inline-block',
             color: 'black',
             border: '1px solid #cacaca',
-            textAlign: 'left',
-            verticalAlign: 'top', // https://stackoverflow.com/questions/10778949/why-does-adding-text-to-a-span-change-its-position
+            verticalAlign: 'top',
             fontSize: '14px',
             lineHeight: '15px',
             overflow: 'hidden',
@@ -200,6 +199,9 @@ export default class Cell extends React.Component {
             css.textAlign = 'center'
             css.color = 'white'
             css.backgroundColor = '#276b80'
+        }
+        if (this.props.x === 0) {
+            css.width = '160px'
         }
 
         return css
@@ -221,7 +223,7 @@ export default class Cell extends React.Component {
         if (this.props.y === 0) {
             return (
                 <span onKeyPress={this.onKeyPressOnSpan} style={css} role="presentation">
-                    {`w${this.props.x}`}
+                    {`week ${this.props.x}`}
                 </span>
             )
         }
@@ -287,5 +289,5 @@ Cell.propTypes = {
     /**
      * The value of this cell
      */
-    value: PropTypes.string.isRequired,
+    // value: PropTypes.string.isRequired,
 }

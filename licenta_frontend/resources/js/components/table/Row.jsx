@@ -15,7 +15,7 @@ const Row = (props) => {
                 rowId={props.headerY && props.headerY.id}
                 onChangedValue={props.handleChangedCell}
                 updateCells={props.updateCells}
-                value={props.rowData[x] || ''}
+                value={(props.rowData[x] === undefined) ? '' : props.rowData[x]}
                 executeFormula={props.executeFormula}
             />,
         )

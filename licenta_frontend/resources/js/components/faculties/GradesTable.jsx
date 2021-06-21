@@ -135,7 +135,7 @@ class GradesTable extends React.Component {
             <>
                 <Filter
                     clickHandler={this.handleChangeSubject.bind(this)}
-                    name="subjects"
+                    name="Subject"
                     fetchInfo={this.fetchStudents.bind(this)}
                     list={this.state.subjects}
                     selectedId={this.state.selectedSubjectId}
@@ -146,7 +146,7 @@ class GradesTable extends React.Component {
         const yearsFilter = (
             <Filter
                 clickHandler={this.handleChangeYear.bind(this)}
-                name="years"
+                name="Year"
                 fetchInfo={this.fetchStudents.bind(this)}
                 list={Object.values(yearsList)}
                 selectedId={this.state.selectedYear}
@@ -155,7 +155,7 @@ class GradesTable extends React.Component {
         const groupsFilter = (
             <Filter
                 clickHandler={this.handleChangeGroup.bind(this)}
-                name="groups"
+                name="Group"
                 fetchInfo={this.fetchStudents.bind(this)}
                 list={Object.values(groupsList)}
                 selectedId={this.state.selectedGroup}
@@ -164,8 +164,8 @@ class GradesTable extends React.Component {
         const halfYearsFilter = (
             <Filter
                 clickHandler={this.handleChangeHalfYear.bind(this)}
-                name="half-years"
-                // fetchInfo={this.fetchStudents.bind(this)}
+                name="Half-year"
+                fetchInfo={this.fetchStudents.bind(this)}
                 list={Object.values(halfYearsList)}
                 selectedId={this.state.selectedHalfYear}
             />
@@ -175,7 +175,7 @@ class GradesTable extends React.Component {
         }
 
         const filters = (
-            <div>
+            <div className="d-flex justify-content-between align-items-center">
                 {subjectsFilter}
                 {yearsFilter}
                 {halfYearsFilter}
@@ -187,9 +187,11 @@ class GradesTable extends React.Component {
         if (this.state.selectedSubjectId == '' || this.state.selectedYear == '' || !this.state.hasFilters) {
             return (
                 <>
+                    <h1>Student Grades</h1>
+                    <hr></hr>
                     {filters}
                     <hr></hr>
-                    <h3>Please select a subject and a year</h3>
+                    <h3>Please select a subject and a year!</h3>
                 </>
             );
         }
@@ -197,6 +199,8 @@ class GradesTable extends React.Component {
         if (stdListSize < 1) {
             return (
                 <>
+                    <h1>Student Grades</h1>
+                    <hr></hr>
                     {filters}
                     <hr></hr>
                     <h3>There are no students assigned for this subject yet!</h3>
@@ -206,9 +210,11 @@ class GradesTable extends React.Component {
 
         return (
             <div style={{ width: 'max-content' }}>
+                <h1>Student Grades</h1>
+                <hr></hr>
                 {filters}
                 <hr></hr>
-                <Table headerY={students} x={5} y={Object.keys(students).length} id={'1'} />
+                <Table headerY={students} x={8} y={Object.keys(students).length} id={'1'} subjectId={this.state.selectedSubjectId} year={this.state.selectedYear} group={this.state.selectedGroup} halfYear={this.state.selectedHalfYear} />
             </div>
         )
     }
