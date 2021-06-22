@@ -61,19 +61,19 @@ class GetFaculties extends React.Component {
 
     handleShowButtons(id) {
         return _.get(this.props, 'auth.user.permissions', []).includes('faculty')
-        ? <div className="btn-wrapper">
-            <button className="btn btn-primary" onClick={this.handleEdit.bind(this, id)}>Edit</button>
-            <button className="btn btn-primary" onClick={this.openModal.bind(this, id)}>Delete</button>
-        </div>
-        : null
+            ? <div className="btn-wrapper">
+                <button className="btn btn-primary" onClick={this.handleEdit.bind(this, id)}>Edit</button>
+                <button className="btn btn-danger" onClick={this.openModal.bind(this, id)}>Delete</button>
+            </div>
+            : null
     }
 
     openModal(id) {
-        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+        this.setState({ ...this.state, modalIsOpen: true, selectedId: id });
     }
 
     closeModal() {
-        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+        this.setState({ ...this.state, modalIsOpen: false, selectedId: null });
     }
 
     render() {
@@ -93,16 +93,16 @@ class GetFaculties extends React.Component {
             )
         } else {
             return (
-                <div className="row">                    
+                <div className="row">
                     {faculties.map(faculty => <Card key={faculty.id}
-                        clickHandler = {this.showDetails.bind(this, faculty.id)}
-                        imageSrc = "https://placeimg.com/800/600/tech"
-                        imageAlt = {faculty.name}
-                        cardTitle = {faculty.name}
-                        description = {<div>{faculty.address}<br/>{faculty.description}</div>}
-                        additional = {this.handleShowButtons(faculty.id)}
+                        clickHandler={this.showDetails.bind(this, faculty.id)}
+                        imageSrc="https://placeimg.com/800/600/tech"
+                        imageAlt={faculty.name}
+                        cardTitle={faculty.name}
+                        description={<div>{faculty.address}<br />{faculty.description}</div>}
+                        additional={this.handleShowButtons(faculty.id)}
                     />)}
-                    <DeleteConfirmation 
+                    <DeleteConfirmation
                         modalIsOpen={this.state.modalIsOpen}
                         closeModal={this.closeModal.bind(this)}
                         handleDelete={this.handleDelete.bind(this, this.state.selectedId)}

@@ -5,6 +5,7 @@ import { getApiHost, formatDate } from '../../services/commonService';
 import Spinner from '../ui/Spinner';
 import axios from 'axios';
 import DeleteConfirmation from '../ui/DeleteConfirmation';
+import MenuSecondary from '../pages/menu/MenuSecondary';
 import Filter from '../ui/Filter';
 
 class GetStudentGrades extends React.Component {
@@ -14,7 +15,7 @@ class GetStudentGrades extends React.Component {
         this.state = {
             grades: [],
             subjects: [],
-            selectedSubjectId: null,
+            selectedSubjectId: '',
             isLoaded: false,
             modalIsOpen: false,
             selectedId: null
@@ -32,7 +33,7 @@ class GetStudentGrades extends React.Component {
 
 
     fetchSubjects() {
-        const apiUrl = `${getApiHost()}/users/students/${this.routeUserId}/subjects`;
+        const apiUrl = `${getApiHost()}/users/students/${this.props.auth.user.id}/subjects`;
         try {
             fetch(apiUrl, {
                 headers: {
@@ -48,7 +49,7 @@ class GetStudentGrades extends React.Component {
     }
     fetchGrades(event) {
         event && event.preventDefault();
-        let apiUrl = `${getApiHost()}/users/students/${this.routeUserId}/grades`;
+        let apiUrl = `${getApiHost()}/users/students/${this.props.auth.user.id}/grades`;
         if (this.state.selectedSubjectId) {
             apiUrl += `?subjectId=${this.state.selectedSubjectId}`;
         }
@@ -66,25 +67,10 @@ class GetStudentGrades extends React.Component {
         };
     }
 
-    handleEdit(id) {
-        this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/students/${this.props.userId}/grades/${id}/edit`);
-    }
+
 
     handleChange(event) {
         this.setState({ selectedSubjectId: event.target.value });
-    }
-
-    handleDelete(id) {
-        const apiUrl = `${getApiHost()}/grades/${id}`;
-        const headers = {
-            'Authorization': this.props.auth.user.api_token
-        }
-        try {
-            axios.delete(apiUrl, { headers })
-                .then(this.fetchGrades.bind(this));
-        } catch (error) {
-            console.log(error)
-        }
     }
 
     openModal(id) {
@@ -104,18 +90,23 @@ class GetStudentGrades extends React.Component {
             return <Spinner />
         }
         const filter = (
-            <Filter
-                clickHandler={this.handleChange.bind(this)}
-                name="subjects"
-                fetchInfo={this.fetchGrades.bind(this)}
-                list={subjects}
-                selectedId={this.state.selectedSubjectId}
-            />
+            <div className="d-flex justify-content-between align-items-center">
+                <Filter
+                    clickHandler={this.handleChange.bind(this)}
+                    name="Subject"
+                    fetchInfo={this.fetchGrades.bind(this)}
+                    list={subjects}
+                    selectedId={this.state.selectedSubjectId}
+                />
+                <button onClick={this.fetchGrades.bind(this)} className="btn btn-primary mx-2" >Apply</button>
+
+            </div>
         );
         if (gradesLstSize < 1) {
             return (
                 <>
                     {filter}
+                    <hr></hr>
                     <h3>
                         There are no grades for now!
                     </h3>
@@ -126,6 +117,7 @@ class GetStudentGrades extends React.Component {
         return (
             <div className="table-responsive">
                 {filter}
+                <hr></hr>
                 <table className="table table-bordered table-hover">
                     <thead className="thead-dark">
                         <tr className="bg-primary">
@@ -148,14 +140,8 @@ class GetStudentGrades extends React.Component {
                         })}
                     </tbody>
                 </table>
-                <DeleteConfirmation
-                    modalIsOpen={this.state.modalIsOpen}
-                    closeModal={this.closeModal.bind(this)}
-                    handleDelete={this.handleDelete.bind(this, this.state.selectedId)}
-                />
             </div>
         );
-
     }
 }
 

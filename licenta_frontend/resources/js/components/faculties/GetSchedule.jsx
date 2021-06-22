@@ -160,7 +160,19 @@ class GetSchedule extends React.Component {
             <>
                 <Filter
                     clickHandler={this.handleChange.bind(this)}
-                    name="subjects"
+                    name="Subject"
+                    list={this.state.subjects}
+                    selectedId={this.state.selectedSubjectId}
+                />
+                <Filter
+                    clickHandler={this.handleChange.bind(this)}
+                    name="Year"
+                    list={this.state.subjects}
+                    selectedId={this.state.selectedSubjectId}
+                />
+                <Filter
+                    clickHandler={this.handleChange.bind(this)}
+                    name="Group"
                     list={this.state.subjects}
                     selectedId={this.state.selectedSubjectId}
                 />
@@ -176,7 +188,7 @@ class GetSchedule extends React.Component {
             return (
                 <>
                     {_.get(this.props, 'auth.user.role_id') == '1' ?
-                        <div className="d-flex mb-3">
+                        <div className="d-flex justify-content-between align-items-center">
                             {filter}
                         </div>
                         : null
@@ -206,7 +218,7 @@ class GetSchedule extends React.Component {
                         {_.get(this.props, 'auth.user.role_id') == '1' ?
                             <>
                                 <hr></hr>
-                                <div className="d-flex mb-3">
+                                <div className="d-flex justify-content-between align-items-center">
                                     {filter}
                                 </div>
                             </>

@@ -62,20 +62,20 @@ class GetUniversities extends React.Component {
     }
 
     openModal(id) {
-        this.setState({...this.state, modalIsOpen: true, selectedId: id });
+        this.setState({ ...this.state, modalIsOpen: true, selectedId: id });
     }
 
     closeModal() {
-        this.setState({...this.state, modalIsOpen: false, selectedId: null });
+        this.setState({ ...this.state, modalIsOpen: false, selectedId: null });
     }
 
-    handleShowButtons(id) { 
+    handleShowButtons(id) {
         return _.get(this.props, 'auth.user.permissions', []).includes('edit_university')
-        ? <div className="btn-wrapper">
-            <button className="btn btn-primary" onClick={this.handleEdit.bind(this, id)}>Edit</button>
-            <button className="btn btn-primary" onClick={this.openModal.bind(this, id)}>Delete</button>
-        </div>
-        : null
+            ? <div className="btn-wrapper">
+                <button className="btn btn-primary" onClick={this.handleEdit.bind(this, id)}>Edit</button>
+                <button className="btn btn-danger" onClick={this.openModal.bind(this, id)}>Delete</button>
+            </div>
+            : null
     }
 
     render() {
@@ -98,18 +98,18 @@ class GetUniversities extends React.Component {
                 <div className="row">
                     {universities.map(university => {
                         return (
-                            <Card 
-                                key = {university.id}
-                                clickHandler = {this.showDetails.bind(this, university.id)}
-                                imageSrc = "https://placeimg.com/800/600/tech"
-                                imageAlt = {university.name}
-                                cardTitle = {university.name}
-                                description = {`${university.city}, ${university.country}`}
-                                additional = {this.handleShowButtons(university.id)}
-                                />
+                            <Card
+                                key={university.id}
+                                clickHandler={this.showDetails.bind(this, university.id)}
+                                imageSrc="https://placeimg.com/800/600/tech"
+                                imageAlt={university.name}
+                                cardTitle={university.name}
+                                description={`${university.city}, ${university.country}`}
+                                additional={this.handleShowButtons(university.id)}
+                            />
                         )
                     })}
-                    <DeleteConfirmation 
+                    <DeleteConfirmation
                         modalIsOpen={this.state.modalIsOpen}
                         closeModal={this.closeModal.bind(this)}
                         handleDelete={this.handleDelete.bind(this, this.state.selectedId)}

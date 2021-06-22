@@ -89,12 +89,15 @@ class GetAnnouncements extends React.Component {
                     <h3>
                         There are no announcements yet.
                     </h3>
-                    <button
-                        className="btn btn-outline-success btn-sm float-right"
-                        onClick={() => this.props.history.push(newAnnouncementUrl)}
-                    >
-                        Add Announcement
-                    </button>
+                    {_.get(this.props, 'auth.user.permissions', []).includes('announcements') ?
+                        <button
+                            className="btn add-button float-right"
+                            onClick={() => this.props.history.push(newAnnouncementUrl)}
+                        >
+                            Add Announcement
+                        </button>
+                        : null
+                    }
                 </div>
             )
         } else {

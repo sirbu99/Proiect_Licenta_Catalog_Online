@@ -2,11 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
+import { withRouter } from 'react-router-dom';
 
 import { hasPermission } from '../../../services/commonService';
 
 const MenuSecondary = (props) => {
-    const userId = _.get(props, 'auth.user.data.id');
+    const userId = _.get(props, 'auth.user.id');
+    const routeFacultyId = _.get(props, 'match.params.facultyId', null);
+    const routeUniversityId = _.get(props, 'match.params.id', null);
+    console.log(props.match.params);
     return (
         <nav className="sidebar">
             <div className="sidebar-header">
@@ -15,7 +19,7 @@ const MenuSecondary = (props) => {
 
             <ul className="list-unstyled components">
                 <li>
-                    <Link to="./announcements" className="nav-link">
+                    <Link to={`/universities/${routeUniversityId}/${routeFacultyId}/announcements`} className="nav-link">
                         <FaUser className="mr-2" size="1.5em" />
                         <span>Announcements</span>
                     </Link>
@@ -23,13 +27,13 @@ const MenuSecondary = (props) => {
                 {_.get(props, 'auth.user.role_id') == '1'
                     ? <>
                         <li>
-                            <Link to="./students" className="nav-link">
+                            <Link to={`/universities/${routeUniversityId}/${routeFacultyId}/students`} className="nav-link">
                                 <FaUser className="mr-2" size="1.5em" />
                                 <span>Students</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to="./teachers" className="nav-link">
+                            <Link to={`/universities/${routeUniversityId}/${routeFacultyId}/teachers`} className="nav-link">
                                 <FaUser className="mr-2" size="1.5em" />
                                 <span>Teachers</span>
                             </Link>
@@ -40,13 +44,13 @@ const MenuSecondary = (props) => {
                 {_.get(props, 'auth.user.role_id') == '5'
                     ? <>
                         <li>
-                            <Link to="./students" className="nav-link">
+                            <Link to={`/universities/${routeUniversityId}/${routeFacultyId}/students`} className="nav-link">
                                 <FaUser className="mr-2" size="1.5em" />
                                 <span>Students</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={`./grades-table`} className="nav-link">
+                            <Link to={`/universities/${routeUniversityId}/${routeFacultyId}/grades-table`} className="nav-link">
                                 <FaUser className="mr-2" size="1.5em" />
                                 <span>Edit Grades</span>
                             </Link>
@@ -57,13 +61,13 @@ const MenuSecondary = (props) => {
                 {_.get(props, 'auth.user.role_id') == '6'
                     ? <>
                         <li>
-                            <Link to="./teachers" className="nav-link">
+                            <Link to={`/universities/${routeUniversityId}/${routeFacultyId}/teachers`} className="nav-link">
                                 <FaUser className="mr-2" size="1.5em" />
                                 <span>Teachers</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={`./students/${userId}/grades`} className="nav-link">
+                            <Link to={`/universities/${routeUniversityId}/${routeFacultyId}/students/${userId}/grades`} className="nav-link">
                                 <FaUser className="mr-2" size="1.5em" />
                                 <span>Grades</span>
                             </Link>
@@ -72,21 +76,11 @@ const MenuSecondary = (props) => {
                     : null
                 }
                 <li>
-                    <Link to="./schedule" className="nav-link">
+                    <Link to={`/universities/${routeUniversityId}/${routeFacultyId}/schedule`} className="nav-link">
                         <FaUser className="mr-2" size="1.5em" />
                         <span>Schedule</span>
                     </Link>
                 </li>
-
-                {hasPermission('users.view')
-                    ? <li>
-                        <Link to="/manage/users" className="nav-link">
-                            <FaUser className="mr-2" size="1.5em" />
-                            <span>User list</span>
-                        </Link>
-                    </li>
-                    : null
-                }
             </ul>
         </nav >
     );
@@ -97,4 +91,4 @@ const mapStateToProps = (state) => ({
     auth: state.authentication,
 });
 
-export default connect(mapStateToProps)(MenuSecondary);
+export default connect(mapStateToProps)(withRouter(MenuSecondary));
