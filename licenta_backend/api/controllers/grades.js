@@ -66,7 +66,17 @@ exports.addGrade = async(req, res) => {
     try {
         gradeInfo = req.body;
         grade = await gradesRepository.addGrade(gradeInfo.student_id, gradeInfo.teacher_id, gradeInfo.subject_id, gradeInfo.grade, gradeInfo.year, gradeInfo.half_year, gradeInfo.group, gradeInfo.type, gradeInfo.date);
-        res.send(grade);
+        res.send("The grade info has been saved!");
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.saveGradeForStudent = async(req, res) => {
+    try {
+        gradeInfo = req.body;
+        grade = await gradesRepository.saveGradeForStudent(gradeInfo.student_id, process.env.AUTH_ID, req.params.subjectId, gradeInfo.grade, gradeInfo.date_diff);
+        res.send("The grade info has been saved!");
     } catch (error) {
         console.log(error);
     }

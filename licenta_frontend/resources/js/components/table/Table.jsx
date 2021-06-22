@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Parser as FormulaParser } from 'hot-formula-parser';
 import Row from './Row';
 import { getApiHost } from '../../services/commonService';
+import axios from 'axios';
 
 /**
  * Table creates a table with x rows and y columns
@@ -15,7 +16,12 @@ class Table extends React.Component {
 
     this.state = {
       data: {},
-      grades: [],
+      gradeInfo: {
+        student_id: '',
+        subject_id: '',
+        date_diff: '',
+        grade: '',
+      }
     }
     this.routeFacultyId = _.get(this.props, 'match.params.facultyId', null);
     this.routeUniversityId = _.get(this.props, 'match.params.id', null);
@@ -160,15 +166,60 @@ class Table extends React.Component {
   }
 
   handleChangedCell = ({ x, y }, value) => {
-    const modifiedData = Object.assign({}, this.state.data)
-    if (!modifiedData[y]) modifiedData[y] = {}
-    modifiedData[y][x] = value
-    this.setState({ data: modifiedData })
+    const modifiedData = Object.assign({}, this.state.data);
+    modifiedData[x] = {
+      date_diff: x,
+      student_id: this.props.headerY[y - 1].id,
+      grade: value,
+    };
+    this.setState({
+      data: modifiedData,
+      gradeInfo: {
+        ...this.state.gradeInfo,
+        grade: value,
+        student_id: modifiedData[x].student_id,
+        date_diff: modifiedData[x].date_diff,
+        subject_id: this.props.subjectId
+      }
+    }, this.saveData.bind(this, modifiedData[x] ? 'post' : 'put'))
 
-    if (this.props.saveToLocalStorage && window && window.localStorage) {
-      window.localStorage.setItem(this.tableIdentifier, JSON.stringify(modifiedData))
+    // modifiedData[y][x] = value
+    // this.setState({ data: modifiedData })
+
+    // const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades/${this.props.subjectId}/update`;
+    // const headers = {
+    //   'Authorization': this.props.auth.user.api_token
+    // }
+    // try {
+    //   axios.put(apiUrl, this.state.gardeInfo, { headers });
+    //   this.props.history.push(`/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades-table`);
+    // } catch (error) {
+    //   console.log(error)
+    // }
+    // if (this.props.saveToLocalStorage && window && window.localStorage) {
+    //   window.localStorage.setItem(this.tableIdentifier, JSON.stringify(modifiedData))
+    // }
+    // }
+  }
+
+  saveData(type) {
+    const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades/${this.props.subjectId}/add`;
+    const headers = {
+      'Authorization': this.props.auth.user.api_token
+    }
+    try {
+      if (type === 'post') {
+        axios.post(apiUrl, this.state.gradeInfo, { headers });
+      } else {
+        axios.put(apiUrl, this.state.gradeInfo, { headers });
+      }
+
+      // this.props.history.push(`/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades-table`);
+    } catch (error) {
+      console.log(error)
     }
   }
+
 
   render() {
     const rows = []

@@ -29,6 +29,8 @@ router.get("/:facultyId/teachers-list", teachersController.getTeachersList);
 
 router.use(authMiddleware.checkAuth);
 router.get("/:facultyId/grades", gradesController.getGradesByTeacher);
+router.post("/:facultyId/grades/:subjectId/add", gradesController.saveGradeForStudent);
+// router.get("/:facultyId/grades/:subjectId/update", gradesController.updateGradeForStudent);
 router.get("/:facultyId/schedule", scheduleController.getSchedule);
 router.get("/:facultyId/schedule/groups", scheduleController.getGroupsFromSchedule);
 router.get("/:facultyId/schedule/subjects", subjectsController.getSubjects);

@@ -155,6 +155,43 @@ async function addGrade(studentId, teacherId, subjectId, grade, year, halfYear, 
     `, [studentId, teacherId, subjectId, grade, year, halfYear, group, type, date]);
 }
 
+async function saveGradeForStudent(studentId, userId, subjectId, grade, date_diff) {
+    const weekday = await db.queryPromise(`
+        SELECT
+            day
+        FROM schedule
+        JOIN subjects ON subjects.id = schedule.subject_id
+        JOIN subjects_students AS ss ON ss.subject_id = subjects.id
+        JOIN students ON students.id = ss.student_id
+        JOIN teachers ON schedule.user_id = teachers.user_id
+        WHERE subjects.id = ?
+        AND teachers.user_id = ?
+        AND students.id = ?
+        AND schedule.year = students.year
+        AND schedule.group = students.group
+        AND schedule.half_year = students.half_year
+        `, [subjectId, userId, studentId])
+    const gradeDate = await db.queryPromise(`
+        CALL Get_Grades_Date(?, ?);
+    `, [weekday[0].day, date_diff]);
+    const teacherId = await db.queryPromise(`
+        SELECT
+            id
+        FROM teachers
+        WHERE user_id =?
+    `, [userId]);
+
+    return db.queryPromise(`
+        INSERT INTO grades
+        SET   
+            student_id = ?,
+            teacher_id = ?,
+            subject_id = ?,
+            grade = ?,
+            date = ?;
+    `, [studentId, teacherId[0].id, subjectId, grade, gradeDate[0][0].data_notei]);
+}
+
 
 async function changeGrade(id, grade) {
     return db.queryPromise(`
@@ -184,4 +221,5 @@ module.exports = {
     changeGrade,
     changeGradeDate,
     getGradesBySubject,
+    saveGradeForStudent,
 }

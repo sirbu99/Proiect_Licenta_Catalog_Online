@@ -112,7 +112,8 @@ async function getStudentsBySubject(id, subjectId, teacherId) {
 async function getStudentsBySubjectAndTeacher(id, subjectId, year, halfYear, group, teacherId) {
     const bindings = [id, teacherId];
     let query = `
-        SELECT 
+        SELECT
+            students.id,
             registration_number,
             first_name,
             last_name,

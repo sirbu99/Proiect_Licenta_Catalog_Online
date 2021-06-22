@@ -121,7 +121,7 @@ class GradesTable extends React.Component {
         const groupsList = {};
         const halfYearsList = {};
         const students = this.state.students.map((item) => {
-            return { id: item.registration_number, value: `${item.first_name} ${item.last_name}` }
+            return { id: item.id, registration_number: item.registration_number, value: `${item.first_name} ${item.last_name}` }
         });
 
         this.state.yearInfo.forEach(item => {
@@ -214,7 +214,16 @@ class GradesTable extends React.Component {
                 <hr></hr>
                 {filters}
                 <hr></hr>
-                <Table headerY={students} x={8} y={Object.keys(students).length} id={'1'} subjectId={this.state.selectedSubjectId} year={this.state.selectedYear} group={this.state.selectedGroup} halfYear={this.state.selectedHalfYear} />
+                <Table
+                    headerY={students}
+                    x={8}
+                    y={Object.keys(students).length}
+                    id={'1'}
+                    subjectId={this.state.selectedSubjectId}
+                    year={this.state.selectedYear}
+                    group={this.state.selectedGroup}
+                    halfYear={this.state.selectedHalfYear}
+                />
             </div>
         )
     }

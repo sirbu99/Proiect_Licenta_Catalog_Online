@@ -289,5 +289,5 @@ Cell.propTypes = {
     /**
      * The value of this cell
      */
-    // value: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
 }
