@@ -43,7 +43,7 @@ async function getGradesByStudent(userId, subjectId) {
 async function getGradesByTeacher(teacherId, subjectId, year, halfYear, group) {
     const bindings = [teacherId];
     let query = `
-         SELECT DISTINCT
+         SELECT
             grades.student_id,
             grade,
             date,
@@ -87,6 +87,7 @@ async function getGradesByTeacher(teacherId, subjectId, year, halfYear, group) {
         query += "AND students.group = ?";
         bindings.push(group);
     }
+    query += 'GROUP BY grades.student_id, grades.date';
     return db.queryPromise(query, bindings);
 }
 
@@ -139,23 +140,7 @@ async function getGradesAvgForStudent(studentId) {
     `, [studentId]);
 }
 
-async function addGrade(studentId, teacherId, subjectId, grade, year, halfYear, group, type, date) {
-    return db.queryPromise(`
-        INSERT INTO grades
-        SET   
-            student_id = ?,
-            teacher_id = ?,
-            subject_id = ?,
-            grade = ?,
-            year = ?,
-            half_year = ?,
-            \`group\` = ?,
-            type = ?,
-            date = ?;
-    `, [studentId, teacherId, subjectId, grade, year, halfYear, group, type, date]);
-}
-
-async function saveGradeForStudent(studentId, userId, subjectId, grade, date_diff) {
+async function editGradeForStudent(studentId, userId, subjectId, grade, date_diff) {
     const weekday = await db.queryPromise(`
         SELECT
             day
@@ -188,27 +173,10 @@ async function saveGradeForStudent(studentId, userId, subjectId, grade, date_dif
             teacher_id = ?,
             subject_id = ?,
             grade = ?,
-            date = ?;
-    `, [studentId, teacherId[0].id, subjectId, grade, gradeDate[0][0].data_notei]);
-}
-
-
-async function changeGrade(id, grade) {
-    return db.queryPromise(`
-        UPDATE grades
-        SET   
-            grade = ?
-        WHERE id = ?;
-    `, [grade, id]);
-}
-
-async function changeGradeDate(id, date) {
-    return db.queryPromise(`
-        UPDATE grades
-        SET   
             date = ?
-        WHERE id = ?;
-    `, [date, id]);
+        ON DUPLICATE KEY UPDATE
+            grade = VALUES(grade)
+    `, [studentId, teacherId[0].id, subjectId, grade, gradeDate[0][0].data_notei]);
 }
 
 module.exports = {
@@ -217,9 +185,6 @@ module.exports = {
     getGradesByTeacher,
     getGradesByYear,
     getGradesAvgForStudent,
-    addGrade,
-    changeGrade,
-    changeGradeDate,
     getGradesBySubject,
-    saveGradeForStudent,
+    editGradeForStudent,
 }

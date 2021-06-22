@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Logo = (props) => {
     return (
         <Link to="/">
-            <img alt="logo" className={`logo ${props.size}`} src="/images/logo.png" loading="lazy"/>
+            <img alt="logo" className="photo" src="/images/logo.png" loading="lazy" />
         </Link>
     );
 };

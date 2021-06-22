@@ -72,10 +72,10 @@ exports.addGrade = async(req, res) => {
     }
 };
 
-exports.saveGradeForStudent = async(req, res) => {
+exports.editGradeForStudent = async(req, res) => {
     try {
         gradeInfo = req.body;
-        grade = await gradesRepository.saveGradeForStudent(gradeInfo.student_id, process.env.AUTH_ID, req.params.subjectId, gradeInfo.grade, gradeInfo.date_diff);
+        grade = await gradesRepository.editGradeForStudent(gradeInfo.student_id, process.env.AUTH_ID, req.params.subjectId, gradeInfo.grade, gradeInfo.date_diff);
         res.send("The grade info has been saved!");
     } catch (error) {
         console.log(error);

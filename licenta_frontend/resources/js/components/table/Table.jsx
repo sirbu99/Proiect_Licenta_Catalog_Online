@@ -100,13 +100,6 @@ class Table extends React.Component {
 
   componentDidMount() {
     this.fetchGrades();
-    // if (this.props.saveToLocalStorage && window && window.localStorage) {
-    //   const data = window.localStorage.getItem(this.tableIdentifier)
-    //   if (data) {
-    //     // antipattern
-    //     this.setState({ data: JSON.parse(data) })
-    //   }
-    // }
   }
 
   fetchGrades(event) {
@@ -181,40 +174,17 @@ class Table extends React.Component {
         date_diff: modifiedData[x].date_diff,
         subject_id: this.props.subjectId
       }
-    }, this.saveData.bind(this, modifiedData[x] ? 'post' : 'put'))
-
-    // modifiedData[y][x] = value
-    // this.setState({ data: modifiedData })
-
-    // const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades/${this.props.subjectId}/update`;
-    // const headers = {
-    //   'Authorization': this.props.auth.user.api_token
-    // }
-    // try {
-    //   axios.put(apiUrl, this.state.gardeInfo, { headers });
-    //   this.props.history.push(`/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades-table`);
-    // } catch (error) {
-    //   console.log(error)
-    // }
-    // if (this.props.saveToLocalStorage && window && window.localStorage) {
-    //   window.localStorage.setItem(this.tableIdentifier, JSON.stringify(modifiedData))
-    // }
-    // }
+    }, this.saveData.bind(this))
   }
 
   saveData(type) {
-    const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades/${this.props.subjectId}/add`;
+    const postApiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades/${this.props.subjectId}/edit`;
     const headers = {
       'Authorization': this.props.auth.user.api_token
     }
     try {
-      if (type === 'post') {
-        axios.post(apiUrl, this.state.gradeInfo, { headers });
-      } else {
-        axios.put(apiUrl, this.state.gradeInfo, { headers });
-      }
-
-      // this.props.history.push(`/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades-table`);
+      axios.post(postApiUrl, this.state.gradeInfo, { headers })
+        .then(() => this.props.history.push(`/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades-table`));
     } catch (error) {
       console.log(error)
     }
@@ -225,15 +195,18 @@ class Table extends React.Component {
     const rows = []
     const sortedRowData = {};
     for (let y = 0; y < this.props.y + 1; y += 1) {
-      const rowData = this.state.data[y] || {}
-      const grades = [];
-      const weeks = [];
+      const studentGrades = [];
+      for (let i = 0; i < Object.keys(this.state.data).length; i++) {
+        const studentData = Object.values(this.state.data);
+        if (this.props.headerY[y - 1] && studentData[i].student_id === this.props.headerY[y - 1].id) {
+          studentGrades.push(studentData[i]);
+        }
+      }
+      const rowData = this.state.data[y] || {};
       const rowValues = Object.values(rowData);
       if (rowValues[1]) {
-        grades.push(rowValues[1].toString());
-        weeks.push(rowValues[4]);
-        for (let i = 0; i < grades.length; i++) {
-          sortedRowData[weeks[i]] = grades[i].toString();
+        for (let i = 0; i < studentGrades.length; i++) {
+          sortedRowData[studentGrades[i].date_diff] = studentGrades[i].grade.toString();
         }
         rows.push(
           <Row
