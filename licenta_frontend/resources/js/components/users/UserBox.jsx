@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FaUser } from 'react-icons/fa';
 import LoginForm from '../auth/LoginForm';
+import RegisterForm from '../auth/RegisterForm';
 import { Link } from 'react-router-dom';
 import { authActions } from '../../actions/users/authActions';
 
@@ -30,7 +31,12 @@ const UserBox = (props) => {
                                 </Link>
                             </li>
                         </> :
-                        <LoginForm />
+                        <>
+                            <LoginForm />
+                            <Link to="/register" className="nav-link">
+                                <span>Register</span>
+                            </Link>
+                        </>
                     }
                 </ul>
             </div>

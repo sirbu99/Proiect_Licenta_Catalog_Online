@@ -16,12 +16,14 @@ import ScheduleInfoForm from '../faculties/ScheduleInfoForm';
 import ProfileView from '../users/ProfileView';
 import Grades from './facultyPages/Grades';
 import StudentGrades from './facultyPages/StudentGrades';
+import RegisterForm from '../auth/RegisterForm';
 
 const routes = {
     all: [
         <Route key="route-home-page" exact path="/" component={UniversitiesPage} />,
         <Route key="route-universities" exact path="/universities" component={UniversitiesPage} />,
         <Route key="route-faculties" exact path="/universities/:id" component={FacultiesPage} />,
+        // <Route key="route-register" exact path="/universities/:id/:facultyId/register" component={RegisterForm} />,
         <Route key="route-faculties-info" exact path="/universities/:id/:facultyId/info" component={FacultyInfo} />
     ],
     loggedIn: [

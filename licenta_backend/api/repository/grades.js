@@ -158,7 +158,7 @@ async function editGradeForStudent(studentId, userId, subjectId, grade, date_dif
         `, [subjectId, userId, studentId])
     const gradeDate = await db.queryPromise(`
         CALL Get_Grades_Date(?, ?);
-    `, [weekday[0].day, date_diff]);
+    `, [weekday[0], date_diff]);
     const teacherId = await db.queryPromise(`
         SELECT
             id

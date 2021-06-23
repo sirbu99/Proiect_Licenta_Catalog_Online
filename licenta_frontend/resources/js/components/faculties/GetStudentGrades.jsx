@@ -118,9 +118,9 @@ class GetStudentGrades extends React.Component {
             <div className="table-responsive">
                 {filter}
                 <hr></hr>
-                <table className="table table-bordered table-hover">
+                <table className="table table-bordered table-hover align-middle">
                     <thead className="thead-dark">
-                        <tr className="bg-primary">
+                        <tr className="bg-primary text-white">
                             <th scope="col">Subject</th>
                             <th scope="col">Grade</th>
                             <th scope="col">Date</th>

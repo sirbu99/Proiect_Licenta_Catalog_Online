@@ -193,8 +193,8 @@ class Table extends React.Component {
 
   render() {
     const rows = []
-    const sortedRowData = {};
     for (let y = 0; y < this.props.y + 1; y += 1) {
+      const sortedRowData = {};
       const studentGrades = [];
       for (let i = 0; i < Object.keys(this.state.data).length; i++) {
         const studentData = Object.values(this.state.data);

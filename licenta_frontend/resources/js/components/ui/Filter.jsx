@@ -10,7 +10,6 @@ const Filter = (props) => {
                         return (
                             <option key={item.id} value={item.id}>{item.name}</option>
                         )
-
                     })}
                 </select>
             </label>

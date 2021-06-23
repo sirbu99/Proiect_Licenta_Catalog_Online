@@ -1,9 +1,8 @@
 const db = require("../../utils/database");
-const { use } = require("../routes/db");
 
 async function getSubjectsList(id) {
     return db.queryPromise(`
-        SELECT 
+        SELECT
             sub.name,
             sub.year,
             sub.semester,
