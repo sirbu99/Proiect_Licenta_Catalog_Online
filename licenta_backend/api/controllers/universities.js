@@ -9,6 +9,15 @@ exports.getAllUniversities = async(req, res) => {
     }
 };
 
+exports.getUniversityById = async(req, res) => {
+    try {
+        [university] = await uniRepository.getUniversityById(req.params.universityId);
+        res.send(university);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 exports.postUniversity = async(req, res) => {
     try {
         let universityInfo = req.body;

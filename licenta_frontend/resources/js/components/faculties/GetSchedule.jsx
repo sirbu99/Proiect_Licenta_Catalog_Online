@@ -168,13 +168,13 @@ class GetSchedule extends React.Component {
                     clickHandler={this.handleChange.bind(this)}
                     name="Year"
                     list={this.state.subjects}
-                    selectedId={this.state.selectedSubjectId}
+                    selectedId=''
                 />
                 <Filter
                     clickHandler={this.handleChange.bind(this)}
                     name="Group"
                     list={this.state.subjects}
-                    selectedId={this.state.selectedSubjectId}
+                    selectedId=''
                 />
                 <button onClick={this.fetchSchedule.bind(this)} className="btn btn-primary mx-2" >Apply</button>
             </>

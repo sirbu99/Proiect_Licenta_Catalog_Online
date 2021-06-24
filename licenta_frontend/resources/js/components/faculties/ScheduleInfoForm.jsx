@@ -67,7 +67,6 @@ class ScheduleInfoForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state.schedule);
         const headers = {
             'Authorization': this.props.auth.user.api_token
         };

@@ -12,6 +12,8 @@ router.post("/", universitiesController.postUniversity);
 
 router.put("/:universityId", universitiesController.putUniversity);
 
+// router.get("/:universityId", universitiesController.getUniversityById);
+
 router.delete("/:universityId", universitiesController.deleteUniversity);
 
 module.exports = router;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ValidatedComponent from '../ValidatedComponent';
 import FormComponent from '../FormComponent';
-import {getApiHost } from '../../services/commonService';
+import { getApiHost } from '../../services/commonService';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 
@@ -18,42 +18,65 @@ class EditFacultyForm extends Component {
                 description: '',
             }
         };
+        this.routeFacultyId = _.get(this.props, 'match.params.facultyId', null);
+        this.routeUniversityId = _.get(this.props, 'match.params.id', null);
     }
 
-    handleSubmit() {
-        const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}`;
+    handleSubmit(e) {
+        e.preventDefault();
+        const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}`;
         const headers = {
             'Authorization': this.props.auth.user.api_token
         }
         try {
-            axios.put(apiUrl, this.state.faculty, { headers });
-            this.props.history.push(`/universities/${this.props.universityId}`);
+            axios.put(apiUrl, this.state.faculty, { headers })
+                .then(() => this.props.history.push(`/universities/${this.routeUniversityId}`));
         } catch (error) {
             console.log(error)
         }
     }
+    componentDidMount() {
+        if (!this.routeFacultyId) {
+            return;
+        }
+        const apiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}`;
+        try {
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    this.setState({ faculty: data, isLoaded: true })
+                });
 
-render() {
-    const renderField = this.renderField.bind(this, 'faculty');
+        } catch (error) {
+            console.error(error);
+        };
+    }
 
-    return (
-        <div className="card mt-3">
-            <div className="card-body">
-                <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                    <h2>Faculty Info</h2>
-                    <div className="row">
-                        <div className="col-md-10">
-                            {renderField('name', 'Faculty Name')}
-                            {renderField('address', 'Address')}
-                            {renderField('description', 'Description')}
+    render() {
+        const renderField = this.renderField.bind(this, 'faculty');
+
+        return (
+            <div className="card mt-3">
+                <div className="card-body">
+                    <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
+                        <h2>Faculty Info</h2>
+                        <div className="row">
+                            <div className="col-md-10">
+                                {renderField('name', 'Faculty Name')}
+                                {renderField('address', 'Address')}
+                                {renderField('description', 'Description')}
+                            </div>
                         </div>
-                    </div>
-                    <button className="btn btn-primary" onClick={this.handleSubmit.bind(this, 'faculty')}>Save</button>
-                </form>
+                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    }
 }
 
 const mapStateToProps = (state) => ({

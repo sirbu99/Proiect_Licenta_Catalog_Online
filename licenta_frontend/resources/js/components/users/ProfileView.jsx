@@ -9,6 +9,8 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import toastr from 'toastr';
 
+import LoginForm from '../auth/LoginForm';
+
 
 class ProfileView extends React.Component {
     constructor(props) {
@@ -91,7 +93,7 @@ class ProfileView extends React.Component {
         }
 
         return (
-            <>
+            this.props.auth.loggedIn ?
                 <div className="card" >
                     <div className="card-header">
                         <h2 className="card-title">Profile Info</h2>
@@ -156,7 +158,10 @@ class ProfileView extends React.Component {
                         </div>
                     </div>
                 </div >
-            </>
+                : <div className="card col-md-6 m-auto">
+                    <h5>You must be logged in to see this page</h5>
+                    <LoginForm />
+                </div>
         );
     }
 

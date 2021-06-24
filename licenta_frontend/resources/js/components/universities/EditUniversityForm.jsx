@@ -25,8 +25,8 @@ class EditUniversityForm extends Component {
             'Authorization': this.props.auth.user.api_token
         }
         try {
-            axios.put(apiUrl, this.state.university, { headers });
-            this.props.history.push(`/universities`);
+            axios.put(apiUrl, this.state.university, { headers })
+                .then(() => this.props.history.push(`/universities`));
         } catch (error) {
             console.log(error)
         }

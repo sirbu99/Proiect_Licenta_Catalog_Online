@@ -13,7 +13,7 @@ exports.getAllFaculties = async(req, res) => {
 
 exports.getFacultyById = async(req, res) => {
     try {
-        faculty = await facultyRepository.getFacultyById(req.params.facultyId, req.params.universityId);
+        const [faculty] = await facultyRepository.getFacultyById(req.params.facultyId);
         res.send(faculty);
     } catch (error) {
         console.log(error);

@@ -4,6 +4,10 @@ async function getAllUniversities() {
     return db.queryPromise('SELECT * FROM universities');
 }
 
+async function getUniversityById(id) {
+    return db.queryPromise('SELECT * FROM universities WHERE id = ?', [id]);
+}
+
 async function postUniversity(name, city, country) {
     return db.queryPromise('SET @name = ?;SET @city = ?;SET @country = ?; CALL Add_Universities(@name, @city, @country);', [name, city, country]);
 }
@@ -21,5 +25,6 @@ module.exports = {
     postUniversity,
     putUniversity,
     deleteUniversity,
+    getUniversityById,
 
 }

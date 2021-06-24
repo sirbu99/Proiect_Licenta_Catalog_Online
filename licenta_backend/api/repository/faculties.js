@@ -4,8 +4,12 @@ async function getAllFaculties(uniId) {
     return db.queryPromise('SELECT * FROM faculties WHERE university_id= ?', uniId);
 }
 
-async function getFacultyById(id, uniId) {
-    return db.queryPromise('SELECT * FROM faculties WHERE id = ? AND university_id =?', [id, uniId]);
+async function getFacultyById(id) {
+    return db.queryPromise(`
+    SELECT *
+    FROM faculties
+    WHERE id = ?
+    `, [id]);
 }
 
 async function getGroupsFromFaculty(facultyId) {

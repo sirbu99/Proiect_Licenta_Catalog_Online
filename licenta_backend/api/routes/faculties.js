@@ -24,10 +24,10 @@ router.get("/:facultyId/students", studentsController.getStudents);
 router.get("/:facultyId/students/list", studentsController.getStudentsList);
 
 
+router.use(authMiddleware.checkAuth);
 router.get("/:facultyId/teachers", teachersController.getTeachers);
 router.get("/:facultyId/teachers-list", teachersController.getTeachersList);
 
-router.use(authMiddleware.checkAuth);
 router.get("/:facultyId/grades", gradesController.getGradesByTeacher);
 router.post("/:facultyId/grades/:subjectId/edit", gradesController.editGradeForStudent);
 router.get("/:facultyId/schedule", scheduleController.getSchedule);
@@ -51,7 +51,7 @@ router.post("/:facultyId/announcements", announcementsController.addAnnouncement
 
 
 router.get("/:facultyId/subjects", subjectsController.getSubjectsList);
-router.get("/:facultyId/subjects-list/:userId", subjectsController.getSubjectsByTeacher);
+router.get("/:facultyId/subjects-list/:userId", subjectsController.getSubjectsByTeacherId);
 
 
 router.get("/:facultyId/grades", gradesController.getGrades);

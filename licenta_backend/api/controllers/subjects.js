@@ -35,3 +35,13 @@ exports.getSubjectsByTeacher = async(req, res) => {
         console.log(error);
     }
 };
+
+exports.getSubjectsByTeacherId = async(req, res) => {
+    try {
+        subjects = await subjectsRepository.getSubjectsByTeacher(req.params.userId);
+        console.log(subjects);
+        res.send(subjects);
+    } catch (error) {
+        console.log(error);
+    }
+};

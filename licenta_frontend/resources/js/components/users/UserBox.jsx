@@ -33,7 +33,7 @@ const UserBox = (props) => {
                         </> :
                         <>
                             <LoginForm />
-                            <Link to="/register" className="nav-link">
+                            <Link to="/register" className="nav-link text-center">
                                 <span>Register</span>
                             </Link>
                         </>
