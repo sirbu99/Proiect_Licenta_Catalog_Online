@@ -71,7 +71,7 @@ const FormComponent = (ComposedComponent) => {
                         onChange={onChange}
                         name={fieldName}
                         type={type}
-                        className="form-control form-control-md"
+                        className="form-control form-control-md "
                     />
                     {this.renderValidationMessages(fieldName)}
                 </div>

@@ -62,16 +62,15 @@ class EditFacultyForm extends Component {
         return (
             <div className="card mt-3">
                 <div className="card-body">
+                    <h2 className="text-center">Faculty Info</h2>
+                    <hr></hr>
                     <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                        <h2>Faculty Info</h2>
-                        <div className="row">
-                            <div className="col-md-10">
-                                {renderField('name', 'Faculty Name')}
-                                {renderField('address', 'Address')}
-                                {renderField('description', 'Description')}
-                            </div>
+                        {renderField('name', 'Faculty Name')}
+                        {renderField('address', 'Address')}
+                        {renderField('description', 'Description')}
+                        <div className="form-group mb-3">
+                            <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                         </div>
-                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                     </form>
                 </div>
             </div>

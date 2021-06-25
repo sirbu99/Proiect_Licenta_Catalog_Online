@@ -81,7 +81,7 @@ exports.createStudent = async(req, res) => {
         mailer.send(
             studentInfo.email,
             'Please finish the registration process',
-            `Your registration code is ${invitationCode}`
+            `Your registration code is ${invitationCode}: http://localhost:4000/register/${invitationCode}`
         )
         res.send("The student has been added");
     } catch (error) {

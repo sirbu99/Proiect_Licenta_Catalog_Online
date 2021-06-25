@@ -177,7 +177,7 @@ class Table extends React.Component {
     }, this.saveData.bind(this))
   }
 
-  saveData(type) {
+  saveData() {
     const postApiUrl = `${getApiHost()}/universities/${this.routeUniversityId}/${this.routeFacultyId}/grades/${this.props.subjectId}/edit`;
     const headers = {
       'Authorization': this.props.auth.user.api_token

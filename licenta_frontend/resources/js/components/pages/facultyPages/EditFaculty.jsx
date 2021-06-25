@@ -10,9 +10,8 @@ class FacultyEdit extends Component {
 
     render() {
         return (
-            <div className="text-center">
-                <h1>Edit Faculty</h1>
-                <EditFacultyForm universityId={this.props.match.params.id} facultyId = {this.props.match.params.facultyId}></EditFacultyForm>
+            <div>
+                <EditFacultyForm universityId={this.props.match.params.id} facultyId={this.props.match.params.facultyId}></EditFacultyForm>
             </div>
         );
     }

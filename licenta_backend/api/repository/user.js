@@ -4,6 +4,10 @@ async function getUserByEmail(email) {
     return db.queryPromise('SELECT * FROM users WHERE email = ?', [email]);
 }
 
+async function getUserByInvitationCode(invitationCode) {
+    return db.queryPromise('SELECT * FROM users WHERE invitation_code = ?', [invitationCode]);
+}
+
 async function getPermissionsByUserId(userId) {
     return db.queryPromise('SELECT permissions.permission_name FROM permissions JOIN roles_permissions on roles_permissions.permission_id  = permissions.id join users ON users.role_id = roles_permissions.role_id WHERE users.id = ?;', userId);
 }
@@ -13,6 +17,14 @@ async function insertIntoUsers(identification_number, first_name, last_name, pas
     INSERT INTO users
     SET ?
     `, { identification_number, first_name, last_name, password, role_id, email, birthday, address, invitation_code });
+}
+
+async function updatePassword(invitationCode, password) {
+    return db.queryPromise(`
+    Update users
+    SET password = ?
+    WHERE invitation_code = ?
+    `, [password, invitationCode]);
 }
 
 async function getUserInfo(userId) {
@@ -63,4 +75,6 @@ module.exports = {
     getUserInfo,
     getUserRole,
     changePassword,
+    updatePassword,
+    getUserByInvitationCode,
 }

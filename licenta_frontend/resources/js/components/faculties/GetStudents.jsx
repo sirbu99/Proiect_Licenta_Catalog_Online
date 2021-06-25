@@ -5,7 +5,7 @@ import { getApiHost, formatDate } from '../../services/commonService';
 import axios from 'axios';
 import Spinner from '../ui/Spinner';
 import DeleteConfirmation from '../ui/DeleteConfirmation';
-import { FaEdit, FaWindowClose } from 'react-icons/fa';
+import { FaEdit, FaWindowClose, FaChalkboardTeacher } from 'react-icons/fa';
 
 class GetStudents extends React.Component {
     constructor(props) {
@@ -64,6 +64,7 @@ class GetStudents extends React.Component {
     handleShowButtons(id) {
         return _.get(this.props, 'auth.user.permissions', []).includes('edit_student')
             ? <>
+                <td className="edit-button" crole="button" onClick={this.handleViewGrades.bind(this, id)}><FaChalkboardTeacher /></td>
                 <td className="edit-button" role="button" onClick={this.handleEdit.bind(this, id)}><FaEdit /></td>
                 <td className="delete-button" role="button" onClick={this.openModal.bind(this, id)}><FaWindowClose /></td>
             </>
@@ -130,12 +131,6 @@ class GetStudents extends React.Component {
                             }
 
                             <th scope="col" className="border-1">Email</th>
-                            {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
-                                ? <>
-                                    <th className="border-1" />
-                                </>
-                                : null
-                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -157,12 +152,6 @@ class GetStudents extends React.Component {
                                         : null
                                     }
                                     <td className="border-1">{student.email}</td>
-                                    {_.get(this.props, 'auth.user.permissions', []).includes('edit_student')
-                                        ? <>
-                                            <td role="button" className="border-1" onClick={this.handleViewGrades.bind(this, student.id)}>View Grades</td>
-                                        </>
-                                        : null
-                                    }
                                     {this.handleShowButtons(student.id)}
                                 </tr>
                             );

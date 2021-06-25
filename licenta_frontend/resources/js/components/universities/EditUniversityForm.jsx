@@ -39,15 +39,14 @@ class EditUniversityForm extends Component {
             <div className="card mt-3">
                 <div className="card-body">
                     <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                        <h2>University Info</h2>
-                        <div className="row">
-                            <div className="col-md-10">
-                                {renderField('name', 'University Name', 'university.name')}
-                                {renderField('city', 'City')}
-                                {renderField('country', 'Country')}
-                            </div>
+                        <h2 className="text-center">University Info</h2>
+                        <hr></hr>
+                        {renderField('name', 'University Name', 'university.name')}
+                        {renderField('city', 'City')}
+                        {renderField('country', 'Country')}
+                        <div className="form-group mb-3">
+                            <button className="btn btn-primary" onClick={this.handleSubmit.bind(this, 'university')}>Save</button>
                         </div>
-                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this, 'university')}>Save</button>
                     </form>
                 </div>
             </div>

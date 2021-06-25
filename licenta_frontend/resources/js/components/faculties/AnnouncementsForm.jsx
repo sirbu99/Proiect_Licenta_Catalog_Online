@@ -88,15 +88,15 @@ class AnouncementsForm extends Component {
                 <div className="card mt-3">
                     <div className="card-body">
                         <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                            <h2>Announcement Info</h2>
-                            <div className="row">
-                                <div className="col-md-10">
-                                    {renderField('name', 'Title')}
-                                    {renderField('text', 'Message')}
-                                    {renderField('due_date', 'Due Date', 'date')}
-                                </div>
+                            <h2 className="text-center">Announcement Info</h2>
+                            <hr></hr>
+
+                            {renderField('name', 'Title')}
+                            {renderField('text', 'Message')}
+                            {renderField('due_date', 'Due Date', 'date')}
+                            <div className="form-group mb-3">
+                                <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                             </div>
-                            <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                         </form>
                     </div>
                 </div> :

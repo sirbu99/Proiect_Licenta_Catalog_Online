@@ -97,23 +97,21 @@ class TeacherInfoForm extends Component {
             <div className="card mt-3">
                 <div className="card-body">
                     <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                        <h2>Teacher Info</h2>
-                        <div className="row">
-                            <div className="col-md-10">
-                                {renderField('identification_number', 'Identification Number')}
-                                {renderField('first_name', 'Fist Name')}
-                                {renderField('last_name', 'Last Name')}
-                                {renderField('birthday', 'Birthday', 'date')}
-                                {renderField('address', 'Address')}
-                                {renderField('email', 'Email')}
-                                {renderField('didactic_degree', 'Didactic Degree')}
-
-                            </div>
+                        <h2 className="text-center">Teacher Info</h2>
+                        <hr></hr>
+                        {renderField('identification_number', 'Identification Number')}
+                        {renderField('first_name', 'Fist Name')}
+                        {renderField('last_name', 'Last Name')}
+                        {renderField('birthday', 'Birthday', 'date')}
+                        {renderField('address', 'Address')}
+                        {renderField('email', 'Email')}
+                        {renderField('didactic_degree', 'Didactic Degree')}
+                        <div className="form-group mb-3">
+                            <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                         </div>
-                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                     </form>
                 </div>
-            </div>
+            </div >
         );
     }
 }

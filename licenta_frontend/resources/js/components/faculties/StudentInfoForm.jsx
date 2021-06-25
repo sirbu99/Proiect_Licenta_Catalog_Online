@@ -94,22 +94,21 @@ class StudentInfoForm extends Component {
             <div className="card mt-3">
                 <div className="card-body">
                     <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                        <h2>Student Info</h2>
-                        <div className="row">
-                            <div className="col-md-10">
-                                {renderField('identification_number', 'Identification Number')}
-                                {renderField('first_name', 'Fist Name')}
-                                {renderField('last_name', 'Last Name')}
-                                {renderField('birthday', 'Birthday', 'date')}
-                                {renderField('address', 'Address')}
-                                {renderField('email', 'Email')}
-                                {renderField('funding', 'Funding')}
-                                {renderField('year', 'Year')}
-                                {renderField('half_year', 'Half Year')}
-                                {renderField('group', 'Group')}
-                            </div>
+                        <h2 className="text-center">Student Info</h2>
+                        <hr></hr>
+                        {renderField('identification_number', 'Identification Number')}
+                        {renderField('first_name', 'Fist Name')}
+                        {renderField('last_name', 'Last Name')}
+                        {renderField('birthday', 'Birthday', 'date')}
+                        {renderField('address', 'Address')}
+                        {renderField('email', 'Email')}
+                        {renderField('funding', 'Funding')}
+                        {renderField('year', 'Year')}
+                        {renderField('half_year', 'Half Year')}
+                        {renderField('group', 'Group')}
+                        <div className="form-group mb-3">
+                            <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                         </div>
-                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                     </form>
                 </div>
             </div>

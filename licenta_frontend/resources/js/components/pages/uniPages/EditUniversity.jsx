@@ -10,8 +10,7 @@ class UniversityEdit extends Component {
 
     render() {
         return (
-            <div className="text-center">
-                <h1>Edit University</h1>
+            <div>
                 <EditUniversityForm universityId={this.props.match.params.id}></EditUniversityForm>
             </div>
         );

@@ -165,24 +165,22 @@ class ScheduleInfoForm extends Component {
             <div className="card mt-3">
                 <div className="card-body">
                     <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                        <h2>Schedule Info</h2>
-                        <div className="row">
-                            <div className="col-md-10">
-                                {/* {renderField('user_id', 'User ID')} */}
-                                {/* {renderSelectField('user_id', 'Teachers', teachersList)} */}
-                                {teachersList}
-                                {renderSelectField('subject_id', 'Subjects', options)}
-                                {renderField('year', 'Year')}
-                                {renderField('half_year', 'Half Year')}
-                                {renderField('group', 'Group')}
-                                {renderField('classroom', 'Classroom')}
-                                {renderField('start_at', 'Start At', 'time')}
-                                {renderField('finish_at', 'Finish At', 'time')}
-                                {renderField('day', 'Day')}
-                                {renderField('type', 'Type')}
-                            </div>
+                        <h2 className="text-center">Schedule Info</h2>
+                        <hr></hr>
+
+                        {teachersList}
+                        {renderSelectField('subject_id', 'Subjects', options)}
+                        {renderField('year', 'Year')}
+                        {renderField('half_year', 'Half Year')}
+                        {renderField('group', 'Group')}
+                        {renderField('classroom', 'Classroom')}
+                        {renderField('start_at', 'Start At', 'time')}
+                        {renderField('finish_at', 'Finish At', 'time')}
+                        {renderField('day', 'Day')}
+                        {renderField('type', 'Type')}
+                        <div className="form-group mb-3">
+                            <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                         </div>
-                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
                     </form>
                 </div>
             </div>
