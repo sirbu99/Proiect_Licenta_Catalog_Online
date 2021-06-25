@@ -64,7 +64,7 @@ exports.createTeacher = async(req, res) => {
         mailer.send(
             teacherInfo.email,
             'Please finish the registration process',
-            `Your registration code is ${invitationCode}`
+            `Your registration code is ${invitationCode}: http://localhost:4000/register/${invitationCode}`
         )
         res.send("The teacher has been added");
     } catch (error) {

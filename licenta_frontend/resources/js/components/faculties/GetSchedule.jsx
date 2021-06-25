@@ -14,11 +14,14 @@ class GetSchedule extends React.Component {
 
         this.state = {
             schedule_info: [],
+            yearInfo: [],
             isLoaded: false,
             modalIsOpen: false,
             selectedId: null,
             subjects: [],
             selectedSubjectId: '',
+            selectedYear: '',
+            selectedGroup: '',
         }
     }
     componentDidMount() {
@@ -28,9 +31,18 @@ class GetSchedule extends React.Component {
 
     fetchSchedule(event) {
         event && event.preventDefault();
-        let apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule`;
+        let apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule/list?type=display`;
         if (this.state.selectedSubjectId) {
             apiUrl += `?subjectId=${this.state.selectedSubjectId}`;
+        }
+        if (this.state.selectedYear) {
+            apiUrl += `&year=${this.state.selectedYear}`;
+        }
+        if (this.state.selectedHalfYear) {
+            apiUrl += `&halfYear=${this.state.selectedHalfYear}`;
+        }
+        if (this.state.selectedGroup) {
+            apiUrl += `&group=${this.state.selectedGroup}`;
         }
         try {
             fetch(apiUrl, {
@@ -62,54 +74,21 @@ class GetSchedule extends React.Component {
         };
     }
 
-    // fetchGroups() {
-    //     const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule/groups`;
-    //     try {
-    //         fetch(apiUrl, {
-    //             headers: {
-    //                 'Authorization': this.props.auth.user.api_token
-    //             }
-    //         })
-    //             .then((response) => response.json())
-    //             .then((data) => this.setState({ groups: data, isLoaded: true }));
+    fetchGroups() {
+        const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}S/groups`;
+        try {
+            fetch(apiUrl, {
+                headers: {
+                    'Authorization': this.props.auth.user.api_token
+                }
+            })
+                .then((response) => response.json())
+                .then((data) => this.setState({ yearInfo: data, isLoaded: true }));
 
-    //     } catch (error) {
-    //         console.error(error);
-    //     };
-
-    // }
-    // fetchYears() {
-    //     const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule/years`;
-    //     try {
-    //         fetch(apiUrl, {
-    //             headers: {
-    //                 'Authorization': this.props.auth.user.api_token
-    //             }
-    //         })
-    //             .then((response) => response.json())
-    //             .then((data) => this.setState({ years: data, isLoaded: true }));
-
-    //     } catch (error) {
-    //         console.error(error);
-    //     };
-
-    // }
-    // fetchHalfYears() {
-    //     const apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule/half-years`;
-    //     try {
-    //         fetch(apiUrl, {
-    //             headers: {
-    //                 'Authorization': this.props.auth.user.api_token
-    //             }
-    //         })
-    //             .then((response) => response.json())
-    //             .then((data) => this.setState({ half_year_list: data, isLoaded: true }));
-
-    //     } catch (error) {
-    //         console.error(error);
-    //     };
-
-    // }
+        } catch (error) {
+            console.error(error);
+        };
+    }
 
     handleEdit(id) {
         this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/schedule/${id}/edit`);

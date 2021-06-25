@@ -155,7 +155,7 @@ class ScheduleInfoForm extends Component {
         if (!this.props.auth.loggedIn) {
             return (
                 <div className="card col-md-6 m-auto">
-                    <h5>You must be logged in to see this page</h5>
+                    <h5 className="text-center">You must be logged in to see this page</h5>
                     <LoginForm />
                 </div>
             )
