@@ -5,7 +5,7 @@ import FormComponent from '../FormComponent';
 import { getApiHost, formatDate } from '../../services/commonService';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import { data } from 'jquery';
+import LoginForm from '../auth/LoginForm';
 
 
 class AnouncementsForm extends Component {
@@ -75,22 +75,35 @@ class AnouncementsForm extends Component {
     render() {
         const renderField = this.renderField.bind(this, 'announcement');
 
-        return (
-            <div className="card mt-3">
-                <div className="card-body">
-                    <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                        <h2>Announcement Info</h2>
-                        <div className="row">
-                            <div className="col-md-10">
-                                {renderField('name', 'Title')}
-                                {renderField('text', 'Message')}
-                                {renderField('due_date', 'Due Date', 'date')}
-                            </div>
-                        </div>
-                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
-                    </form>
+        if (!this.props.auth.loggedIn) {
+            return (
+                <div className="card col-md-6 m-auto">
+                    <h5>You must be logged in to see this page</h5>
+                    <LoginForm />
                 </div>
-            </div>
+            )
+        }
+        return (
+            this.props.auth.loggedIn ?
+                <div className="card mt-3">
+                    <div className="card-body">
+                        <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
+                            <h2>Announcement Info</h2>
+                            <div className="row">
+                                <div className="col-md-10">
+                                    {renderField('name', 'Title')}
+                                    {renderField('text', 'Message')}
+                                    {renderField('due_date', 'Due Date', 'date')}
+                                </div>
+                            </div>
+                            <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
+                        </form>
+                    </div>
+                </div> :
+                <div className="card col-md-6 m-auto">
+                    <h5>You must be logged in to see this page</h5>
+                    <LoginForm />
+                </div>
         );
     }
 }

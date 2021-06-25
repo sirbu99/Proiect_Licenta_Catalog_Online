@@ -5,6 +5,7 @@ import FormComponent from '../FormComponent';
 import { getApiHost, formatDate } from '../../services/commonService';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import LoginForm from '../auth/LoginForm';
 
 
 class StudentInfoForm extends Component {
@@ -48,7 +49,7 @@ class StudentInfoForm extends Component {
 
     handleCreateUser(headers) {
         const apiUrl = `${getApiHost()}/users/students`;
-        return axios.post(apiUrl, {facultyId: this.routeFacultyId, ...this.state.student}, { headers });
+        return axios.post(apiUrl, { facultyId: this.routeFacultyId, ...this.state.student }, { headers });
     }
 
     handleEditUser(headers) {
@@ -78,34 +79,42 @@ class StudentInfoForm extends Component {
         };
     }
 
-render() {
-    const renderField = this.renderField.bind(this, 'student');
+    render() {
+        const renderField = this.renderField.bind(this, 'student');
+        if (!this.props.auth.loggedIn) {
+            return (
+                <div className="card col-md-6 m-auto">
+                    <h5>You must be logged in to see this page</h5>
+                    <LoginForm />
+                </div>
+            )
+        }
 
-    return (
-        <div className="card mt-3">
-            <div className="card-body">
-                <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
-                    <h2>Student Info</h2>
-                    <div className="row">
-                        <div className="col-md-10">
-                            {renderField('identification_number', 'Identification Number')}
-                            {renderField('first_name', 'Fist Name')}
-                            {renderField('last_name', 'Last Name')}
-                            {renderField('birthday', 'Birthday','date')}
-                            {renderField('address', 'Address')}
-                            {renderField('email', 'Email')}
-                            {renderField('funding', 'Funding')}
-                            {renderField('year', 'Year')}
-                            {renderField('half_year', 'Half Year')}
-                            {renderField('group', 'Group')}
+        return (
+            <div className="card mt-3">
+                <div className="card-body">
+                    <form className={this.isValid() && this.isDirty() ? 'was-validated' : 'needs-validation'}>
+                        <h2>Student Info</h2>
+                        <div className="row">
+                            <div className="col-md-10">
+                                {renderField('identification_number', 'Identification Number')}
+                                {renderField('first_name', 'Fist Name')}
+                                {renderField('last_name', 'Last Name')}
+                                {renderField('birthday', 'Birthday', 'date')}
+                                {renderField('address', 'Address')}
+                                {renderField('email', 'Email')}
+                                {renderField('funding', 'Funding')}
+                                {renderField('year', 'Year')}
+                                {renderField('half_year', 'Half Year')}
+                                {renderField('group', 'Group')}
+                            </div>
                         </div>
-                    </div>
-                    <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
-                </form>
+                        <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    }
 }
 
 const mapStateToProps = (state) => ({

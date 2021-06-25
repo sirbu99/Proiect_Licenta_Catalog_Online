@@ -33,7 +33,8 @@ class GetStudentGrades extends React.Component {
 
 
     fetchSubjects() {
-        const apiUrl = `${getApiHost()}/users/students/${this.props.auth.user.id}/subjects`;
+        console.log(this.props.match.params);
+        const apiUrl = `${getApiHost()}/users/students/${this.props.match.params.userId}/subjects`;
         try {
             fetch(apiUrl, {
                 headers: {
@@ -49,7 +50,7 @@ class GetStudentGrades extends React.Component {
     }
     fetchGrades(event) {
         event && event.preventDefault();
-        let apiUrl = `${getApiHost()}/users/students/${this.props.auth.user.id}/grades`;
+        let apiUrl = `${getApiHost()}/users/students/${this.props.match.params.userId}/grades`;
         if (this.state.selectedSubjectId) {
             apiUrl += `?subjectId=${this.state.selectedSubjectId}`;
         }

@@ -41,7 +41,7 @@ async function getSubjectsBySemester(id, year, semester) {
 
 async function getSubjectsByStudent(userId) {
     return db.queryPromise(`
-        SELECT 
+        SELECT DISTINCT
             subjects.id,
             name
         FROM subjects 

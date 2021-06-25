@@ -5,6 +5,7 @@ import FormComponent from '../FormComponent';
 import { getApiHost } from '../../services/commonService';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import LoginForm from '../auth/LoginForm';
 
 
 class ScheduleInfoForm extends Component {
@@ -150,6 +151,15 @@ class ScheduleInfoForm extends Component {
         subjects.forEach(subj => {
             options.push({ value: subj.id, label: subj.name });
         });
+
+        if (!this.props.auth.loggedIn) {
+            return (
+                <div className="card col-md-6 m-auto">
+                    <h5>You must be logged in to see this page</h5>
+                    <LoginForm />
+                </div>
+            )
+        }
 
         return (
             <div className="card mt-3">

@@ -10,7 +10,7 @@ const MenuSecondary = (props) => {
     const userId = _.get(props, 'auth.user.id');
     const routeFacultyId = _.get(props, 'match.params.facultyId', null);
     const routeUniversityId = _.get(props, 'match.params.id', null);
-    console.log(props.match.params);
+
     return (
         <nav className="sidebar">
             <div className="sidebar-header">

@@ -16,7 +16,6 @@ import ScheduleInfoForm from '../faculties/ScheduleInfoForm';
 import ProfileView from '../users/ProfileView';
 import Grades from './facultyPages/Grades';
 import StudentGrades from './facultyPages/StudentGrades';
-import RegisterForm from '../auth/RegisterForm';
 
 const routes = {
     all: [

@@ -57,9 +57,8 @@ class GetStudents extends React.Component {
         }
     }
 
-    handleViewGrades(id) {
-        console.log(this.props);
-        this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/students/${id}/grades`);
+    handleViewGrades(sudentId) {
+        this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/students/${sudentId}/grades`);
     }
 
     handleShowButtons(id) {
