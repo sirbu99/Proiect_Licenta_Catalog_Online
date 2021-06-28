@@ -91,9 +91,13 @@ class GetStudents extends React.Component {
 
         if (stdListSize < 1) {
             return (
-                <h3>
-                    There are no students to display!
-                </h3>
+                <>
+                    <h1>Students List</h1>
+                    <hr></hr>
+                    <h3>
+                        There are no students to display!
+                    </h3>
+                </>
             )
         };
 

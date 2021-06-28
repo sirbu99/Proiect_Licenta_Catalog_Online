@@ -203,6 +203,8 @@ class GetSchedule extends React.Component {
         if (scheduleListSize < 1) {
             return (
                 <>
+                    <h1>Schedule</h1>
+                    <hr></hr>
                     {_.get(this.props, 'auth.user.role_id') == '1' ?
                         <div className="d-flex justify-content-between align-items-center">
                             {filter}

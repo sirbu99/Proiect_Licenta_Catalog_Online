@@ -18,7 +18,7 @@ const LoginValidation = (ComposedComponent) => {
 
             this.validationMessages = {
                 email: 'Please fill in an email',
-                password: 'auth.validation:password_required',
+                password: 'Password required',
             };
         };
     }

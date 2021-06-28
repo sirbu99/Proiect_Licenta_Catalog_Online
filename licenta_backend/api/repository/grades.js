@@ -156,9 +156,10 @@ async function editGradeForStudent(studentId, userId, subjectId, grade, date_dif
         AND schedule.group = students.group
         AND schedule.half_year = students.half_year
         `, [subjectId, userId, studentId])
+    console.log("WEEKDAY", weekday[0].day);
     const gradeDate = await db.queryPromise(`
         CALL Get_Grades_Date(?, ?);
-    `, [weekday[0], date_diff]);
+    `, [weekday[0].day, date_diff]);
     const teacherId = await db.queryPromise(`
         SELECT
             id

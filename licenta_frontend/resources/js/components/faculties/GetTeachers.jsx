@@ -85,9 +85,13 @@ class GetTeachers extends React.Component {
 
         if (teacherListSize < 1) {
             return (
-                <h3>
-                    There are no teachers to display!
-                </h3>
+                <>
+                    <h1>Teachers List</h1>
+                    <hr></hr>
+                    <h3>
+                        There are no teachers to display!
+                    </h3>
+                </>
             )
         } else {
             return (

@@ -106,6 +106,8 @@ class GetStudentGrades extends React.Component {
         if (gradesLstSize < 1) {
             return (
                 <>
+                    <h1>Grades</h1>
+                    <hr></hr>
                     {filter}
                     <hr></hr>
                     <h3>
@@ -117,6 +119,10 @@ class GetStudentGrades extends React.Component {
         };
         return (
             <div className="table-responsive">
+                <div className="d-flex justify-content-between mb-3">
+                    <h1>Grades</h1>
+                </div>
+                <hr></hr>
                 {filter}
                 <hr></hr>
                 <table className="table table-bordered table-hover align-middle">
