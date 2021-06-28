@@ -27,6 +27,35 @@ exports.getSchedule = async(req, res) => {
     }
 };
 
+exports.getScheduleByFilters = async(req, res) => {
+    try {
+        userInfo = await userRepository.getUserRole(process.env.AUTH_ID);
+        const subjectId = url.parse(req.url, true).query.subjectId;
+        const year = url.parse(req.url, true).query.year;
+        const halfYear = url.parse(req.url, true).query.halfYear;
+        const group = url.parse(req.url, true).query.group;
+        switch (userInfo[0].role_id) {
+            case 6:
+                studentInfo = await studentsRepository.getStudentInfo(process.env.AUTH_ID);
+                scheduleInfo = await scheduleRepository.getScheduleForStudent(req.params.facultyId, studentInfo[0].group, studentInfo[0].year, studentInfo[0].half_year);
+                res.send(scheduleInfo);
+                break;
+            case 5:
+                scheduleInfo = await scheduleRepository.getScheduleForTeacher(req.params.facultyId, process.env.AUTH_ID);
+                res.send(scheduleInfo);
+                break;
+            default:
+                const subjectId = url.parse(req.url, true).query.subjectId;
+                scheduleInfo = await scheduleRepository.getScheduleBySubject(req.params.facultyId, subjectId, year, halfYear, group);
+                res.send(scheduleInfo);
+                break;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
 exports.getScheduleById = async(req, res) => {
     try {
         const [schedule] = await scheduleRepository.getScheduleById(req.params.scheduleId);

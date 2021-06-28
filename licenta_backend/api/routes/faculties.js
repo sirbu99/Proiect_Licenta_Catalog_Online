@@ -31,6 +31,7 @@ router.get("/:facultyId/teachers-list", teachersController.getTeachersList);
 router.get("/:facultyId/grades", gradesController.getGradesByTeacher);
 router.post("/:facultyId/grades/:subjectId/edit", gradesController.editGradeForStudent);
 router.get("/:facultyId/schedule", scheduleController.getSchedule);
+router.get("/:facultyId/schedule/list", scheduleController.getScheduleByFilters);
 router.get("/:facultyId/schedule/groups", scheduleController.getGroupsFromSchedule);
 router.get("/:facultyId/schedule/subjects", subjectsController.getSubjects);
 router.get("/:facultyId/schedule/years", scheduleController.getYearsFromSchedule);

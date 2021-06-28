@@ -129,7 +129,7 @@ async function getScheduleByGroup(id, year, group, halfYear) {
     `, [id, year, group, halfYear]);
 }
 
-async function getScheduleBySubject(id, subjectId) {
+async function getScheduleBySubject(id, subjectId, year, halfYear, group) {
     const bindings = [id];
     let query = `
         SELECT 
@@ -148,11 +148,23 @@ async function getScheduleBySubject(id, subjectId) {
         JOIN users ON s.user_id = users.id 
         JOIN faculty_members ON faculty_members.user_id = users.id 
         JOIN faculties ON faculty_members.faculty_id = faculties.id 
-        WHERE faculties.id =?
+        WHERE faculties.id = ?
     `;
     if (subjectId) {
         query += "AND subject_id = ?";
         bindings.push(subjectId);
+    }
+    if (year) {
+        query += "AND s.year = ?";
+        bindings.push(year);
+    }
+    if (halfYear) {
+        query += "AND s.half_year = ?";
+        bindings.push(halfYear);
+    }
+    if (group) {
+        query += "AND s.group = ?";
+        bindings.push(group);
     }
     return db.queryPromise(query, bindings);
 }

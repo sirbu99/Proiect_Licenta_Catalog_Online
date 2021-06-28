@@ -27,13 +27,14 @@ class GetSchedule extends React.Component {
     componentDidMount() {
         this.fetchSchedule();
         this.fetchSubjects();
+        this.fetchGroups();
     }
 
     fetchSchedule(event) {
         event && event.preventDefault();
         let apiUrl = `${getApiHost()}/universities/${this.props.universityId}/${this.props.facultyId}/schedule/list?type=display`;
         if (this.state.selectedSubjectId) {
-            apiUrl += `?subjectId=${this.state.selectedSubjectId}`;
+            apiUrl += `&subjectId=${this.state.selectedSubjectId}`;
         }
         if (this.state.selectedYear) {
             apiUrl += `&year=${this.state.selectedYear}`;
@@ -94,11 +95,6 @@ class GetSchedule extends React.Component {
         this.props.history.push(`/universities/${this.props.universityId}/${this.props.facultyId}/schedule/${id}/edit`);
     }
 
-    handleChange(event) {
-        event.preventDefault();
-        this.setState({ selectedSubjectId: event.target.value });
-    }
-
     handleDelete(id) {
         const apiUrl = `${getApiHost()}/schedule/${id}`;
         const headers = {
@@ -129,31 +125,72 @@ class GetSchedule extends React.Component {
         this.setState({ ...this.state, modalIsOpen: false, selectedId: null });
     }
 
+    handleChangeSubject(event) {
+        event.preventDefault();
+        this.setState({
+            selectedSubjectId: event.target.value,
+            selectedYear: '',
+        });
+    }
+
+    handleChangeYear(event) {
+        event.preventDefault();
+        this.setState({
+            selectedYear: event.target.value,
+            selectedSubjectId: ''
+        });
+    }
+
+    handleChangeGroup(event) {
+        event.preventDefault();
+        this.setState({ selectedGroup: event.target.value });
+    }
+
+    handleChangeHalfYear(event) {
+        event.preventDefault();
+        this.setState({ selectedHalfYear: event.target.value });
+    }
+
     render() {
         const schedule_info = this.state.schedule_info;
         const scheduleListSize = Object.keys(schedule_info).length;
         const isLoaded = this.state.isLoaded;
+        const yearsList = {};
+        const groupsList = {};
+        const halfYearsList = {};
         const newScheduleUrl = `/universities/${this.props.universityId}/${this.props.facultyId}/schedule/new`;
 
+        this.state.yearInfo.forEach(item => {
+            yearsList[item.year] = { name: item.year, id: item.year };
+            groupsList[item.group] = { name: item.group, id: item.group };
+            halfYearsList[item.half_year] = { name: item.half_year, id: item.half_year };
+
+        });
         const filter = (
             <>
                 <Filter
-                    clickHandler={this.handleChange.bind(this)}
+                    clickHandler={this.handleChangeSubject.bind(this)}
                     name="Subject"
                     list={this.state.subjects}
                     selectedId={this.state.selectedSubjectId}
                 />
                 <Filter
-                    clickHandler={this.handleChange.bind(this)}
+                    clickHandler={this.handleChangeYear.bind(this)}
                     name="Year"
-                    list={this.state.subjects}
-                    selectedId=''
+                    list={Object.values(yearsList)}
+                    selectedId={this.state.selectedYear}
                 />
                 <Filter
-                    clickHandler={this.handleChange.bind(this)}
+                    clickHandler={this.handleChangeHalfYear.bind(this)}
+                    name="Half-year"
+                    list={Object.values(halfYearsList)}
+                    selectedId={this.state.selectedHalfYear}
+                />
+                <Filter
+                    clickHandler={this.handleChangeGroup.bind(this)}
                     name="Group"
-                    list={this.state.subjects}
-                    selectedId=''
+                    list={Object.values(groupsList)}
+                    selectedId={this.state.selectedGroup}
                 />
                 <button onClick={this.fetchSchedule.bind(this)} className="btn btn-primary mx-2" >Apply</button>
             </>
