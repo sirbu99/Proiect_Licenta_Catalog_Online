@@ -78,16 +78,17 @@ async function updateStudentInfo(id, fName, lName, birthday, address, email, fun
     `, [fName, lName, birthday, address, email, funding, year, halfYear, group, id]);
 }
 
-async function createStudent(userId, funding, year, halfYear, group) {
+async function createStudent(userId, funding, year, halfYear, registrationNumber, group) {
     return db.queryPromise(`
         INSERT INTO students 
         SET 
             user_id = ?, 
             funding = ?, 
             year = ?, 
-            half_year = ?, 
+            half_year = ?,
+            registration_number =?,
             \`group\` = ?;
-    `, [userId, funding, year, halfYear, group]);
+    `, [userId, funding, year, halfYear, registrationNumber, group]);
 }
 
 async function getStudentsBySubject(id, subjectId, teacherId) {

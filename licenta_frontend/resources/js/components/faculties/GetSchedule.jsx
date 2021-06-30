@@ -102,7 +102,7 @@ class GetSchedule extends React.Component {
         }
         try {
             axios.delete(apiUrl, { headers })
-                .then(this.fetchSchedule.bind(this));
+                .then(() => this.fetchSchedule());
         } catch (error) {
             console.log(error)
         }

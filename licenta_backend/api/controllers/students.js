@@ -59,6 +59,7 @@ exports.createStudent = async(req, res) => {
     try {
         const studentInfo = req.body;
         const invitationCode = Math.random().toString(26).slice(2).toUpperCase();
+        const registrationNumber = Math.random().toString(26).slice(2).toUpperCase();
         const createUserQueryResult = await usersRepository.insertIntoUsers(
             studentInfo.identification_number,
             studentInfo.first_name,
@@ -75,6 +76,7 @@ exports.createStudent = async(req, res) => {
             studentInfo.funding,
             studentInfo.year,
             studentInfo.half_year,
+            registrationNumber,
             studentInfo.group,
         );
         await usersRepository.addFacultyMember(createUserQueryResult.insertId, studentInfo.facultyId);

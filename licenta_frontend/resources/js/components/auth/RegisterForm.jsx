@@ -25,7 +25,7 @@ class RegisterForm extends Component {
 
         this.isValid() && axios.put(`${getApiHost()}/register`, requestOptions)
             .then(() => {
-                this.props.history.push("/login");
+                this.props.history.push("/universities");
             });
     }
 
