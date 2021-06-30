@@ -106,7 +106,9 @@ class GetStudentGrades extends React.Component {
         if (gradesLstSize < 1) {
             return (
                 <>
-                    <h1>Grades</h1>
+                    <div className="d-flex justify-content-between mb-3">
+                        <h1>Grades</h1>
+                    </div>
                     <hr></hr>
                     {filter}
                     <hr></hr>
